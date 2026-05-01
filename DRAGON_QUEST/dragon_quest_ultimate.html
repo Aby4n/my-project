@@ -1,0 +1,2214 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0
+  }
+
+  #app {
+    background: #06000f;
+    color: #ddd;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 7px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px;
+    min-height: 760px
+  }
+
+  #topbar {
+    display: flex;
+    gap: 4px;
+    width: 100%;
+    max-width: 560px;
+    margin-bottom: 5px
+  }
+
+  .pan {
+    background: #0d0018;
+    border: 1px solid #5500aa;
+    padding: 5px 7px;
+    flex: 1
+  }
+
+  .pan h3 {
+    color: #aa55ff;
+    font-size: 6px;
+    margin-bottom: 3px;
+    border-bottom: 1px solid #2a0044;
+    padding-bottom: 2px
+  }
+
+  .sr {
+    display: flex;
+    justify-content: space-between;
+    margin: 2px 0;
+    font-size: 6px
+  }
+
+  .sr span:last-child {
+    color: #88ffcc
+  }
+
+  .bw {
+    height: 4px;
+    background: #1a001a;
+    border: 1px solid #330044;
+    margin: 1px 0 3px
+  }
+
+  .bf {
+    height: 100%;
+    transition: width .4s
+  }
+
+  canvas {
+    image-rendering: pixelated;
+    border: 2px solid #5500aa;
+    outline: 2px solid #220033;
+    position: relative
+  }
+
+  #log {
+    width: 576px;
+    background: #0d0018;
+    border: 1px solid #5500aa;
+    padding: 6px;
+    min-height: 72px;
+    font-size: 6px;
+    line-height: 1.9;
+    color: #ccc;
+    margin-top: 4px
+  }
+
+  #lh {
+    color: #aa55ff;
+    font-size: 6px;
+    margin-bottom: 2px
+  }
+
+  #bd {
+    display: flex;
+    gap: 3px;
+    flex-wrap: wrap;
+    margin-top: 4px
+  }
+
+  button {
+    background: #0d0018;
+    border: 1px solid #5500aa;
+    color: #aa55ff;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    padding: 4px 6px;
+    cursor: pointer;
+    transition: all .1s
+  }
+
+  button:hover {
+    background: #5500aa;
+    color: #fff
+  }
+
+  button:active {
+    transform: scale(.95)
+  }
+
+  .ib {
+    border-color: #0088cc;
+    color: #55aaff
+  }
+
+  .ib:hover {
+    background: #0088cc;
+    color: #fff
+  }
+
+  .rb {
+    border-color: #cc0044;
+    color: #ff4488
+  }
+
+  .rb:hover {
+    background: #cc0044;
+    color: #fff
+  }
+
+  .gb {
+    border-color: #228800;
+    color: #44cc22
+  }
+
+  .gb:hover {
+    background: #228800;
+    color: #fff
+  }
+
+  .yb {
+    border-color: #aa8800;
+    color: #ffcc00
+  }
+
+  .yb:hover {
+    background: #aa8800;
+    color: #fff
+  }
+
+  .ic {
+    background: #0d0018;
+    border: 1px solid #0088cc;
+    color: #55aaff;
+    font-size: 5px;
+    padding: 2px 3px;
+    display: inline-block;
+    margin: 1px;
+    cursor: pointer
+  }
+
+  .ic:hover {
+    background: #0088cc;
+    color: #fff
+  }
+
+  #fx {
+    position: absolute;
+    top: 0;
+    left: 0;
+    pointer-events: none
+  }
+
+  .qc {
+    font-size: 5px;
+    color: #ffcc00;
+    margin: 1px 0
+  }
+
+  .qd {
+    color: #888
+  }
+</style>
+<div id="app">
+  <div id="topbar">
+    <div class="pan" style="flex:1.2">
+      <h3>&#9876; HERO</h3>
+      <div class="sr">
+        <span>LV</span>
+        <span id="slv">1</span>
+      </div>
+      <div class="sr">
+        <span>HP</span>
+        <span id="shp">30/30</span>
+      </div>
+      <div class="bw">
+        <div class="bf" id="hpb" style="width:100%;background:#cc0044"></div>
+      </div>
+      <div class="sr">
+        <span>MP</span>
+        <span id="smp">12/12</span>
+      </div>
+      <div class="bw">
+        <div class="bf" id="mpb" style="width:100%;background:#0066cc"></div>
+      </div>
+      <div class="sr" style="color:#aa55ff">
+        <span>AETHER</span>
+        <span id="saether">0/100</span>
+      </div>
+      <div class="bw">
+        <div class="bf" id="aetherb" style="width:0%;background:#aa55ff"></div>
+      </div>
+      <div class="sr" style="color:#ffd700">
+        <span>GOLD</span>
+        <span id="sgold">20</span>
+      </div>
+      <div class="bw">
+        <div class="bf" id="xpb" style="width:0%;background:#885500"></div>
+      </div>
+      <div class="sr">
+        <span>EXP</span>
+        <span id="sexp">0</span>
+      </div>
+      <button onclick="showAetherCore()"
+        style="width:100%;margin-top:2px;border-color:#aa55ff;color:#ffaa00;font-size:5px;">🌌 AETHER CORE</button>
+    </div>
+    <div class="pan" style="flex:.9">
+      <h3>&#128300; MAP</h3>
+      <canvas id="mm" width="88" height="66" style="border:1px solid #330055;outline:none"></canvas>
+      <div class="sr" style="margin-top:2px">
+        <span id="szone" style="color:#aa55ff;font-size:6px">LUMINIA</span>
+        <span id="sfl" style="color:#aa55ff;font-size:6px">—</span>
+      </div>
+    </div>
+    <div class="pan" style="flex:1">
+      <h3>&#127820; BAG</h3>
+      <div id="inv" style="min-height:32px"></div>
+      <div class="sr">
+        <span style="color:#ffd700">KEYS</span>
+        <span id="skeys" style="color:#ffd700">0</span>
+      </div>
+      <div class="sr">
+        <span style="color:#ff4488">STATUS</span>
+        <span id="sst" style="color:#88ffcc">OK</span>
+      </div>
+    </div>
+    <div class="pan" style="flex:1.1">
+      <h3>&#9733; QUESTS</h3>
+      <div id="qlog" style="min-height:52px;font-size:5px"></div>
+      <div style="margin-top:3px;display:flex;gap:3px">
+        <button class="yb" style="font-size:5px;padding:3px 4px" onclick="showSave()">SAVE</button>
+        <button class="gb" style="font-size:5px;padding:3px 4px" onclick="doLoad()">LOAD</button>
+        <button class="rb" style="font-size:5px;padding:3px 4px" onclick="doCheat()">CHEAT</button>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;display:inline-block">
+    <canvas id="gc" width="576" height="352"></canvas>
+    <canvas id="fx" width="576" height="352" style="position:absolute;top:0;left:0;pointer-events:none"></canvas>
+  </div>
+  <div id="log">
+    <div id="lh">&#9658; ADVENTURE LOG</div>
+    <div id="lt">Selamat datang di Luminia! Jelajahi dunia, selesaikan quest, masuki Black Dungeon!</div>
+    <div id="bd"></div>
+  </div>
+</div>
+<script>
+  const gc = document.getElementById('gc'), ctx = gc.getContext('2d');
+  const fx = document.getElementById('fx'), fctx = fx.getContext('2d');
+  const mm = document.getElementById('mm'), mctx = mm.getContext('2d');
+  const TW = 32, VW = 18, VH = 11, DC = 14, DR = 9, DTW = 40;
+  const MW = 100, MH = 80;
+  let camX = 0, camY = 0;
+  function updateCam() {
+    let w = (state === 'kingdom') ? 50 : MW;
+    let h = (state === 'kingdom') ? 50 : MH;
+    camX = Math.max(0, Math.min(w - VW, P.x - Math.floor(VW / 2)));
+    camY = Math.max(0, Math.min(h - VH, P.y - Math.floor(VH / 2)));
+  }
+  const OT = { GRASS: 0, WATER: 1, TREE: 2, MOUNTAIN: 3, SAND: 4, TOWN_HUMAN: 5, DUNGEON: 6, LIBRARY: 7, TOWN_ELF: 8, TOWN_DWARF: 9, UMBRA_FOREST: 10, UMBRA_ROOT: 11, UMBRA_CORE: 12 };
+  const DT = { WALL: 0, FLOOR: 1, DOOR: 2, STAIR: 3, TRAP: 4, CHEST: 5, LOCKED: 6, GATE: 7, EXIT: 8 };
+  const KT = { GRASS: 0, PATH: 1, HOUSE: 2, MARKET: 3, WALL: 4, GATE: 5, PALACE: 6, FOUNTAIN: 7, TREE: 8, WATER: 9, STATUE: 10, GARDEN: 11, FORGE: 12, CAVE_WALL: 13, LAVA: 14, EXIT: 15 };
+  const PT = { FLOOR: 0, WALL: 1, THRONE: 2, STAIR_UP: 3, STAIR_DOWN: 4, EXIT: 5, PILLAR: 6, CARPET: 7, WATER: 8, LAVA: 9, CRYSTAL: 10, FORGE: 11 };
+
+  const OCOL = { 0: '#2d6a1e', 1: '#1a4a8a', 2: '#1a4a1a', 3: '#6a5a4a', 4: '#c8a85a', 5: '#8a5a1a', 6: '#150025', 7: '#4a2511', 8: '#22cc77', 9: '#aa5533', 10: '#0a0a1a', 11: '#1a0515', 12: '#2a000a' };
+  const DCOL = { 0: '#050008', 1: '#1a0028', 2: '#3a1a00', 3: '#002244', 4: '#1a0010', 5: '#1a1a00', 6: '#200008', 7: '#110022', 8: '#002211' };
+  const KCOL = { 0: '#2d6a1e', 1: '#887755', 2: '#8b4513', 3: '#cc8833', 4: '#555555', 5: '#777777', 6: '#ddaa00', 7: '#3388cc', 8: '#1d5e14', 9: '#1a4a8a', 10: '#aaaaaa', 11: '#44aa44', 12: '#442211', 13: '#332211', 14: '#ff3300', 15: '#22ff22' };
+  const PCOL = {
+    Aurelis: { 0: '#bb9955', 1: '#443322', 2: '#ffdd00', 3: '#224488', 4: '#224488', 5: '#33cc00', 6: '#ddaa66', 7: '#cc0022', 8: '#2266cc', 9: '#ff4400', 10: '#00ffff', 11: '#666666' },
+    Elaria: { 0: '#228844', 1: '#114422', 2: '#ffdd00', 3: '#224488', 4: '#224488', 5: '#33cc00', 6: '#44aa22', 7: '#11aa44', 8: '#2266cc', 9: '#ff4400', 10: '#00ffff', 11: '#666666' },
+    Tharvok: { 0: '#443322', 1: '#221100', 2: '#ffdd00', 3: '#224488', 4: '#224488', 5: '#33cc00', 6: '#664422', 7: '#aa3311', 8: '#2266cc', 9: '#ff4400', 10: '#00ffff', 11: '#666666' }
+  };
+
+  const OSOLID = { 1: 1, 2: 1, 3: 1, 12: 1 };
+  const KSOLID = { 2: 1, 3: 1, 4: 1, 6: 1, 7: 1, 8: 1, 9: 1, 10: 1, 12: 1, 13: 1, 14: 1 };
+  const PSOLID = { 1: 1, 2: 1, 6: 1, 8: 1, 9: 1, 10: 1, 11: 1 };
+  const rawMap = [
+    "3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333",
+    "3aaaaaaaaaaaaababaaaaaaa0000000000000000000000000000220020000200002020200002222022222222022220022203",
+    "3abbbbbbabaaaaaaaaaaaaaa0000000000000000000000000002002000200000002000022002202202202000202222200223",
+    "3aaaaaaababaaaaaaaaaaaaa0000000000000000000000000000002200220022000002000022002202222200222000220223",
+    "3aaaababbbaabaabaaaaaaaa0000000000000000000000000000000202000000020200220022000020200022020220222203",
+    "3abaabbabbbabaabaaaaaaaa0000000000000000000000000000000000000202022002022202000220200200000220022023",
+    "3aaaaaabbcbbbaabaaaaaaaa0000000000000000000000000000200020200200000022002202222222020000222000202223",
+    "3aaaababbbbbaaaaaaaaaaaa0000000000000000000000000000020000022022000222020200020220020022220002020203",
+    "3aaabaababbaaaaaaaaaaaaa0000000000000000000000000000000220000200200220020202222022220022222222200003",
+    "3aababaaaaaaaaaaaaaaaaaa0000000000000000000000000000000020000200000000200022002222022220020220022223",
+    "3abaaaaaaaaaaaaaaaaaaaaa0000000000000000000000000010000220020202002220200022000022002222022220220203",
+    "3aaaaaaaaaaaaaaaaaaaaaaa0000000000000000000000000000000000002022000000202022020002200202222220222223",
+    "30aaaaaaaaaaaaaaaaaa00000000000000000000000000000001020000020022200000002002002020220022002220000023",
+    "300000aaaaaaaaaaa00000000000000000000000000000000001202000002200022000202020000220022002022020202203",
+    "3000000000000000000000000000000000000000000000000000100020200000000002002220200022200202200002222223",
+    "3000000000000000000000000000000000000000000000000000000000000000000000000000000082220002020002202223",
+    "3000000000000000000000000000000000000000000000000000000000022000000022002002020000202002202222222003",
+    "3000000000000000000000000000000000000000000000000000100000020002020202000020020202202222200222202023",
+    "3000000000000000000000000000000000000000000000000000001020022200002222222002000022022200202002200003",
+    "3000000000000000000000000000000000000000000000000000110000000020220000220022002200002022002002200223",
+    "3000000000000000000000000000000000000000000000000000110000000202220020022200000210200200002002222223",
+    "3000000000000000000000000000000000000000000000000001100000202000000022002022220200002202222022000223",
+    "3000000000000000000000000000000000000000000000000110200002020002000000020000001200220220222202000223",
+    "3000000000000000000000000000000000000000000000011100000000000200200002200000002000202220220222202023",
+    "3000000000000000000000000000000000000000000000000000000020200020020020220020201000222002202020002223",
+    "3000000000000000000000000000000000000000000000100102000000200000200000000020012020200020002202200203",
+    "3000000000000000000000000000000000000000000001000010000002000200220000000221220222022000222202000003",
+    "3000000000000000000000000000000000000000000000000001000020200000020022000202000002220200020200202003",
+    "3000000000000000000000000000000000000000000010000000100000000020000000200212202022020220200220200003",
+    "3000000000000000000000000000000000000000000100000000111002000000002000000120020000020202202222020003",
+    "3000000000000000000060000000000000000000000000000002001020000000202020222122022020020000000020000003",
+    "3000000000000000000000000000000000000000001100000000210000000200020020000202020000000000000002020223",
+    "3000000000000000000000000000000000000000000000000000100000000220000200022100000000000200000220200023",
+    "3000000000000000000000000000000000000000001000000000000000200200000002000002022000002002000220022223",
+    "3000000000000000000000000000000000000000100000000000100000000000002002000102000220000020002000222003",
+    "3000000000000000000000000000000000000000100000000000100000000000000000001100000000000000000000000003",
+    "3000000000000000000000000000000000000000000000000000100000000000000000010000000000000000000000000003",
+    "3000000000000000000000000000000000000000100000000000000000000000000000110000000000000000000000000003",
+    "3000000000000000000000000000000000000001000000000000000000000000000001000000000000000000000000000003",
+    "3000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000003",
+    "3000000000000000000000000000000000000110000000000050000000000000000100000000000000000000000000000003",
+    "3000000000000000000000000000000000001000000000000000000000000000000100000000000000000000000000000003",
+    "3000000000000000000000000000000000010000000000000000000000000000011000000000000000000000000000000003",
+    "3000000000000000000000000000000000100000000000000000000000000001000000000000000000000000000000000003",
+    "3000000000000000000000000000000001000000000000000000000000000001000000000000000000000000000000000003",
+    "3000000000000000000000000000000001000000000000000000000000001100000000000000000000000000000000000003",
+    "3333030344330330304003030303304000033043000000000000000000000000000000000000000000000000000000000003",
+    "3340033300034300433303003330330010030000000000000000000000100000000000000000000000000000000000000003",
+    "3333033040030034034030333030331304034330000000000000000000100000000000000000000000000000000000000003",
+    "3330333344330300400000000333030434030303000000000000000001000000000000000000000000000000000000000003",
+    "3033340033030334030440333043013034304400000000000000000000000000000000000000000000000000000000000003",
+    "3333430343330330033333303000113330040433000000000000000010000000000000000000000000000000000000000003",
+    "3330334433333034000400033034103030403044000000000000000100000000000000000000000000000000000000000003",
+    "3333334304040300003300333001043300000400000000000000000000000000000000000000000000000000000000000003",
+    "3033333304000330003440343103303003030403000000000000000000000000000000000000000000000000000000000003",
+    "3303033003343330430033031030030343300344000000000000000000000000000000000000000000000000000000000003",
+    "3340333033033330034403130043303000003043000000000000000000000000000000000000000000000000000000000003",
+    "3330343333033300340031300330443003303300000000000000000000000000000000000000000000000000000000000003",
+    "3333033034333300303313444034300300433340000000000000000000000000000000000000000000000000000000000003",
+    "3333303033333300303303033303300330003040000000000000000000000000000000000000000000000000000000000003",
+    "3343333043430304443310300433003443300033000000000000000000000000000000000000000000000000000000000003",
+    "3333343333000030440304333034304430003344000000000000000000000000000000000000000000000000000000000003",
+    "3333303330040330430333034330333030333303000000000000000000000000000000000000000000000000000000000003",
+    "3344330300430000000303003433000004434343000000000000000000000000000000000000000000000000000000000003",
+    "3033303443330000003333004034404334043440000000000000000000000000000000000000000000000000000000000003",
+    "3344333303404009004304333333033033000300000000000000000000000000000000000000000000000000000000000003",
+    "3303033333303040000330034033004334300440000000000000000000000000000000000000000000000000000000000003",
+    "3330333043000000003030403303304334040404000000000000000000000000000000000000000000000000000000000003",
+    "3333003333333333334300000333334433330043000000000000000000000000000000000000000000000000000000000003",
+    "3333033304333334040330033333034304030303000000000000000000000000000000000000000000000000000000000003",
+    "3333033330333330333303340043333330000330000000000000000000000000000000000000000070000000000000000003",
+    "3330333333333334303003303300333330040400000000000000000000000000000000000000000000000000000000000003",
+    "3433333333343330333403033030300030033043000000000000000000000000000000000000000000000000000000000003",
+    "3333333334333343333333403033334433030343000000000000000000000000000000000000000000000000000000000003",
+    "3300003333333333403333000300030333040030000000000000000000000000000000000000000000000000000000000003",
+    "3330343333330333304033403433330303303034000000000000000000000000000000000000000000000000000000000003",
+    "3333333333300334303303433333333033300040000000000000000000000000000000000000000000000000000000000003",
+    "3330333033333333430043333334034300033004000000000000000000000000000000000000000000000000000000000003",
+    "3033333343333334333303333034033300000330000000000000000000000000000000000000000000000000000000000003",
+    "3333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333333"
+  ];
+  const OMAP = rawMap.map(r => r.replace(/\s/g, '').split('').slice(0, 100).map(c => {
+    if (c === 'a') return 10;
+    if (c === 'b') return 11;
+    if (c === 'c') return 12;
+    return Number(c) || 0;
+  }));
+
+  function inUmbra(x, y) { return x >= 1 && x <= 30 && y >= 1 && y <= 16; }
+
+  const QUESTS = [
+    { id: 'q1', name: 'Pembunuh Pertama', desc: 'Kalahkan 3 monster', goal: 'kill', target: 3, prog: 0, done: false, reward: { exp: 30, gold: 20, item: 'Iron Sword' } },
+    { id: 'q2', name: 'Penjelajah Dungeon', desc: 'Masuki Black Dungeon', goal: 'enter_dungeon', target: 1, prog: 0, done: false, reward: { exp: 50, gold: 30 } },
+    { id: 'q3', name: 'Pemburu Bos', desc: 'Kalahkan bos dungeon', goal: 'kill_boss', target: 1, prog: 0, done: false, reward: { exp: 120, gold: 80, item: 'Dark Armor' } },
+    { id: 'q4', name: 'Kolektor Harta', desc: 'Buka 5 peti harta', goal: 'open_chest', target: 5, prog: 0, done: false, reward: { exp: 60, gold: 50, item: 'Magic Ring' } },
+  ];
+  let activeQuests = [...QUESTS.map(q => ({ ...q }))];
+  function qProgress(goal, amt = 1) {
+    activeQuests.forEach(q => {
+      if (!q.done && q.goal === goal) { q.prog = Math.min(q.target, q.prog + amt); if (q.prog >= q.target) claimQuest(q); }
+    });
+    renderQuests();
+  }
+  function claimQuest(q) {
+    q.done = true;
+    let txt = `<span style="color:#ffd700">★ QUEST SELESAI: ${q.name}!</span>`;
+    if (q.reward.exp) { P.exp += q.reward.exp; txt += ` +${q.reward.exp}EXP`; }
+    if (q.reward.gold) { P.gold += q.reward.gold; txt += ` +${q.reward.gold}Gold`; }
+    if (q.reward.item) {
+      P.items.push(q.reward.item); txt += ` +${q.reward.item}`;
+    }
+    recalcStats();
+    if (P.exp >= P.expNext) checkLvUp(txt);
+    else { setLog(txt, moveBtns()); updateHUD(); }
+  }
+  function renderQuests() {
+    const qd = document.getElementById('qlog');
+    qd.innerHTML = activeQuests.map(q => `<div class="qc">${q.done ? '<span style="color:#44cc22">✓</span>' : '<span style="color:#ff4488">○</span>'} ${q.name}<span class="qd"> ${q.prog}/${q.target}</span></div>`).join('');
+  }
+
+  //NPC 
+  const NPCS = [
+    { x: 3, y: 2, spr: '🧓', name: 'Tetua', dialog: ['Dunia ini seimbang, Nak. Percayalah pada cahaya.', 'Ada kegelapan di ufuk sana, tapi jangan dilihat.', 'Dungeon adalah anomali... atau mungkin bagian asli dunia?'] },
+    { x: 1, y: 2, spr: '🧝', name: 'Pedagang', shop: true, dialog: ['Beli perlengkapanku! Hanya materi yang nyata di dunia ini.'] },
+    { x: 3, y: 3, spr: '🧙', name: 'Penyihir', dialog: ['Aether bukanlah hadiah. Ia adalah sisa darah yang membusuk.', 'Sihir adalah cara kita memaksa dunia agar menurut.'] },
+    { x: 29, y: 4, spr: '🧚', name: 'Peri', dialog: ['Mereka bilang Naga Hitam itu jahat...', 'Tapi dia hanya merintih di dasar bumi karena ditinggalkan.'] },
+    { x: 11, y: 15, spr: '🧔', name: 'Nelayan', dialog: ['Air sungai ini... terkadang aku merasa ia tidak nyata.', 'Seolah kita semua hanya bagian dari kebohongan Aetheris.'] },
+    { x: 14, y: 25, spr: '🧝', name: 'Pedagang Selatan', shop: true, dialog: ['Kerajaan-kerajaan itu saling membenci...', 'Itu karena mereka tak bisa menerima kebohongan yang sama.'] },
+    { x: 37, y: 18, spr: '🧙', name: 'Pertapa', dialog: ['Umbra Sylvae adalah wujud asli dunia kita.', 'Penuh kekacauan, tanpa sistem. Itulah kenyataan.'] },
+  ];
+
+  //world chest
+  const OCHESTS = [
+    { x: 7, y: 1, open: false, gold: 20, item: 'Dark Potion' },
+    { x: 6, y: 6, open: false, gold: 12, item: 'Ether' },
+    { x: 25, y: 3, open: false, gold: 18, item: 'Key' },
+    { x: 1, y: 10, open: false, gold: 25, item: 'Dark Potion' },
+    { x: 30, y: 8, open: false, gold: 15, item: 'Hi-Potion' },
+    { x: 15, y: 17, open: false, gold: 22, item: 'Ether' },
+    { x: 35, y: 14, open: false, gold: 30, item: 'Key' },
+    { x: 5, y: 24, open: false, gold: 20, item: 'Hi-Potion' },
+    { x: 25, y: 20, open: false, gold: 35, item: 'Elixir' },
+    { x: 35, y: 26, open: false, gold: 28, item: 'Dark Potion' },
+  ];
+
+  const ECHOES = [
+    { x: 12, y: 5, found: false, text: "Batu ini berbisik: 'Dunia ini tidak pernah utuh. Aetheris memotong bagian dari dirinya, menyebutnya kesalahan, dan menguburnya dalam kegelapan.'" },
+    { x: 28, y: 15, found: false, text: "Batu ini berbisik: 'Naga itu... dia bukan sang penghancur. Dia adalah cermin dari kebenaran yang kita tolak.'" },
+    { x: 18, y: 28, found: false, text: "Batu ini berbisik: 'Manusia, Elf, Dwarf... semuanya berpegang pada kebohongan yang berbeda untuk menghindari kenyataan.'" },
+    { x: 8, y: 38, found: false, text: "Batu ini berbisik: 'Dan kamu... kamu yang berjalan di antara cahaya dan bayangan. Kamu adalah celah di antara ilusi ini.'" }
+  ];
+
+  // world enemies
+  const OENEMIES = [
+    { name: 'Slime', spr: '🟢', hp: 10, atk: 4, def: 1, exp: 6, gold: 3 },
+    { name: 'Drakee', spr: '🦎', hp: 16, atk: 7, def: 2, exp: 10, gold: 5 },
+    { name: 'Goblin', spr: '👺', hp: 20, atk: 9, def: 3, exp: 14, gold: 7 },
+    { name: 'Skeleton', spr: '💀', hp: 25, atk: 11, def: 4, exp: 18, gold: 9 },
+  ];
+
+  const UMBRA_ENEMIES = [
+    { name: 'Root Stalker', spr: '🥀', hp: 45, atk: 18, def: 5, exp: 25, gold: 12 },
+    { name: 'Gloomfang', spr: '🐺', hp: 55, atk: 22, def: 8, exp: 32, gold: 18 },
+    { name: 'Whisper Wisp', spr: '👻', hp: 35, atk: 15, def: 4, exp: 20, gold: 10 },
+    { name: 'Hollow Treant', spr: '🌳', hp: 80, atk: 25, def: 15, exp: 45, gold: 25 },
+  ];
+  const ELDROOT_BOSS = { name: 'Eldroot Umbra', spr: '🌲', hp: 400, atk: 40, def: 20, exp: 300, gold: 150, boss: true };
+
+  //enemies dungeon spawn
+  const DFLOORS = [
+    { name: 'B1', pool: ['Dark Bat', 'Dark Elf', 'Wight'], boss: 'Dungeon Lord', img: 'dungeon_lord.png' },
+    { name: 'B2', pool: ['Zombie King', 'Dark Mage', 'Iron Golem'], boss: 'Shadow Lord', img: 'shadow_lord.png' },
+    { name: 'B3', pool: ['Vampire Lord', 'Chaos Beast', 'Ancient Lich'], boss: 'Lich King', img: 'lich_king.png' },
+    { name: 'Noctora Gate', pool: ['Chaos Beast', 'Ancient Lich'], boss: 'Great Black Dragon', img: 'great_black_dragon.png' },
+  ];
+
+  //dunguen enemise
+  const EDEFS = {
+    'Dark Bat': { spr: '🦇', hp: 14, atk: 6, def: 1, exp: 9, gold: 4 },
+    'Dark Elf': { spr: '🧝', hp: 26, atk: 11, def: 5, exp: 20, gold: 10 },
+    'Wight': { spr: '💀', hp: 22, atk: 9, def: 3, exp: 14, gold: 7 },
+    'Zombie King': { spr: '🧟', hp: 38, atk: 13, def: 6, exp: 26, gold: 13 },
+    'Dark Mage': { spr: '🧙', hp: 30, atk: 17, def: 4, exp: 32, gold: 18 },
+    'Iron Golem': { spr: '🗿', hp: 60, atk: 10, def: 15, exp: 40, gold: 22 },
+    'Vampire Lord': { spr: '🧛', hp: 50, atk: 20, def: 8, exp: 50, gold: 30 },
+    'Chaos Beast': { spr: '👾', hp: 65, atk: 22, def: 10, exp: 62, gold: 36 },
+    'Ancient Lich': { spr: '☠️', hp: 45, atk: 26, def: 7, exp: 75, gold: 45 },
+    'Dungeon Lord': { spr: '👹', hp: 100, atk: 26, def: 16, exp: 130, gold: 75, boss: true },
+    'Shadow Lord': { spr: '🌑', hp: 150, atk: 34, def: 20, exp: 220, gold: 120, boss: true },
+    'Lich King': { spr: '💎', hp: 220, atk: 42, def: 25, exp: 380, gold: 250, boss: true },
+    'Great Black Dragon': { spr: '🐉', hp: 9999, atk: 1000, def: 5555, exp: 0, boss: true },
+  };
+
+  //basic spell
+  const SPELLS = [
+    { name: 'HEAL', mp: 3, desc: 'Pulihkan HP', cost: 1 },
+    { name: 'DARK BOLT', mp: 4, dmg: [16, 26], cost: 1 },
+    { name: 'DRAIN', mp: 5, dmg: [12, 18], drain: true, cost: 1 },
+    { name: 'SHADOW VEIL', mp: 2, buff: true, def: 5, cost: 1 },
+    { name: 'HELLFIRE', mp: 7, dmg: [30, 46], cost: 2 },
+    { name: 'DEATH RAY', mp: 10, dmg: [55, 80], cost: 3 },
+  ];
+
+  //triarch elemental resnance(core,resonance,higher elements)
+  const ELEM_SPELLS = [
+    { name: 'PYRA (Api)', mp: 5, dmg: [25, 40], req: ['Pyra'], cost: 1 },
+    { name: 'Flame Burst', mp: 6, dmg: [20, 30], req: ['Pyra'], cost: 2 },
+    { name: 'Burning Mark', mp: 8, dmg: [10, 15], dot: 10, req: ['Pyra'], cost: 2 },
+    { name: 'Inferno Wave', mp: 10, dmg: [35, 50], req: ['Pyra'], cost: 3 },
+    { name: 'Blazing Dash', mp: 12, dmg: [25, 40], dodgeBoost: 0.15, req: ['Pyra'], cost: 3 },
+    { name: 'Cinder Rain', mp: 15, dmg: [40, 60], req: ['Pyra'], cost: 4 },
+    { name: 'Heat Up', mp: 10, buffAtk: 5, req: ['Pyra'], cost: 2 },
+    { name: 'Phoenix Spark', mp: 25, autoRevive: 0.3, req: ['Pyra'], cost: 6 },
+    { name: 'Molten Armor', mp: 14, buff: true, def: 2, reflect: 15, req: ['Pyra'], cost: 4 },
+    { name: 'Flare Shot', mp: 8, dmg: [30, 45], req: ['Pyra'], cost: 2 },
+    { name: 'Ash Collapse', mp: 18, delayDmg: [80, 100], req: ['Pyra'], cost: 5 },
+    { name: 'AQUA (Air)', mp: 4, dmg: [15, 25], heal: 15, req: ['Aqua'], cost: 1 },
+    { name: 'Water Pulse', mp: 5, dmg: [15, 25], req: ['Aqua'], cost: 1 },
+    { name: 'Tidal Shield', mp: 8, buff: true, def: 5, req: ['Aqua'], cost: 2 },
+    { name: 'Healing Stream', mp: 12, regen: 10, req: ['Aqua'], cost: 3 },
+    { name: 'Aqua Prison', mp: 10, dmg: [10, 20], stun: true, req: ['Aqua'], cost: 3 },
+    { name: 'Wave Crash', mp: 14, dmg: [30, 45], stun: true, req: ['Aqua'], cost: 4 },
+    { name: 'Mist Veil', mp: 10, accDown: 30, req: ['Aqua'], cost: 3 },
+    { name: 'Flow Step', mp: 8, dodgeBoost: 0.20, req: ['Aqua'], cost: 2 },
+    { name: 'Deep Pressure', mp: 15, dmg: [40, 55], slow: true, req: ['Aqua'], cost: 4 },
+    { name: 'Bubble Guard', mp: 12, blockNext: true, req: ['Aqua'], cost: 4 },
+    { name: 'Ocean Call', mp: 20, dmg: [20, 35], regen: 15, heal: 20, req: ['Aqua'], cost: 5 },
+    { name: 'TERRA (Tanah)', mp: 5, dmg: [20, 35], buff: true, def: 3, req: ['Terra'], cost: 1 },
+    { name: 'Stone Fist', mp: 6, dmg: [25, 40], req: ['Terra'], cost: 2 },
+    { name: 'Earth Wall', mp: 10, buff: true, def: 8, req: ['Terra'], cost: 3 },
+    { name: 'Quake', mp: 12, dmg: [30, 45], stun: true, req: ['Terra'], cost: 4 },
+    { name: 'Root Bind', mp: 8, dmg: [10, 15], stun: true, slow: true, req: ['Terra'], cost: 3 },
+    { name: 'Iron Skin', mp: 12, buff: true, def: 12, req: ['Terra'], cost: 4 },
+    { name: 'Boulder Drop', mp: 14, dmg: [45, 65], req: ['Terra'], cost: 4 },
+    { name: 'Ground Slam', mp: 16, dmg: [40, 50], stun: true, req: ['Terra'], cost: 5 },
+    { name: 'Terra Pulse', mp: 18, dmg: [55, 75], req: ['Terra'], cost: 5 },
+    { name: 'Fortress Stance', mp: 15, dmgReduce: 0.5, req: ['Terra'], cost: 5 },
+    { name: 'Gaia’s Grasp', mp: 22, dmg: [30, 50], stun: true, debuff: true, req: ['Terra'], cost: 6 },
+    { name: 'AERO (Angin)', mp: 4, dmg: [20, 30], req: ['Aero'], cost: 1 },
+    { name: 'Wind Cutter', mp: 5, dmg: [18, 28], req: ['Aero'], cost: 1 },
+    { name: 'Gale Dash', mp: 8, dmg: [15, 25], dodgeBoost: 0.15, req: ['Aero'], cost: 2 },
+    { name: 'Cyclone Trap', mp: 12, dmg: [20, 30], stun: true, req: ['Aero'], cost: 3 },
+    { name: 'Air Slice', mp: 14, multiHit: 3, dmg: [10, 15], req: ['Aero'], cost: 4 },
+    { name: 'Feather Step', mp: 10, dodgeBoost: 0.30, req: ['Aero'], cost: 3 },
+    { name: 'Storm Kick', mp: 15, dmg: [40, 60], stun: true, req: ['Aero'], cost: 4 },
+    { name: 'Wind Barrier', mp: 12, buff: true, def: 4, reflect: 5, req: ['Aero'], cost: 3 },
+    { name: 'Pressure Burst', mp: 14, dmg: [50, 70], req: ['Aero'], cost: 4 },
+    { name: 'Sky Lift', mp: 12, dmg: [20, 35], comboSetup: true, req: ['Aero'], cost: 4 },
+    { name: 'Tempest Flow', mp: 18, buffAtk: 8, dodgeBoost: 0.10, req: ['Aero'], cost: 5 },
+    { name: 'VOLATARIS (Petir)', mp: 12, dmg: [50, 80], req: ['Pyra', 'Aero'], cost: 3 },
+    { name: 'GLACIEN (Es)', mp: 10, dmg: [40, 60], stun: true, req: ['Aqua', 'Aero'], cost: 3 },
+    { name: 'VERDANTIS (Alam)', mp: 15, heal: 80, req: ['Terra', 'Aqua'], cost: 3 },
+    { name: 'LUMINIS (Cahaya)', mp: 20, heal: 100, purify: true, antiDebuff: true, req: ['Pyra', 'Aqua', 'Terra', 'Aero'], cost: 7 },
+    { name: 'UMBRYS (Kegelapan)', mp: 18, dmg: [60, 90], lifesteal: true, debuff: true, reqExact: 3, cost: 7 },
+    { name: 'ASTRAEL (Kosmos)', mp: 30, dmg: [999, 999], reqAscendant: true, cost: 7 },
+    { name: '[ERASE]', mp: 0, dmg: [9999, 9999], reqAscendant: true, cost: 0, desc: 'Hapus anomali' }
+  ];
+
+  //item shop
+  const SHOP_ITEMS = [
+    { name: 'Dark Potion', cost: 8, desc: 'Pulihkan 30HP' },
+    { name: 'Ether', cost: 6, desc: 'Pulihkan 12MP' },
+    { name: 'Antidote', cost: 5, desc: 'Sembuhkan racun' },
+    { name: 'Hi-Potion', cost: 18, desc: 'Pulihkan 60HP' },
+    { name: 'Elixir', cost: 35, desc: 'Pulihkan 80HP+30MP' },
+  ];
+
+  let P = { x: 50, y: 41, hp: 30, maxHp: 30, mp: 12, maxMp: 12, atk: 12, def: 6, lv: 1, exp: 0, expNext: 25, gold: 20, keys: 0, items: [], status: 'OK', defBuff: 0, steps: 0, kills: 0, bossKills: 0, chestsOpened: 0, coreElems: [], ascendant: false, antiDebuff: 0, sp: 0, unlockedSpells: ['HEAL'], stats: { might: 10, insight: 10, velocity: 10, fortune: 10, vitalis: 10, aether: 10 }, statPoints: 0, aetherEnergy: 0, aetherState: 0, growth: { atk: 0, spell: 0, dodge: 0, hit: 0, burst: 0, fortune: 0 }, crystalAtk: 0 };
+  let state = 'over', battle = null, curEnemy = null;
+  let dmap = null, dobjs = null, dvis = new Set(), dfi = 0;
+  let inputLock = false, osteps = 0, particles = [];
+  let npcTalk = null, npcIdx = 0;
+  let eDot = 0, eDelay = null, eAccDown = 0;
+  let kmap = null, knpcs = [], kchests = [], curKingdom = null;
+  let pmap = null, pnpcs = [], pchests = [], pfloor = 0;
+  const SAVE_KEY = 'dq_save_v2';
+
+  //function save game 
+  function saveGame() {
+    const data = { P, dfi, activeQuests, ochests: OCHESTS.map(c => c.open), state, curKingdom, pfloor };
+    try { window.storage && window.storage.set(SAVE_KEY, JSON.stringify(data)); } catch (e) { }
+    localStorage && localStorage.setItem && localStorage.setItem(SAVE_KEY, JSON.stringify(data));
+    setLog('💾 Game tersimpan!', moveBtns());
+  }
+  function showSave() { saveGame(); }
+  async function doLoad() {
+    let raw = null;
+    try { const r = await window.storage.get(SAVE_KEY); if (r) raw = r.value; } catch (e) { }
+    if (!raw) try { raw = localStorage.getItem(SAVE_KEY); } catch (e) { }
+    if (!raw) { setLog('Tidak ada save data!', [{ label: 'OK', fn: () => setLog('', []) }]); return; }
+    try {
+      const d = JSON.parse(raw);
+      Object.assign(P, d.P);
+      if (!P.stats) P.stats = { might: 10, insight: 10, velocity: 10, fortune: 10, vitalis: 10, aether: 10 };
+      if (P.statPoints === undefined) P.statPoints = 0;
+      if (P.aetherEnergy === undefined) P.aetherEnergy = 0;
+      if (P.aetherState === undefined) P.aetherState = 0;
+      if (!P.growth) P.growth = { atk: 0, spell: 0, dodge: 0, hit: 0, burst: 0, fortune: 0 };
+      if (P.growth.hit === undefined) P.growth.hit = 0;
+      if (P.growth.burst === undefined) P.growth.burst = 0;
+      if (P.growth.fortune === undefined) P.growth.fortune = 0;
+
+      if (d.state) state = d.state; else state = 'over';
+      if (d.curKingdom) curKingdom = d.curKingdom;
+      if (d.pfloor !== undefined) pfloor = d.pfloor;
+
+      if (state === 'over') {
+        if (P.x < 1 || P.x >= MW - 1 || P.y < 1 || P.y >= MH - 1 || OSOLID[OMAP[P.y][P.x]]) { P.x = 50; P.y = 41; }
+        if (P.x < 10 && P.y < 10) { P.x = 50; P.y = 41; }
+      }
+      dfi = d.dfi || 0;
+      if (d.activeQuests) activeQuests = d.activeQuests;
+      if (d.ochests) d.ochests.forEach((o, i) => { if (OCHESTS[i]) OCHESTS[i].open = o; });
+
+      if (state === 'kingdom') { kmap = mkKingdomMap(curKingdom); drawKingdom(); }
+      else if (state === 'palace') { pmap = mkPalace(curKingdom, pfloor); drawPalace(); }
+      else if (state === 'library') { drawLibrary(); }
+      else if (state === 'dungeon' || state === 'dbattle') {
+        state = 'dungeon'; const dInfo = mkDungeon(dfi); dmap = dInfo.m; dobjs = dInfo.obs; dvis = new Set(); revealD(); drawDungeon();
+      }
+      else { state = 'over'; drawOver(); }
+
+      setLog('📂 Game dimuat!', moveBtns());
+      renderQuests(); updateHUD();
+    } catch (e) { setLog('Gagal load save!', [{ label: 'OK', fn: () => setLog('', []) }]); }
+  }
+
+  //function tester cheat
+  function doCheat() {
+    P.lv = 10;
+    P.statPoints += 45;
+    P.sp += 10;
+    P.expNext = 10 * 30 + 30;
+    P.coreElems = ['Pyra', 'Aqua', 'Terra', 'Aero'];
+    P.unlockedSpells = [...SPELLS.map(s => s.name), ...ELEM_SPELLS.filter(s => s.name !== 'ASTRAEL (Kosmos)').map(s => s.name)];
+    recalcStats();
+    P.hp = P.maxHp; P.mp = P.maxMp;
+    setLog('<b>CHEAT AKTIF!</b><br>Level 10, Semua elemen dasar dan sihir turunannya terbuka!', [{ label: 'OK', fn: () => { if (state === 'over') setLog('', moveBtns()); else setLog('', []); } }]);
+    updateHUD();
+  }
+
+  //dungeon function floor
+  function mkDungeon(fi) {
+    if (fi === 3) {
+      const layout = [
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 7, 7, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      ];
+      const m = layout.map(r => [...r]);
+      const fl = DFLOORS[fi]; const obs = [];
+      obs.push({ type: 'enemy', x: 6, y: 4, alive: true, name: fl.boss, ...JSON.parse(JSON.stringify(EDEFS[fl.boss])) });
+      obs.push({ type: 'enemy', x: 4, y: 6, alive: true, name: fl.pool[0], ...JSON.parse(JSON.stringify(EDEFS[fl.pool[0]])) });
+      obs.push({ type: 'enemy', x: 9, y: 6, alive: true, name: fl.pool[1], ...JSON.parse(JSON.stringify(EDEFS[fl.pool[1]])) });
+      obs.push({ type: 'chest', x: 1, y: 1, open: false, gold: 100, item: 'Elixir' });
+      obs.push({ type: 'chest', x: 12, y: 1, open: false, gold: 100, item: 'Dark Crystal' });
+      m[7][6] = DT.STAIR;
+      m[0][1] = DT.EXIT;
+      return { m, obs };
+    }
+    const layout = [
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+      [0, 1, 1, 2, 1, 1, 0, 0, 1, 1, 2, 1, 1, 0],
+      [0, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 1, 0],
+      [0, 2, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 2, 0],
+      [0, 1, 0, 0, 0, 1, 2, 2, 1, 0, 0, 0, 1, 0],
+      [0, 1, 1, 2, 1, 1, 0, 0, 1, 1, 2, 1, 1, 0],
+      [0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0],
+      [0, 0, 0, 1, 1, 1, 2, 2, 1, 1, 1, 0, 0, 0],
+      [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+    ];
+    const m = layout.map(r => [...r]);
+    const fl = DFLOORS[fi]; const obs = [];
+    const eSlots = [{ x: 9, y: 1 }, { x: 11, y: 2 }, { x: 12, y: 4 }, { x: 9, y: 5 }, { x: 4, y: 7 }, { x: 1, y: 4 }, { x: 3, y: 1 }];
+    eSlots.forEach((p, i) => {
+      const nm = fl.pool[i % fl.pool.length];
+      obs.push({ type: 'enemy', x: p.x, y: p.y, alive: true, name: nm, ...JSON.parse(JSON.stringify(EDEFS[nm])) });
+    });
+    obs.push({ type: 'enemy', x: 11, y: 7, alive: true, name: fl.boss, ...JSON.parse(JSON.stringify(EDEFS[fl.boss])) });
+    obs.push({ type: 'chest', x: 3, y: 4, open: false, gold: 15 + fi * 10, item: Math.random() < .5 ? 'Dark Potion' : 'Ether' });
+    obs.push({ type: 'chest', x: 10, y: 7, open: false, gold: 10 + fi * 8, item: Math.random() < .35 ? 'Key' : 'Hi-Potion' });
+    obs.push({ type: 'chest', x: 1, y: 7, open: false, gold: 20 + fi * 12, item: fi === 2 ? 'Elixir' : 'Dark Potion' });
+    obs.push({ type: 'locked', x: 6, y: 3, open: false });
+    obs.push({ type: 'chest', x: 6, y: 4, open: false, gold: 30 + fi * 15, item: 'Dark Crystal' });
+    obs.push({ type: 'trap', x: 5, y: 4, used: false }, { type: 'trap', x: 8, y: 3, used: false }, { type: 'trap', x: 11, y: 1, used: false });
+    m[7][6] = DT.STAIR;
+    m[0][1] = DT.EXIT;
+    return { m, obs };
+  }
+  function getDObj(x, y) { return dobjs && dobjs.find(o => o.x === x && o.y === y && (o.alive || o.type === 'chest' || o.type === 'locked' || o.type === 'trap')); }
+  function dSolid(x, y) {
+    if (x < 0 || x >= DC || y < 0 || y >= DR) return true;
+    if (dmap[y][x] === DT.WALL) return true;
+    if (dmap[y][x] === DT.LOCKED) { const o = dobjs.find(ob => ob.type === 'locked' && ob.x === x && ob.y === y); return o && !o.open; }
+    return false;
+  }
+  function revealD() { const cx = P.x, cy = P.y; for (let dy = -2; dy <= 2; dy++)for (let dx = -2; dx <= 2; dx++) { const x = cx + dx, y = cy + dy; if (x >= 0 && x < DC && y >= 0 && y < DR) dvis.add(x + ',' + y); } }
+
+  function spawnParticles(sx, sy, color, count = 8, type = 'hit') {
+    for (let i = 0; i < count; i++) {
+      const angle = Math.random() * Math.PI * 2, speed = 1 + Math.random() * 2;
+      particles.push({ x: sx, y: sy, vx: Math.cos(angle) * speed, vy: Math.sin(angle) * speed, life: 1, color, type, size: type === 'star' ? 4 : 2 });
+    }
+  }
+  function updateParticles() {
+    fctx.clearRect(0, 0, 576, 352);
+    particles = particles.filter(p => p.life > 0);
+    particles.forEach(p => {
+      p.x += p.vx; p.y += p.vy; p.vy += .05; p.life -= .04;
+      fctx.globalAlpha = p.life; fctx.fillStyle = p.color;
+      if (p.type === 'star') { fctx.font = `${p.size * 2}px serif`; fctx.fillText('★', p.x, p.y); }
+      else { fctx.beginPath(); fctx.arc(p.x, p.y, p.size, 0, Math.PI * 2); fctx.fill(); }
+      fctx.globalAlpha = 1;
+    });
+    if (particles.length > 0) requestAnimationFrame(updateParticles);
+    else fctx.clearRect(0, 0, 576, 352);
+  }
+
+  //function draw over map
+  function drawOver() {
+    updateCam();
+    ctx.clearRect(0, 0, 576, 352);
+    const t = Date.now() / 1000;
+    for (let y = camY; y < camY + VH && y < MH; y++) {
+      for (let x = camX; x < camX + VW && x < MW; x++) {
+        const sx = (x - camX) * TW, sy = (y - camY) * TW;
+        const ti = OMAP[y][x];
+        ctx.fillStyle = OCOL[ti]; ctx.fillRect(sx, sy, TW, TW);
+        if (ti === OT.WATER) {
+          ctx.fillStyle = `rgba(100,160,255,${.08 + .04 * Math.sin(t * 2 + x + y)})`;
+          ctx.fillRect(sx, sy, TW, TW);
+          ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(sx, sy + 6, TW, 3);
+        }
+        if (ti === OT.TREE) {
+          ctx.fillStyle = '#1d5e14'; ctx.beginPath(); ctx.arc(sx + 16, sy + 12, 10, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#2d7a1e'; ctx.beginPath(); ctx.arc(sx + 16, sy + 10, 7, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#5a3a10'; ctx.fillRect(sx + 13, sy + 20, 6, 8);
+        }
+        if (ti === OT.MOUNTAIN) {
+          ctx.fillStyle = '#5a4a3a'; ctx.beginPath(); ctx.moveTo(sx + 16, sy + 2); ctx.lineTo(sx + 30, sy + 28); ctx.lineTo(sx + 2, sy + 28); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#eee'; ctx.beginPath(); ctx.moveTo(sx + 16, sy + 2); ctx.lineTo(sx + 22, sy + 12); ctx.lineTo(sx + 10, sy + 12); ctx.closePath(); ctx.fill();
+        }
+        if (ti === OT.TOWN_HUMAN) {
+          ctx.fillStyle = '#c87832'; ctx.fillRect(sx + 3, sy + 8, 26, 20);
+          ctx.fillStyle = '#c83232'; ctx.beginPath(); ctx.moveTo(sx + 1, sy + 10); ctx.lineTo(sx + 16, sy + 1); ctx.lineTo(sx + 31, sy + 10); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#88440e'; ctx.fillRect(sx + 12, sy + 18, 8, 10);
+          ctx.fillStyle = 'rgba(255,200,50,.2)'; ctx.fillRect(sx + 6, sy + 12, 7, 7); ctx.fillRect(sx + 19, sy + 12, 7, 7);
+        }
+        if (ti === OT.TOWN_ELF) {
+          ctx.fillStyle = '#11aa44'; ctx.beginPath(); ctx.arc(sx + 16, sy + 16, 14, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#55ff99'; ctx.beginPath(); ctx.arc(sx + 16, sy + 12, 10, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#663311'; ctx.fillRect(sx + 12, sy + 18, 8, 10);
+        }
+        if (ti === OT.TOWN_DWARF) {
+          ctx.fillStyle = '#665544'; ctx.fillRect(sx + 2, sy + 12, 28, 16);
+          ctx.fillStyle = '#443322'; ctx.fillRect(sx + 2, sy + 2, 28, 10);
+          ctx.fillStyle = '#aa3311'; ctx.fillRect(sx + 10, sy + 16, 12, 12);
+          ctx.fillStyle = '#ffcc00'; ctx.fillRect(sx + 12, sy + 18, 8, 8);
+        }
+        if (ti === OT.DUNGEON) {
+          ctx.fillStyle = '#100020'; ctx.fillRect(sx + 1, sy + 1, 30, 30);
+          ctx.strokeStyle = '#6600cc'; ctx.lineWidth = 1; ctx.strokeRect(sx + 1, sy + 1, 30, 30);
+          const gl = Math.abs(Math.sin(t * 1.5)) * .4 + .2;
+          ctx.fillStyle = `rgba(150,0,255,${gl})`; ctx.fillRect(sx + 1, sy + 1, 30, 30);
+          ctx.font = '16px serif'; ctx.fillText('⚔', sx + 7, sy + 22);
+        }
+        if (ti === OT.LIBRARY) {
+          ctx.fillStyle = '#4a2511'; ctx.fillRect(sx + 2, sy + 2, 28, 28);
+          ctx.fillStyle = '#8b4513'; ctx.fillRect(sx + 4, sy + 4, 24, 12);
+          ctx.fillStyle = '#5c3317'; ctx.fillRect(sx + 12, sy + 16, 8, 14);
+          ctx.font = '16px serif'; ctx.fillText('📖', sx + 7, sy + 15);
+        }
+        if (ti === OT.UMBRA_FOREST || ti === OT.UMBRA_ROOT || ti === OT.UMBRA_CORE) {
+          if (ti === OT.UMBRA_FOREST) {
+            ctx.fillStyle = '#110a18'; ctx.fillRect(sx + 8, sy + 4, 16, 24);
+            ctx.fillStyle = `rgba(180, 50, 255, ${.05 + .05 * Math.sin(t * 3 + x)})`;
+            ctx.fillRect(sx, sy, TW, TW);
+          }
+          if (ti === OT.UMBRA_ROOT) {
+            ctx.fillStyle = '#2a0515'; ctx.beginPath(); ctx.moveTo(sx, sy + 16); ctx.lineTo(sx + 32, sy + 12); ctx.lineTo(sx + 16, sy + 32); ctx.fill();
+            ctx.fillStyle = '#4a0525'; ctx.fillRect(sx + 12, sy + 14, 6, 12);
+          }
+          if (ti === OT.UMBRA_CORE) {
+            const cg = Math.abs(Math.sin(t * 4)) * .3 + .2;
+            ctx.fillStyle = `rgba(255, 0, 80, ${cg})`; ctx.fillRect(sx + 4, sy + 4, 24, 24);
+            ctx.fillStyle = '#ff0055'; ctx.font = '20px serif'; ctx.fillText('👁️', sx + 4, sy + 24);
+          }
+        }
+      }
+    }
+    OCHESTS.forEach(c => { if (!c.open && c.x >= camX && c.x < camX + VW && c.y >= camY && c.y < camY + VH) { ctx.font = '16px serif'; ctx.fillText('📦', (c.x - camX) * TW + 7, (c.y - camY) * TW + 22); } });
+    NPCS.forEach(n => { if (n.x >= camX && n.x < camX + VW && n.y >= camY && n.y < camY + VH) { ctx.font = '18px serif'; ctx.fillText(n.spr, (n.x - camX) * TW + 6, (n.y - camY) * TW + 22); } });
+    const px = (P.x - camX) * TW, py = (P.y - camY) * TW;
+    const glow = Math.abs(Math.sin(t * 2)) * .15 + .08;
+    ctx.fillStyle = `rgba(180,100,255,${glow})`; ctx.beginPath(); ctx.arc(px + 16, py + 16, 22, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '20px serif'; ctx.fillText('🧑‍🦱', px + 6, py + 22);
+    ctx.strokeStyle = 'rgba(180,100,255,.7)'; ctx.lineWidth = 1.5; ctx.strokeRect(px + 2, py + 2, 28, 28);
+
+    if (inUmbra(P.x, P.y)) {
+      const hasLight = (P.unlockedSpells || []).includes('LUMINIS') || (P.items || []).includes('Lumina Orb');
+      const radius = hasLight ? 160 : 40;
+      const grad = ctx.createRadialGradient(px + 16, py + 16, radius * 0.3, px + 16, py + 16, radius);
+      grad.addColorStop(0, 'rgba(5,0,10,0)');
+      grad.addColorStop(1, 'rgba(5,0,10,0.95)');
+      ctx.fillStyle = grad;
+      ctx.fillRect(0, 0, 576, 352);
+    }
+
+    drawMiniOver();
+  }
+  function drawMiniOver() {
+    const scX = 88 / MW, scY = 66 / MH; mctx.clearRect(0, 0, 88, 66);
+    const t = Date.now() / 1000;
+    for (let y = 0; y < MH; y++)for (let x = 0; x < MW; x++) {
+      const ti = OMAP[y][x];
+      mctx.fillStyle = OCOL[ti] || '#000';
+      mctx.fillRect(Math.floor(x * scX), Math.floor(y * scY), Math.ceil(scX), Math.ceil(scY));
+      if (ti === OT.TOWN_HUMAN || ti === OT.TOWN_ELF || ti === OT.TOWN_DWARF || ti === OT.DUNGEON || ti === OT.LIBRARY) {
+        if (Math.sin(t * 5) > 0) mctx.fillStyle = '#fff';
+        else mctx.fillStyle = ti === OT.TOWN_HUMAN ? '#c87832' : ti === OT.TOWN_ELF ? '#22cc77' : ti === OT.TOWN_DWARF ? '#aa5533' : ti === OT.DUNGEON ? '#aa00ff' : '#ffcc00';
+        mctx.fillRect(Math.floor(x * scX) - 1, Math.floor(y * scY) - 1, Math.ceil(scX) + 2, Math.ceil(scY) + 2);
+      }
+      if (ti === OT.UMBRA_CORE) {
+        if (Math.sin(t * 5) > 0) mctx.fillStyle = '#ff0055';
+        else mctx.fillStyle = '#000';
+        mctx.fillRect(Math.floor(x * scX) - 1, Math.floor(y * scY) - 1, Math.ceil(scX) + 2, Math.ceil(scY) + 2);
+      }
+    }
+    NPCS.forEach(n => { mctx.fillStyle = '#ffcc00'; mctx.fillRect(Math.floor(n.x * scX), Math.floor(n.y * scY), Math.ceil(scX), Math.ceil(scY)); });
+    mctx.fillStyle = '#aa55ff'; mctx.fillRect(Math.floor(P.x * scX) - 1, Math.floor(P.y * scY) - 1, Math.ceil(scX) + 2, Math.ceil(scY) + 2);
+  }
+
+  //function system dungeon
+  function drawDungeon() {
+    ctx.clearRect(0, 0, 576, 352);
+    const t = Date.now() / 1000;
+    for (let y = 0; y < DR; y++) {
+      for (let x = 0; x < DC; x++) {
+        const vis = dvis.has(x + ',' + y), ti = dmap[y][x];
+        if (!vis) { ctx.fillStyle = '#000'; ctx.fillRect(x * DTW, y * DTW, DTW, DTW); continue; }
+        ctx.fillStyle = DCOL[ti] || '#1a0028'; ctx.fillRect(x * DTW, y * DTW, DTW, DTW);
+        if (ti === DT.WALL) {
+          ctx.fillStyle = '#0c0018';
+          ctx.fillRect(x * DTW + 2, y * DTW + 2, DTW - 4, DTW - 4);
+          ctx.strokeStyle = '#280044';
+          ctx.lineWidth = .5;
+          ctx.strokeRect(x * DTW, y * DTW, DTW, DTW);
+        }
+        if (ti === DT.FLOOR) {
+          ctx.strokeStyle = '#220038';
+          ctx.lineWidth = .3;
+          ctx.strokeRect(x * DTW, y * DTW, DTW, DTW);
+          for (let i = 0; i < 3; i++) {
+            ctx.fillStyle = '#120018';
+            ctx.fillRect(x * DTW + 4 + i * 12, y * DTW + 18, 8, 2);
+          }
+        }
+        if (ti === DT.DOOR) {
+          ctx.fillStyle = '#4a1a00';
+          ctx.fillRect(x * DTW + 8, y * DTW + 4, DTW - 16, DTW - 8);
+          ctx.strokeStyle = '#cc6600'; ctx.lineWidth = 1;
+          ctx.strokeRect(x * DTW + 8, y * DTW + 4, DTW - 16, DTW - 8);
+          ctx.fillStyle = '#ffaa00'; ctx.beginPath();
+          ctx.arc(x * DTW + DTW / 2, y * DTW + DTW / 2, 3, 0, Math.PI * 2);
+          ctx.fill();
+        }
+        if (ti === DT.STAIR) {
+          ctx.fillStyle = '#001c44'; ctx.fillRect(x * DTW + 4, y * DTW + 4, DTW - 8, DTW - 8);
+          const sg = Math.abs(Math.sin(t * 2)) * .3 + .2;
+          ctx.fillStyle = `rgba(0,100,220,${sg})`; ctx.fillRect(x * DTW + 4, y * DTW + 4, DTW - 8, DTW - 8);
+          for (let s = 0; s < 4; s++)ctx.fillRect(x * DTW + 6 + s * 5, y * DTW + 28 - s * 5, DTW - 12 - s * 4, 3);
+        }
+        if (ti === DT.CHEST) { const c = dobjs.find(o => o.type === 'chest' && o.x === x && o.y === y); if (c && !c.open) { ctx.fillStyle = '#2a1a00'; ctx.fillRect(x * DTW + 5, y * DTW + 10, DTW - 10, DTW - 18); ctx.strokeStyle = '#ffaa00'; ctx.lineWidth = 1.5; ctx.strokeRect(x * DTW + 5, y * DTW + 10, DTW - 10, DTW - 18); const cg = Math.abs(Math.sin(t * 3 + x)) * .2 + .1; ctx.fillStyle = `rgba(255,170,0,${cg})`; ctx.fillRect(x * DTW + 5, y * DTW + 10, DTW - 10, DTW - 18); } else { ctx.fillStyle = '#1a0e00'; ctx.fillRect(x * DTW + 5, y * DTW + 14, DTW - 10, DTW - 22); } }
+        if (ti === DT.LOCKED) { const o = dobjs.find(ob => ob.type === 'locked' && ob.x === x && ob.y === y); if (o && !o.open) { ctx.fillStyle = '#220008'; ctx.fillRect(x * DTW + 7, y * DTW + 4, DTW - 14, DTW - 8); ctx.strokeStyle = '#ff0044'; ctx.lineWidth = 1.5; ctx.strokeRect(x * DTW + 7, y * DTW + 4, DTW - 14, DTW - 8); const lg = Math.abs(Math.sin(t * 2.5)) * .3; ctx.fillStyle = `rgba(255,0,68,${lg})`; ctx.fillRect(x * DTW + 7, y * DTW + 4, DTW - 14, DTW - 8); ctx.font = '13px serif'; ctx.fillText('🔒', x * DTW + 9, y * DTW + 28); } else { ctx.fillStyle = '#180010'; ctx.fillRect(x * DTW + 7, y * DTW + 4, DTW - 14, DTW - 8); } }
+        if (ti === DT.TRAP) { const trap = dobjs.find(o => o.type === 'trap' && o.x === x && o.y === y); if (!trap || !trap.used) { const tg = Math.abs(Math.sin(t * 3 + x + y)) * .15; ctx.fillStyle = `rgba(180,0,40,${tg + .05})`; ctx.fillRect(x * DTW, y * DTW, DTW, DTW); } }
+        if (ti === DT.GATE) {
+          ctx.fillStyle = '#110022'; ctx.fillRect(x * DTW, y * DTW, DTW, DTW);
+          const gg = Math.abs(Math.sin(t * 2 + x)) * .3;
+          ctx.fillStyle = `rgba(170,0,255,${gg})`; ctx.fillRect(x * DTW, y * DTW, DTW, DTW);
+          ctx.strokeStyle = '#aa00ff'; ctx.lineWidth = 2; ctx.strokeRect(x * DTW + 2, y * DTW + 2, DTW - 4, DTW - 4);
+        }
+        if (ti === DT.EXIT) {
+          ctx.fillStyle = '#1a3300';
+          ctx.fillRect(x * DTW + 8, y * DTW + 4, DTW - 16, DTW - 8);
+          ctx.strokeStyle = '#33cc00'; ctx.lineWidth = 1;
+          ctx.strokeRect(x * DTW + 8, y * DTW + 4, DTW - 16, DTW - 8);
+          ctx.fillStyle = '#33cc00'; ctx.font = '10px serif';
+          ctx.fillText('OUT', x * DTW + 10, y * DTW + 24);
+        }
+      }
+    }
+    dobjs.filter(o => o.type === 'enemy' && o.alive).forEach(e => {
+      if (!dvis.has(e.x + ',' + e.y)) return;
+      const mhp = EDEFS[e.name]?.hp || e.hp;
+      ctx.fillStyle = e.boss ? '#ff0000' : '#660022'; ctx.fillRect(e.x * DTW + 3, e.y * DTW + 1, DTW - 6, 4);
+      ctx.fillStyle = e.boss ? 'rgba(255,100,0,.8)' : 'rgba(255,80,130,.8)'; ctx.fillRect(e.x * DTW + 3, e.y * DTW + 1, Math.max(0, (DTW - 6) * e.hp / mhp), 4);
+      if (e.boss) { const bg = Math.abs(Math.sin(t * 2)) * .2; ctx.fillStyle = `rgba(255,50,0,${bg})`; ctx.fillRect(e.x * DTW, e.y * DTW, DTW, DTW); }
+      ctx.font = '22px serif'; ctx.fillText(e.spr || '👾', e.x * DTW + 8, e.y * DTW + 28);
+    });
+    const px = P.x, py = P.y, gt = Math.abs(Math.sin(t * 2)) * .15 + .08;
+    ctx.fillStyle = `rgba(180,80,255,${gt})`; ctx.beginPath(); ctx.arc(px * DTW + DTW / 2, py * DTW + DTW / 2, DTW, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '22px serif'; ctx.fillText('🧑‍🦱', px * DTW + 8, py * DTW + 28);
+    ctx.strokeStyle = 'rgba(180,80,255,.8)'; ctx.lineWidth = 1.5; ctx.strokeRect(px * DTW + 2, py * DTW + 2, DTW - 4, DTW - 4);
+    drawMiniDungeon();
+  }
+  function drawMiniDungeon() {
+    const sc = Math.floor(88 / DC); mctx.clearRect(0, 0, 88, 66);
+    for (let y = 0; y < DR; y++)for (let x = 0; x < DC; x++) {
+      if (!dvis.has(x + ',' + y)) { mctx.fillStyle = '#000'; mctx.fillRect(x * sc, y * sc, sc, sc); continue; }
+      const ti = dmap[y][x];
+      mctx.fillStyle = ti === DT.WALL ? '#0c0018' : ti === DT.STAIR ? '#0055cc' : ti === DT.CHEST ? '#442200' : ti === DT.LOCKED ? '#440011' : ti === DT.GATE ? '#aa00ff' : ti === DT.EXIT ? '#33cc00' : '#280050';
+      mctx.fillRect(x * sc, y * sc, sc, sc);
+    }
+    dobjs.filter(o => o.type === 'enemy' && o.alive && dvis.has(o.x + ',' + o.y)).forEach(e => {
+      mctx.fillStyle = e.boss ? '#ff2200' : '#ff4488'; mctx.fillRect(e.x * sc, e.y * sc, sc, sc);
+    });
+    mctx.fillStyle = '#aa55ff'; mctx.fillRect(P.x * sc, P.y * sc, sc, sc);
+  }
+
+  //function library system
+  const LMAP = [
+    [0, 0, 0, 0, 0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 2, 2, 1, 1, 1, 2, 2, 0],
+    [0, 2, 2, 1, 5, 1, 2, 2, 0],
+    [0, 1, 1, 1, 3, 1, 1, 1, 0],
+    [0, 1, 1, 1, 1, 1, 1, 1, 0],
+    [0, 2, 2, 1, 1, 1, 2, 2, 0],
+    [0, 2, 2, 1, 1, 1, 2, 2, 0],
+    [0, 0, 0, 0, 4, 0, 0, 0, 0]
+  ];
+  function enterLibrary() {
+    state = 'library'; P.x = 4; P.y = 7;
+    setLog('<span style="color:#aa55ff">★ Kamu memasuki Perpustakaan Kuno! ★</span>', moveBtns());
+    drawLibrary(); updateHUD();
+  }
+  function drawLibrary() {
+    ctx.clearRect(0, 0, 576, 352);
+    const LTW = 32;
+    const offsetX = (576 - 9 * LTW) / 2;
+    const offsetY = (352 - 9 * LTW) / 2;
+    for (let y = 0; y < 9; y++) {
+      for (let x = 0; x < 9; x++) {
+        let ti = LMAP[y][x];
+        let px = offsetX + x * LTW, py = offsetY + y * LTW;
+        if (ti === 0) { ctx.fillStyle = '#1a0f08'; ctx.fillRect(px, py, LTW, LTW); ctx.strokeStyle = '#0f0804'; ctx.strokeRect(px, py, LTW, LTW); }
+        if (ti === 1) { ctx.fillStyle = '#3d2616'; ctx.fillRect(px, py, LTW, LTW); ctx.strokeStyle = '#2e1c10'; ctx.strokeRect(px, py, LTW, LTW); }
+        if (ti === 2) { ctx.fillStyle = '#29170a'; ctx.fillRect(px, py, LTW, LTW); ctx.fillStyle = '#1f1006'; ctx.fillRect(px + 4, py + 4, LTW - 8, LTW - 8); ctx.font = '16px serif'; ctx.fillText('📚', px + 6, py + 22); }
+        if (ti === 3) { ctx.fillStyle = '#4a2c15'; ctx.fillRect(px, py, LTW, LTW); ctx.fillStyle = '#3d220f'; ctx.fillRect(px + 2, py + 2, LTW - 4, LTW - 4); }
+        if (ti === 4) { ctx.fillStyle = '#1a3300'; ctx.fillRect(px, py, LTW, LTW); ctx.fillStyle = '#33cc00'; ctx.font = '10px serif'; ctx.fillText('OUT', px + 4, py + 20); }
+        if (ti === 5) { ctx.fillStyle = '#3a1a00'; ctx.fillRect(px, py, LTW, LTW); ctx.fillStyle = '#ff00aa'; ctx.font = '16px serif'; ctx.fillText('📖', px + 6, py + 22); }
+      }
+    }
+    let wx = offsetX + 4 * LTW, wy = offsetY + 4 * LTW;
+    ctx.font = '20px serif'; ctx.fillText('🧙‍♂️', wx + 4, wy + 22);
+    let px = offsetX + P.x * LTW, py = offsetY + P.y * LTW;
+    ctx.fillStyle = `rgba(180,80,255,0.2)`; ctx.beginPath(); ctx.arc(px + LTW / 2, py + LTW / 2, LTW / 2, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '20px serif'; ctx.fillText('🧑‍🦱', px + 4, py + 24);
+    mctx.clearRect(0, 0, 88, 66);
+  }
+  function moveLibrary(dx, dy) {
+    let nx = P.x + dx, ny = P.y + dy;
+    if (nx < 0 || nx >= 9 || ny < 0 || ny >= 9) return;
+    let ti = LMAP[ny][nx];
+    if (ti === 0 || ti === 2 || ti === 3 || ti === 5) {
+      if (ti === 3) {
+        talkNPC({
+          name: 'Pustakawan Agung',
+          dialog: ['Selamat datang di Perpustakaan Kuno.', 'Aku menjaga rahasia Triarch Element Resonance.', 'Buku Grimoire di depan sana menyimpan sihir-sihir kuno.', 'Gunakan Spell Point-mu dengan bijak!']
+        });
+      } else if (ti === 2) {
+        setLog('Ada rak buku penuh teks magis kuno.', moveBtns());
+      } else if (ti === 5) {
+        showGrimoire();
+      }
+      return;
+    }
+    if (ti === 4) {
+      state = 'over'; P.x = 35; P.y = 6;
+      setLog('Keluar dari perpustakaan.', moveBtns());
+      drawOver(); updateHUD();
+      return;
+    }
+    P.x = nx; P.y = ny;
+    setLog('Langkahmu bergema di perpustakaan yang hening...', moveBtns());
+    drawLibrary(); updateHUD();
+  }
+
+  //grimoire system 
+  function showGrimoire() {
+    let txt = `<b>GRIMOIRE KUNO</b><br>Spell Points (SP): <span style="color:#ffd700">${P.sp || 0}</span><br>Pilih sihir untuk dipelajari:`;
+    const btns = [];
+    SPELLS.forEach((s, i) => {
+      let reqLv = 1 + Math.floor(i / 1.2);
+      let unlocked = (P.unlockedSpells || []).includes(s.name);
+      if (unlocked || P.lv < reqLv) return;
+      btns.push({ label: `${s.name} (${s.cost}SP)`, fn: () => unlockSpell(s) });
+    });
+    ELEM_SPELLS.forEach(es => {
+      let unlocked = (P.unlockedSpells || []).includes(es.name);
+      if (unlocked) return;
+      let ok = false;
+      if (es.req) ok = es.req.every(r => (P.coreElems || []).includes(r));
+      else if (es.reqExact) ok = ((P.coreElems || []).length === es.reqExact);
+      else if (es.reqAscendant) ok = P.ascendant;
+      if (ok) btns.push({ label: `${es.name} (${es.cost}SP)`, fn: () => unlockSpell(es) });
+    });
+    btns.push({ label: 'TUTUP', fn: () => { setLog('Kamu menutup Grimoire.', moveBtns()); } });
+    setLog(txt, btns);
+  }
+
+  //function spell unlock
+  function unlockSpell(s) {
+    if ((P.sp || 0) < s.cost) {
+      setLog(`<span style="color:#ff0044">SP tidak cukup! Butuh ${s.cost} SP.</span>`, [{ label: 'KEMBALI', fn: showGrimoire }]);
+      return;
+    }
+    P.sp -= s.cost;
+    P.unlockedSpells = P.unlockedSpells || [];
+    P.unlockedSpells.push(s.name);
+    setLog(`<span style="color:#00ffaa">Sihir dipelajari: ${s.name}!</span>`, [{ label: 'KEMBALI', fn: showGrimoire }]);
+    updateHUD();
+  }
+
+  function setLog(txt, btns) {
+    document.getElementById('lt').innerHTML = txt;
+    const bd = document.getElementById('bd'); bd.innerHTML = '';
+    if (btns) btns.forEach(b => { const el = document.createElement('button'); el.textContent = b.label; if (b.cls) el.className = b.cls; el.onclick = b.fn; bd.appendChild(el); });
+  }
+  function addLog(t) { document.getElementById('lt').innerHTML += '<br>' + t; }
+  function moveBtns() { return [{ label: '↑', fn: () => move(0, -1) }, { label: '↓', fn: () => move(0, 1) }, { label: '←', fn: () => move(-1, 0) }, { label: '→', fn: () => move(1, 0) }]; }
+  function updateHUD() {
+    document.getElementById('slv').textContent = P.lv;
+    document.getElementById('shp').textContent = P.hp + '/' + P.maxHp;
+    document.getElementById('smp').textContent = P.mp + '/' + P.maxMp;
+    document.getElementById('saether').textContent = Math.floor(P.aetherEnergy) + '/100';
+    document.getElementById('aetherb').style.width = Math.min(100, P.aetherEnergy) + '%';
+    document.getElementById('sgold').textContent = P.gold;
+    document.getElementById('skeys').textContent = P.keys;
+    document.getElementById('sst').textContent = P.status;
+    document.getElementById('sexp').textContent = P.exp;
+    document.getElementById('sfl').textContent = state === 'dungeon' || state === 'dbattle' ? (DFLOORS[dfi]?.name || '???') : '—';
+    document.getElementById('szone').textContent = (state === 'dungeon' || state === 'dbattle') ? 'DUNGEON' : state === 'library' ? 'LIBRARY' : state === 'kingdom' ? 'KINGDOM' : state === 'palace' ? 'PALACE' : 'LUMINIA';
+    document.getElementById('hpb').style.width = (P.hp / P.maxHp * 100) + '%';
+    document.getElementById('hpb').style.background = P.hp / P.maxHp < .25 ? '#ff0044' : '#cc0044';
+    document.getElementById('mpb').style.width = (P.mp / P.maxMp * 100) + '%';
+    document.getElementById('xpb').style.width = Math.min(100, P.exp / P.expNext * 100) + '%';
+    document.getElementById('inv').innerHTML = P.items.map((it, i) => `<span class="ic" onclick="useItemOW(${i})" title="Klik untuk pakai">${it}</span>`).join('');
+    if (P.coreElems && P.coreElems.length > 0) document.getElementById('inv').innerHTML += `<div style="margin-top:2px;color:#00ffaa;font-size:5px">ELEM: ${P.coreElems.join(', ')}</div>`;
+    renderQuests();
+  }
+
+  function recalcStats() {
+    if (P.ascendant) {
+      P.maxHp = 9999; P.hp = 9999; P.maxMp = 9999; P.mp = 9999; P.atk = 999; P.def = 999;
+      return;
+    }
+    const oldMaxHp = P.maxHp;
+    P.maxHp = Math.floor(P.stats.vitalis * 3);
+    P.hp = Math.max(1, P.hp + (P.maxHp - oldMaxHp));
+
+    let eqMp = P.items.includes('Magic Ring') ? 6 : 0;
+    const oldMaxMp = P.maxMp;
+    P.maxMp = Math.floor(P.stats.aether * 1.2) + eqMp;
+    P.mp = Math.max(0, P.mp + (P.maxMp - oldMaxMp));
+
+    let eqAtk = 0;
+    if (P.items.includes('Steel Sword')) eqAtk = 10;
+    else if (P.items.includes('Iron Sword')) eqAtk = 5;
+
+    let eqDef = 0;
+    if (P.items.includes('Steel Armor')) eqDef = 6;
+    else if (P.items.includes('Dark Armor')) eqDef = 4;
+    else if (P.items.includes('Iron Armor')) eqDef = 3;
+
+    if (!P.crystalAtk) P.crystalAtk = 0;
+
+    P.atk = Math.floor(P.stats.might * 1.2) + eqAtk + P.crystalAtk;
+    P.def = Math.floor(P.stats.vitalis * 0.6) + eqDef;
+
+    if (P.hp > P.maxHp) P.hp = P.maxHp;
+    if (P.mp > P.maxMp) P.mp = P.maxMp;
+  }
+
+  //function aethercore system
+  function showAetherCore() {
+    if (state !== 'over' && state !== 'library') {
+      addLog('<br><span style="color:#ff0000">Tidak bisa buka Core saat bertarung!</span>');
+      return;
+    }
+    inputLock = true;
+    const s = P.stats;
+    let txt = `<b>🌌 AETHER CORE</b><br>Stat Points: <span style="color:#00ffaa">${P.statPoints}</span><br>
+  <span style="font-size:5px">
+  💪 Might: ${s.might} (Phys Dmg)<br>
+  🧠 Insight: ${s.insight} (Mag Dmg${s.insight >= 60 ? ', MP Disc' : ''})<br>
+  ⚡ Velocity: ${s.velocity} (Dodge${s.velocity >= 50 ? ', Auto-Dodge' : ''})<br>
+  🍀 Fortune: ${s.fortune} (Crit, Drop${s.fortune >= 70 ? ', SuperCrit' : ''})<br>
+  ❤️ Vitalis: ${s.vitalis} (HP, Regen)<br>
+  🌌 Aether: ${s.aether} (MP, Burst Pwr)<br>
+  </span>`;
+    const btns = [];
+    if (P.statPoints > 0) {
+      btns.push({ label: '+MIGHT', fn: () => { P.statPoints--; P.stats.might++; recalcStats(); updateHUD(); showAetherCore(); } });
+      btns.push({ label: '+INSIGHT', fn: () => { P.statPoints--; P.stats.insight++; recalcStats(); updateHUD(); showAetherCore(); } });
+      btns.push({ label: '+VELO', fn: () => { P.statPoints--; P.stats.velocity++; recalcStats(); updateHUD(); showAetherCore(); } });
+      btns.push({ label: '+FORTUNE', fn: () => { P.statPoints--; P.stats.fortune++; recalcStats(); updateHUD(); showAetherCore(); } });
+      btns.push({ label: '+VITALIS', fn: () => { P.statPoints--; P.stats.vitalis++; recalcStats(); updateHUD(); showAetherCore(); } });
+      btns.push({ label: '+AETHER', fn: () => { P.statPoints--; P.stats.aether++; recalcStats(); updateHUD(); showAetherCore(); } });
+    }
+    btns.push({ label: 'TUTUP', fn: () => { inputLock = false; setLog('Menutup Aether Core.', moveBtns()); updateHUD(); } });
+    setLog(txt, btns);
+  }
+
+  //system use item
+  function useItemOW(idx) {
+    if (state !== 'over' && state !== 'dungeon') return;
+    const it = P.items[idx];
+    let txt = '';
+    if (it === 'Dark Potion') { const h = 25 + Math.floor(Math.random() * 10); P.hp = Math.min(P.maxHp, P.hp + h); P.items.splice(idx, 1); txt = `Dark Potion! +${h}HP`; }
+    else if (it === 'Hi-Potion') { const h = 55 + Math.floor(Math.random() * 15); P.hp = Math.min(P.maxHp, P.hp + h); P.items.splice(idx, 1); txt = `Hi-Potion! +${h}HP`; }
+    else if (it === 'Elixir') { P.hp = P.maxHp; P.mp = P.maxMp; P.items.splice(idx, 1); txt = 'Elixir! HP & MP penuh!'; }
+    else if (it === 'Ether') { P.mp = Math.min(P.maxMp, P.mp + 12); P.items.splice(idx, 1); txt = 'Ether! +12MP'; }
+    else if (it === 'Antidote') { P.status = 'OK'; P.items.splice(idx, 1); txt = 'Antidote! Racun sembuh!'; }
+    else { setLog(`${it} tidak bisa dipakai di sini.`, moveBtns()); return; }
+    spawnParticles((P.x - camX) * TW + 16, (P.y - camY) * TW + 16, '#00ffaa', 10, 'star');
+    updateParticles();
+    setLog(txt, moveBtns()); updateHUD();
+  }
+
+  // function move/move over
+  function move(dx, dy) {
+    if (inputLock) return;
+    if (state === 'over') moveOver(dx, dy);
+    else if (state === 'dungeon') moveDungeon(dx, dy);
+    else if (state === 'library') moveLibrary(dx, dy);
+    else if (state === 'kingdom') moveKingdom(dx, dy);
+    else if (state === 'palace') movePalace(dx, dy);
+  }
+  function moveOver(dx, dy) {
+    const nx = P.x + dx, ny = P.y + dy;
+    if (nx < 0 || nx >= MW || ny < 0 || ny >= MH) return;
+    if (!P.ascendant && OSOLID[OMAP[ny][nx]]) return;
+    const npc = NPCS.find(n => n.x === nx && n.y === ny);
+    if (npc) { talkNPC(npc); return; }
+
+    if (typeof ECHOES !== 'undefined') {
+      const echo = ECHOES.find(e => e.x === nx && e.y === ny && !e.found);
+      if (echo) {
+        echo.found = true;
+        setLog(`<span style="color:#aa88ff">✨ [LORE ECHO]</span><br><i>${echo.text}</i>`, moveBtns());
+        P.x = nx; P.y = ny; drawOver(); updateHUD(); return;
+      }
+    }
+
+    P.x = nx; P.y = ny; osteps++;
+    if (P.status === 'POISON' && osteps % 3 === 0) { P.hp = Math.max(1, P.hp - 3); }
+    const ch = OCHESTS.find(c => c.x === nx && c.y === ny && !c.open);
+    if (ch) { openChest(ch); drawOver(); updateHUD(); return; }
+    if (OMAP[ny][nx] === OT.UMBRA_CORE) { startBattle(JSON.parse(JSON.stringify(ELDROOT_BOSS)), 'obattle'); return; }
+    if (OMAP[ny][nx] === OT.DUNGEON) { enterDungeon(); return; }
+    if (OMAP[ny][nx] === OT.LIBRARY) { enterLibrary(); return; }
+    if (OMAP[ny][nx] === OT.TOWN_HUMAN) { enterKingdom('Aurelis'); return; }
+    if (OMAP[ny][nx] === OT.TOWN_ELF) { enterKingdom('Elaria'); return; }
+    if (OMAP[ny][nx] === OT.TOWN_DWARF) { enterKingdom('Tharvok'); return; }
+
+    let isUmbra = inUmbra(nx, ny);
+    if (isUmbra && Math.random() < 0.15) {
+      P.aetherEnergy = Math.max(0, P.aetherEnergy - 5);
+      if (P.mp > 0) P.mp--;
+      setLog('<span style="color:#aa55ff">Hutan menelan cahayamu... (Aether terkuras)</span>', moveBtns());
+      drawOver(); updateHUD(); return;
+    }
+
+    let encounterRate = isUmbra ? 0.35 : 0.30;
+    if (osteps % 4 === 0 && Math.random() < encounterRate) startBattle(pickOEnemy(), 'obattle');
+    else { setLog(isUmbra ? '<span style="color:#888">Keheningan yang mencekam...</span>' : 'Kamu melangkah di bumi Luminia...', moveBtns()); drawOver(); }
+    updateHUD();
+  }
+
+  //kingdom system 
+  function enterKingdom(name) {
+    if (!P.visitedKingdoms) P.visitedKingdoms = [];
+    if (!P.visitedKingdoms.includes(name)) P.visitedKingdoms.push(name);
+    curKingdom = name;
+    kmap = mkKingdomMap(name);
+    state = 'kingdom';
+    P.x = 24; P.y = 43;
+    if (name === 'Elaria') P.y = 39;
+    setLog(`Memasuki <span style="color:#aa55ff">${name}</span>.`, moveBtns());
+    drawKingdom(); updateHUD();
+  }
+
+  //3 kingdom map system 
+  function mkKingdomMap(kName) {
+    const m = Array(50).fill(0).map(() => Array(50).fill(KT.GRASS));
+    knpcs = []; kchests = [];
+    if (kName === 'Aurelis') {
+      for (let y = 0; y < 50; y++) for (let x = 0; x < 50; x++) m[y][x] = KT.GRASS;
+      for (let y = 5; y < 45; y++) { m[y][5] = KT.WALL; m[y][44] = KT.WALL; }
+      for (let x = 5; x < 45; x++) { m[5][x] = KT.WALL; m[44][x] = KT.WALL; }
+      for (let y = 10; y < 45; y++) for (let x = 23; x <= 26; x++) m[y][x] = KT.PATH;
+      for (let x = 10; x < 40; x++) for (let y = 23; y <= 26; y++) m[y][x] = KT.PATH;
+      for (let x = 22; x <= 27; x++) for (let y = 22; y <= 27; y++) m[y][x] = KT.PATH;
+      m[24][24] = KT.FOUNTAIN; m[24][25] = KT.FOUNTAIN; m[25][24] = KT.FOUNTAIN; m[25][25] = KT.FOUNTAIN;
+      m[44][24] = KT.EXIT; m[44][25] = KT.EXIT;
+      for (let x = 20; x <= 29; x++) for (let y = 4; y <= 6; y++) m[y][x] = KT.PALACE;
+      m[7][24] = KT.GATE; m[7][25] = KT.GATE;
+
+      for (let x = 10; x < 20; x += 4) { m[15][x] = KT.HOUSE; m[15][x + 1] = KT.HOUSE; m[35][x] = KT.HOUSE; m[35][x + 1] = KT.HOUSE; }
+      for (let x = 30; x < 40; x += 4) { m[15][x] = KT.HOUSE; m[15][x + 1] = KT.HOUSE; m[35][x] = KT.HOUSE; m[35][x + 1] = KT.HOUSE; }
+      m[21][15] = KT.MARKET; m[21][16] = KT.MARKET; m[21][35] = KT.MARKET; m[21][36] = KT.MARKET;
+
+      knpcs.push({ x: 24, y: 28, spr: '🛡️', name: 'Penjaga', dialog: ['Selamat datang di Aurelis.', 'Istana ada di utara.'] });
+      knpcs.push({ x: 16, y: 22, spr: '🧝', name: 'Aurelis Market', shop: true, sType: 'Aurelis' });
+      knpcs.push({ x: 36, y: 22, spr: '🧓', name: 'Penduduk', dialog: ['Udara di ibukota sangat segar.'] });
+      knpcs.push({ x: 42, y: 40, spr: '🌌', name: 'Teleport Gate', isGate: true });
+    }
+    else if (kName === 'Elaria') {
+      for (let y = 0; y < 50; y++) for (let x = 0; x < 50; x++) m[y][x] = Math.random() < .2 ? KT.TREE : KT.GRASS;
+      for (let y = 10; y < 40; y++) for (let x = 22; x <= 25; x++) { m[y][x] = KT.PATH; }
+      for (let x = 20; x <= 30; x++) for (let y = 6; y <= 8; y++) m[y][x] = KT.PALACE;
+      m[9][24] = KT.GATE; m[9][25] = KT.GATE;
+      m[40][23] = KT.EXIT; m[40][24] = KT.EXIT;
+
+      for (let x = 10; x < 20; x += 5) { m[20][x] = KT.HOUSE; m[30][x] = KT.HOUSE; }
+      for (let x = 30; x < 40; x += 5) { m[20][x] = KT.HOUSE; m[30][x] = KT.HOUSE; }
+      m[25][24] = KT.WATER; m[25][25] = KT.WATER;
+
+      knpcs.push({ x: 24, y: 27, spr: '🧝', name: 'Elf', dialog: ['Kolam suci ini memulihkan HP & MP-mu.'] });
+      knpcs.push({ x: 12, y: 21, spr: '🧚', name: 'Elaria Alchemist', shop: true, sType: 'Elaria' });
+      knpcs.push({ x: 38, y: 38, spr: '🌌', name: 'Teleport Gate', isGate: true });
+    }
+    else if (kName === 'Tharvok') {
+      for (let y = 0; y < 50; y++) for (let x = 0; x < 50; x++) m[y][x] = KT.CAVE_WALL;
+      for (let y = 5; y < 45; y++) for (let x = 5; x < 45; x++) m[y][x] = Math.random() < .1 ? KT.LAVA : KT.PATH;
+      for (let x = 20; x <= 30; x++) for (let y = 5; y <= 10; y++) m[y][x] = KT.PALACE;
+      m[11][24] = KT.GATE; m[11][25] = KT.GATE;
+      m[44][24] = KT.EXIT; m[44][25] = KT.EXIT;
+
+      for (let y = 15; y < 40; y += 5) { m[y][10] = KT.HOUSE; m[y][11] = KT.HOUSE; m[y][38] = KT.HOUSE; m[y][39] = KT.HOUSE; }
+      m[25][24] = KT.FORGE; m[25][25] = KT.FORGE;
+
+      knpcs.push({ x: 24, y: 27, spr: '🧔', name: 'Dwarf', dialog: ['Hati-hati dengan lava!'] });
+      knpcs.push({ x: 12, y: 16, spr: '⚒️', name: 'Tharvok Forge', shop: true, sType: 'Tharvok' });
+      knpcs.push({ x: 40, y: 40, spr: '🌌', name: 'Teleport Gate', isGate: true });
+    }
+    return m;
+  }
+
+  //draw kingdom place 
+  function drawKingdom() {
+    updateCam();
+    ctx.clearRect(0, 0, 576, 352);
+    const t = Date.now() / 1000;
+    for (let y = camY; y < camY + VH && y < 50; y++) {
+      for (let x = camX; x < camX + VW && x < 50; x++) {
+        const sx = (x - camX) * TW, sy = (y - camY) * TW;
+        const ti = kmap[y][x];
+        ctx.fillStyle = KCOL[ti] || '#000';
+        ctx.fillRect(sx, sy, TW, TW);
+        if (ti === KT.GRASS) {
+          ctx.fillStyle = '#3a8a2a';
+          if ((x + y) % 2 === 0) { ctx.fillRect(sx + 4, sy + 8, 2, 4); ctx.fillRect(sx + 18, sy + 22, 2, 4); }
+          else if ((x * y) % 3 === 0) { ctx.fillRect(sx + 10, sy + 14, 4, 2); }
+        }
+        else if (ti === KT.PATH) {
+          ctx.fillStyle = '#665544';
+          ctx.fillRect(sx + 4, sy + 4, 8, 6);
+          ctx.fillRect(sx + 18, sy + 12, 10, 8);
+          ctx.fillRect(sx + 8, sy + 24, 6, 4);
+        }
+        else if (ti === KT.HOUSE) {
+          ctx.fillStyle = '#d2b48c'; ctx.fillRect(sx + 2, sy + 12, 28, 18);
+          ctx.fillStyle = '#8b2222'; ctx.beginPath(); ctx.moveTo(sx, sy + 12); ctx.lineTo(sx + 16, sy + 2); ctx.lineTo(sx + 32, sy + 12); ctx.closePath(); ctx.fill();
+          ctx.fillStyle = '#5c3a21'; ctx.fillRect(sx + 12, sy + 20, 8, 10);
+          ctx.fillStyle = '#87ceeb'; ctx.fillRect(sx + 4, sy + 16, 6, 6); ctx.fillRect(sx + 22, sy + 16, 6, 6);
+        }
+        else if (ti === KT.MARKET) {
+          ctx.fillStyle = '#d2b48c'; ctx.fillRect(sx + 4, sy + 14, 24, 16);
+          ctx.fillStyle = '#5c3a21'; ctx.fillRect(sx + 6, sy + 14, 2, 16); ctx.fillRect(sx + 24, sy + 14, 2, 16);
+          ctx.fillStyle = '#eee'; ctx.fillRect(sx + 2, sy + 4, 28, 10);
+          ctx.fillStyle = ((x + y) % 2 === 0) ? '#cc2222' : '#2222cc';
+          for (let i = 0; i < 4; i++) ctx.fillRect(sx + 2 + i * 7, sy + 4, 4, 10);
+        }
+        else if (ti === KT.PALACE) {
+          ctx.fillStyle = '#bb9955'; ctx.fillRect(sx, sy, TW, TW);
+          ctx.fillStyle = '#886633'; ctx.fillRect(sx + 4, sy + 4, 6, 6); ctx.fillRect(sx + 14, sy + 4, 4, 6); ctx.fillRect(sx + 22, sy + 4, 6, 6);
+          ctx.fillStyle = '#221100'; ctx.fillRect(sx + 10, sy + 16, 12, 16);
+        }
+        else if (ti === KT.GATE) {
+          ctx.fillStyle = '#444'; ctx.fillRect(sx, sy, TW, TW);
+          ctx.fillStyle = '#111'; ctx.beginPath(); ctx.arc(sx + 16, sy + 16, 10, Math.PI, 0); ctx.fill(); ctx.fillRect(sx + 6, sy + 16, 20, 16);
+          ctx.fillStyle = '#777'; for (let i = 0; i < 4; i++) ctx.fillRect(sx + 8 + i * 5, sy + 8, 2, 24);
+        }
+        else if (ti === KT.WATER) {
+          ctx.fillStyle = `rgba(100,160,255,${.08 + .04 * Math.sin(t * 2 + x + y)})`; ctx.fillRect(sx, sy, TW, TW);
+          ctx.fillStyle = 'rgba(255,255,255,.06)'; ctx.fillRect(sx + 4, sy + 8, 12, 2); ctx.fillRect(sx + 16, sy + 20, 8, 2);
+        }
+        else if (ti === KT.FOUNTAIN) {
+          ctx.fillStyle = '#666'; ctx.beginPath(); ctx.arc(sx + 16, sy + 16, 14, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = `rgba(100,180,255,${.6 + .2 * Math.sin(t * 4)})`; ctx.beginPath(); ctx.arc(sx + 16, sy + 16, 10, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#fff'; ctx.fillRect(sx + 15, sy + 10, 2, 12);
+        }
+        else if (ti === KT.LAVA) {
+          ctx.fillStyle = `rgba(255,100,0,${.6 + .2 * Math.sin(t * 3 + x + y)})`; ctx.fillRect(sx, sy, TW, TW);
+          if ((x * y) % 3 === 0) { ctx.fillStyle = '#ffaa00'; ctx.beginPath(); ctx.arc(sx + 10, sy + 10, 4, 0, Math.PI * 2); ctx.fill(); }
+        }
+        else if (ti === KT.WALL) {
+          ctx.fillStyle = '#444'; ctx.fillRect(sx, sy, TW, TW);
+          ctx.fillStyle = '#333'; ctx.fillRect(sx, sy + 8, TW, 2); ctx.fillRect(sx, sy + 20, TW, 2);
+          ctx.fillRect(sx + 8, sy, 2, 8); ctx.fillRect(sx + 24, sy, 2, 8);
+          ctx.fillRect(sx + 16, sy + 10, 2, 10);
+        }
+        else if (ti === KT.CAVE_WALL) {
+          ctx.fillStyle = '#221100'; ctx.beginPath(); ctx.moveTo(sx + 4, sy + 4); ctx.lineTo(sx + 28, sy + 8); ctx.lineTo(sx + 24, sy + 28); ctx.lineTo(sx + 8, sy + 24); ctx.closePath(); ctx.fill();
+        }
+        else if (ti === KT.FORGE) {
+          ctx.fillStyle = '#333'; ctx.fillRect(sx + 8, sy + 14, 16, 10);
+          ctx.fillRect(sx + 4, sy + 10, 24, 4);
+          ctx.fillStyle = `rgba(255,100,0,${.5 + .3 * Math.sin(t * 5)})`; ctx.fillRect(sx + 10, sy + 24, 12, 6);
+        }
+        else if (ti === KT.TREE) {
+          ctx.fillStyle = '#1d5e14'; ctx.beginPath(); ctx.arc(sx + 16, sy + 12, 12, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#2d7a1e'; ctx.beginPath(); ctx.arc(sx + 16, sy + 10, 8, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = '#5a3a10'; ctx.fillRect(sx + 13, sy + 20, 6, 10);
+        }
+      }
+    }
+
+    knpcs.forEach(n => { if (n.x >= camX && n.x < camX + VW && n.y >= camY && n.y < camY + VH) { ctx.font = '18px serif'; ctx.fillText(n.spr, (n.x - camX) * TW + 6, (n.y - camY) * TW + 22); } });
+
+    const px = (P.x - camX) * TW, py = (P.y - camY) * TW;
+    ctx.fillStyle = `rgba(180,100,255,0.2)`; ctx.beginPath(); ctx.arc(px + 16, py + 16, 22, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '20px serif'; ctx.fillText('🧑‍🦱', px + 6, py + 22);
+
+    mctx.clearRect(0, 0, 88, 66);
+    const scX = 88 / 50, scY = 66 / 50;
+    for (let y = 0; y < 50; y++) for (let x = 0; x < 50; x++) {
+      mctx.fillStyle = KCOL[kmap[y][x]] || '#000';
+      mctx.fillRect(x * scX, y * scY, scX + 0.5, scY + 0.5);
+    }
+    mctx.fillStyle = '#aa55ff'; mctx.fillRect(P.x * scX - 1, P.y * scY - 1, scX + 2, scY + 2);
+  }
+
+  function moveKingdom(dx, dy) {
+    const nx = P.x + dx, ny = P.y + dy;
+    if (nx < 0 || nx >= 50 || ny < 0 || ny >= 50) return;
+    if (!P.ascendant && KSOLID[kmap[ny][nx]]) return;
+
+    const npc = knpcs.find(n => n.x === nx && n.y === ny);
+    if (npc) {
+      if (P.ascendant) {
+        setLog(`<b>${npc.name || 'Seseorang'}:</b><br><span style="color:#ff0000; font-family:monospace; font-size:18px">TIDAK... REALITAS INI HANCUR... KAU... APA KAU?!</span>`, moveBtns());
+        return;
+      }
+      if (npc.shop) {
+        if (npc.sType === 'Aurelis') shopAurelis();
+        else if (npc.sType === 'Elaria') shopElaria();
+        else if (npc.sType === 'Tharvok') shopTharvok();
+        return;
+      }
+      if (npc.isGate) { showTeleport(); return; }
+      talkNPC(npc); return;
+    }
+
+    if (kmap[ny][nx] === KT.GATE) { enterPalace(); return; }
+    if (kmap[ny][nx] === KT.WATER && curKingdom === 'Elaria') { P.hp = P.maxHp; P.mp = P.maxMp; setLog('Air suci memulihkan jiwamu.', moveBtns()); }
+    if (kmap[ny][nx] === KT.EXIT) {
+      state = 'over';
+      P.x = curKingdom === 'Aurelis' ? 50 : curKingdom === 'Elaria' ? 85 : 15;
+      P.y = curKingdom === 'Aurelis' ? 40 : curKingdom === 'Elaria' ? 15 : 65;
+      setLog(`Keluar dari ${curKingdom}.`, moveBtns());
+      drawOver(); updateHUD(); return;
+    }
+
+    P.x = nx; P.y = ny;
+    setLog(`Jalanan ${curKingdom}...`, moveBtns());
+    drawKingdom(); updateHUD();
+  }
+
+  function mkPalace(kName, fl) {
+    const m = Array(9).fill(0).map(() => Array(14).fill(PT.FLOOR));
+    pnpcs = []; pchests = [];
+
+    for (let x = 0; x < 14; x++) { m[0][x] = PT.WALL; m[8][x] = PT.WALL; }
+    for (let y = 0; y < 9; y++) { m[y][0] = PT.WALL; m[y][13] = PT.WALL; }
+
+    if (kName === 'Aurelis') {
+      if (fl === 0) {
+        for (let y = 1; y <= 7; y++) { m[y][6] = PT.CARPET; m[y][7] = PT.CARPET; }
+        m[1][6] = PT.THRONE; m[1][7] = PT.THRONE;
+        m[3][3] = PT.PILLAR; m[5][3] = PT.PILLAR; m[3][10] = PT.PILLAR; m[5][10] = PT.PILLAR;
+        m[8][6] = PT.EXIT; m[8][7] = PT.EXIT;
+        m[1][1] = PT.STAIR_UP;
+        pnpcs.push({ x: 6, y: 2, spr: '👑', name: 'Raja Aurelis', dialog: ['Pahlawan, kalahkan kegelapan!'] });
+      } else {
+        m[1][1] = PT.STAIR_DOWN;
+        m[4][6] = PT.CARPET; m[4][7] = PT.CARPET;
+        pchests.push({ x: 12, y: 1, gold: 100, item: 'Elixir', open: false });
+      }
+    }
+    else if (kName === 'Elaria') {
+      if (fl === 0) {
+        m[8][6] = PT.EXIT; m[8][7] = PT.EXIT;
+        m[4][6] = PT.WATER; m[4][7] = PT.WATER;
+        m[1][1] = PT.STAIR_UP;
+        pnpcs.push({ x: 6, y: 3, spr: '🧝', name: 'Penjaga Pohon', dialog: ['Pohon ini adalah nyawa kami.'] });
+      } else {
+        m[1][1] = PT.STAIR_DOWN;
+        m[4][6] = PT.CRYSTAL; m[4][7] = PT.CRYSTAL;
+        pnpcs.push({ x: 6, y: 5, spr: '🧓', name: 'Elder Elf', dialog: ['Aura alam melindungimu.'] });
+      }
+    }
+    else if (kName === 'Tharvok') {
+      if (fl === 0) {
+        m[8][6] = PT.EXIT; m[8][7] = PT.EXIT;
+        for (let y = 1; y < 8; y++) { m[y][3] = PT.LAVA; m[y][10] = PT.LAVA; }
+        m[1][1] = PT.STAIR_UP;
+        m[4][6] = PT.FORGE; m[4][7] = PT.FORGE;
+      } else {
+        m[1][1] = PT.STAIR_DOWN;
+        m[3][6] = PT.CRYSTAL;
+        pchests.push({ x: 12, y: 1, gold: 300, item: 'Dark Crystal', open: false });
+      }
+    }
+    return m;
+  }
+
+  function enterPalace() {
+    pfloor = 0;
+    pmap = mkPalace(curKingdom, pfloor);
+    state = 'palace';
+    P.x = 6; P.y = 7;
+    setLog(`Memasuki Istana ${curKingdom}.`, moveBtns());
+    drawPalace(); updateHUD();
+  }
+
+  function drawPalace() {
+    ctx.clearRect(0, 0, 576, 352);
+    const offsetX = (576 - 14 * DTW) / 2, offsetY = (352 - 9 * DTW) / 2;
+    const cols = PCOL[curKingdom];
+    for (let y = 0; y < 9; y++) {
+      for (let x = 0; x < 14; x++) {
+        const ti = pmap[y][x];
+        const px = offsetX + x * DTW, py = offsetY + y * DTW;
+        ctx.fillStyle = cols[ti] || '#000';
+        ctx.fillRect(px, py, DTW, DTW);
+        if (ti === PT.EXIT) { ctx.fillStyle = '#1a3300'; ctx.fillRect(px + 8, py + 4, DTW - 16, DTW - 8); ctx.fillStyle = '#33cc00'; ctx.font = '10px serif'; ctx.fillText('OUT', px + 10, py + 24); }
+        if (ti === PT.STAIR_UP) { ctx.fillStyle = '#0055cc'; ctx.fillRect(px + 4, py + 4, DTW - 8, DTW - 8); ctx.fillStyle = '#fff'; ctx.fillText('UP', px + 8, py + 24); }
+        if (ti === PT.STAIR_DOWN) { ctx.fillStyle = '#0055cc'; ctx.fillRect(px + 4, py + 4, DTW - 8, DTW - 8); ctx.fillStyle = '#fff'; ctx.fillText('DN', px + 8, py + 24); }
+      }
+    }
+    pchests.forEach(c => { if (!c.open) { ctx.font = '22px serif'; ctx.fillText('📦', offsetX + c.x * DTW + 8, offsetY + c.y * DTW + 28); } });
+    pnpcs.forEach(n => { ctx.font = '22px serif'; ctx.fillText(n.spr, offsetX + n.x * DTW + 8, offsetY + n.y * DTW + 28); });
+
+    const px = offsetX + P.x * DTW, py = offsetY + P.y * DTW;
+    ctx.fillStyle = `rgba(180,80,255,0.2)`; ctx.beginPath(); ctx.arc(px + DTW / 2, py + DTW / 2, DTW / 2, 0, Math.PI * 2); ctx.fill();
+    ctx.font = '22px serif'; ctx.fillText('🧑‍🦱', px + 8, py + 28);
+    mctx.clearRect(0, 0, 88, 66);
+  }
+
+  function movePalace(dx, dy) {
+    const nx = P.x + dx, ny = P.y + dy;
+    if (nx < 0 || nx >= 14 || ny < 0 || ny >= 9) return;
+    if (!P.ascendant && PSOLID[pmap[ny][nx]]) return;
+
+    const npc = pnpcs.find(n => n.x === nx && n.y === ny);
+    if (npc) { talkNPC(npc); return; }
+
+    const ch = pchests.find(c => c.x === nx && c.y === ny && !c.open);
+    if (ch) {
+      ch.open = true; P.gold += ch.gold;
+      if (ch.item) P.items.push(ch.item);
+      setLog(`📦 Peti terbuka! +${ch.gold}G ${ch.item ? '+' + ch.item : ''}`, moveBtns());
+      drawPalace(); updateHUD(); return;
+    }
+
+    if (pmap[ny][nx] === PT.STAIR_UP) {
+      pfloor++; pmap = mkPalace(curKingdom, pfloor); P.x = 1; P.y = 2;
+      setLog('Naik lantai.', moveBtns()); drawPalace(); updateHUD(); return;
+    }
+    if (pmap[ny][nx] === PT.STAIR_DOWN) {
+      pfloor--; pmap = mkPalace(curKingdom, pfloor); P.x = 1; P.y = 2;
+      setLog('Turun lantai.', moveBtns()); drawPalace(); updateHUD(); return;
+    }
+    if (pmap[ny][nx] === PT.EXIT) {
+      state = 'kingdom';
+      P.x = 24; P.y = 8;
+      if (curKingdom === 'Elaria') { P.x = 24; P.y = 10; }
+      else if (curKingdom === 'Tharvok') { P.x = 24; P.y = 12; }
+      setLog(`Keluar dari Istana ${curKingdom}.`, moveBtns());
+      drawKingdom(); updateHUD(); return;
+    }
+
+    P.x = nx; P.y = ny;
+    setLog(`Mengitari Istana ${curKingdom}...`, moveBtns());
+    drawPalace(); updateHUD();
+  }
+
+
+  //function teleport system 
+  function showTeleport() {
+    inputLock = true;
+    let txt = '<b>🌌 TELEPORT GATE</b><br>Pilih destinasi:';
+    let btns = [];
+    const coords = { 'Aurelis': { x: 50, y: 40 }, 'Elaria': { x: 85, y: 15 }, 'Tharvok': { x: 15, y: 65 } };
+    (P.visitedKingdoms || []).forEach(k => {
+      btns.push({
+        label: `Ke ${k}`, fn: () => {
+          inputLock = false;
+          P.x = coords[k].x; P.y = coords[k].y;
+          state = 'over';
+          setLog(`Berhasil teleportasi ke ${k}.`, moveBtns());
+          drawOver(); updateHUD();
+        }
+      });
+    });
+    btns.push({
+      label: 'BATAL', fn: () => {
+        inputLock = false;
+        if (state === 'kingdom') { drawKingdom(); setLog('Batal teleport.', moveBtns()); }
+        else {
+          let curK = 'Aurelis';
+          if (OMAP[P.y][P.x] === OT.TOWN_ELF) curK = 'Elaria';
+          if (OMAP[P.y][P.x] === OT.TOWN_DWARF) curK = 'Tharvok';
+          enterKingdom(curK);
+        }
+      }
+    });
+    setLog(txt, btns);
+  }
+
+  function shopAurelis() {
+    inputLock = true;
+    const s = [{ name: 'Iron Sword', cost: 40 }, { name: 'Iron Armor', cost: 45 }, { name: 'Hi-Potion', cost: 15 }];
+    showShopUI('Aurelis Market', s, () => { state = 'kingdom'; drawKingdom(); setLog('Kembali ke pasar.', moveBtns()); inputLock = false; });
+  }
+  function shopElaria() {
+    inputLock = true;
+    const s = [{ name: 'Elixir', cost: 35 }, { name: 'Ether', cost: 20 }, { name: 'Antidote', cost: 10 }, { name: 'Lumina Orb', cost: 150 }];
+    showShopUI('Elaria Alchemist', s, () => { state = 'kingdom'; drawKingdom(); setLog('Kembali ke kota.', moveBtns()); inputLock = false; });
+  }
+  function shopTharvok() {
+    inputLock = true;
+    const s = [{ name: 'Steel Sword', cost: 100 }, { name: 'Steel Armor', cost: 120 }, { name: 'Dark Crystal', cost: 150 }];
+    showShopUI('Tharvok Forge', s, () => { state = 'kingdom'; drawKingdom(); setLog('Kembali ke forge.', moveBtns()); inputLock = false; });
+  }
+  function showShopUI(title, items, backFn) {
+    let txt = `<b>${title}</b><br>Pilih item untuk dibeli.`;
+    let btns = [];
+    items.forEach(i => {
+      btns.push({
+        label: `${i.name} (${i.cost}G)`, fn: () => {
+          if (P.gold >= i.cost) { P.gold -= i.cost; P.items.push(i.name); recalcStats(); setLog(`Membeli ${i.name}.`, [{ label: 'KEMBALI', fn: () => showShopUI(title, items, backFn) }]); updateHUD(); }
+          else { setLog(`Uang tidak cukup!`, [{ label: 'KEMBALI', fn: () => showShopUI(title, items, backFn) }]); }
+        }
+      });
+    });
+    btns.push({ label: 'KEMBALI', fn: backFn });
+    setLog(txt, btns);
+  }
+  function pickOEnemy() {
+    if (inUmbra(P.x, P.y)) {
+      const pool = UMBRA_ENEMIES;
+      return JSON.parse(JSON.stringify(pool[Math.floor(Math.random() * pool.length)]));
+    }
+    const pool = P.lv <= 2 ? OENEMIES.slice(0, 2) : P.lv <= 4 ? OENEMIES.slice(0, 3) : OENEMIES;
+    return JSON.parse(JSON.stringify(pool[Math.floor(Math.random() * pool.length)]));
+  }
+
+  //function dungeon sysem 
+  function enterDungeon() {
+    qProgress('enter_dungeon');
+    dfi = 0; const d = mkDungeon(0); dmap = d.m; dobjs = d.obs; dvis = new Set();
+    P.x = 1; P.y = 1; revealD(); state = 'dungeon';
+    setLog('<span style="color:#aa55ff">★ Kamu memasuki Black Dungeon! ★</span><br>Kegelapan pekat menyelimuti. Kalahkan Bos tiap lantai!', moveBtns());
+    drawDungeon(); updateHUD();
+  }
+  function exitDungeon() {
+    state = 'over'; P.x = 12; P.y = 12;
+    const heal = Math.floor(P.maxHp * .25); P.hp = Math.min(P.maxHp, P.hp + heal);
+    setLog(`<span style="color:#88ffcc">Kamu keluar dari Black Dungeon!</span><br>+${heal}HP pulih. Selamat kembali, pahlawan!`, moveBtns());
+    drawOver(); updateHUD();
+  }
+  function moveDungeon(dx, dy) {
+    const nx = P.x + dx, ny = P.y + dy;
+    if (nx < 0 || nx >= DC || ny < 0 || ny >= DR) return;
+    if (!P.ascendant && dSolid(nx, ny)) {
+      const loc = dobjs.find(o => o.type === 'locked' && o.x === nx && o.y === ny && !o.open);
+      if (loc) {
+        if (P.keys > 0) { loc.open = true; dmap[ny][nx] = DT.FLOOR; P.keys--; spawnParticles(nx * DTW + DTW / 2, ny * DTW + DTW / 2, '#ffcc00', 12, 'star'); updateParticles(); setLog('🔑 Kunci digunakan! Pintu terbuka!', moveBtns()); updateHUD(); }
+        else setLog('Pintu dikunci! Butuh KUNCI.', moveBtns()); return;
+      }
+      return;
+    }
+    P.x = nx; P.y = ny; P.steps++;
+    if (P.status === 'POISON' && P.steps % 3 === 0) { P.hp = Math.max(1, P.hp - 4); }
+    if (P.defBuff > 0 && P.steps % 4 === 0) P.defBuff = Math.max(0, P.defBuff - 1);
+    revealD();
+    const obj = getDObj(nx, ny);
+    if (obj) {
+      if (obj.type === 'enemy' && obj.alive) { startBattle(obj, 'dbattle'); return; }
+      if (obj.type === 'chest' && !obj.open) { openChest(obj); drawDungeon(); updateHUD(); return; }
+      if (obj.type === 'trap' && !obj.used) { triggerTrap(obj); }
+    }
+    if (dmap[ny][nx] === DT.STAIR) {
+      const bossLive = dobjs.find(o => o.type === 'enemy' && o.alive && o.boss);
+      if (bossLive) setLog('⚠️ Aura gelap menghalangimu... Kalahkan Bos dulu!', moveBtns());
+      else nextFloor();
+      return;
+    }
+    if (dmap[ny][nx] === DT.EXIT) {
+      exitDungeon();
+      return;
+    }
+    setLog('Langkahmu bergema di lorong gelap...', moveBtns());
+    drawDungeon(); updateHUD();
+  }
+
+  //function world system 
+  function triggerTrap(trap) {
+    trap.used = true;
+    const dmg = 8 + Math.floor(Math.random() * 12); P.hp = Math.max(0, P.hp - dmg);
+    const px = (state === 'dungeon') ? P.x * DTW + DTW / 2 : (P.x - camX) * TW + TW / 2;
+    const py = (state === 'dungeon') ? P.y * DTW + DTW / 2 : (P.y - camY) * TW + TW / 2;
+    spawnParticles(px, py, '#ff0044', 15); updateParticles();
+    if (Math.random() < .3) P.status = 'POISON';
+    setLog(`⚠️ JEBAKAN! ${dmg} dmg!${P.status === 'POISON' ? ' ☠️ Diracun!' : ''}`, moveBtns());
+    if (P.hp <= 0) { die(); return; }
+    drawDungeon(); updateHUD();
+  }
+  function openChest(ch) {
+    ch.open = true; P.gold += ch.gold; P.chestsOpened++;
+    qProgress('open_chest');
+    P.growth.fortune++;
+    let fortuneTxt = '';
+    if (P.growth.fortune >= 10) { P.growth.fortune = 0; P.stats.fortune++; recalcStats(); fortuneTxt = ' <span style="color:#00ffaa">[FORTUNE UP]</span>'; }
+    let txt = `📦 Peti terbuka! +${ch.gold} Gold!${fortuneTxt}`;
+    if (ch.item) {
+      if (ch.item === 'Key') P.keys++;
+      else P.items.push(ch.item);
+      txt += ` Ditemukan: <span style="color:#55aaff">${ch.item}</span>!`;
+    }
+    recalcStats();
+    const cx = state === 'dungeon' ? ch.x * DTW + DTW / 2 : (ch.x - camX) * TW + TW / 2;
+    const cy = state === 'dungeon' ? ch.y * DTW + DTW / 2 : (ch.y - camY) * TW + TW / 2;
+    spawnParticles(cx, cy, '#ffd700', 16, 'star'); updateParticles();
+    setLog(txt, moveBtns());
+  }
+  function nextFloor() {
+    dfi++;
+    if (dfi >= DFLOORS.length) {
+      setLog('<span style="color:#ffd700">★★★ BLACK DUNGEON DITAKLUKKAN! ★★★</span><br>Kamu adalah legenda Luminia! Kembali ke dunia.', [{ label: 'KEMBALI KE LUMINIA', cls: 'gb', fn: exitDungeon }]);
+      return;
+    }
+    const d = mkDungeon(dfi); dmap = d.m; dobjs = d.obs; dvis = new Set();
+    P.x = 1; P.y = 1; revealD();
+    const heal = Math.floor(P.maxHp * .3); P.hp = Math.min(P.maxHp, P.hp + heal);
+    let txtDesc = `<span style="color:#aa55ff">Turun ke ${DFLOORS[dfi].name}...</span><br>Jauh lebih gelap dan berbahaya!`;
+    if (dfi === 3) txtDesc = `<span style="color:#ff0044">Memasuki gerbang Noctora...</span><br>Aura naga hitam sangat pekat!`;
+    setLog(`${txtDesc} +${heal}HP pulih.`, moveBtns());
+    drawDungeon(); updateHUD();
+  }
+  function talkNPC(npc) {
+    if (P.ascendant) {
+      setLog(`<b>${npc.name}:</b><br><span style="color:#ff0000; font-family:monospace; font-size:18px">k-kamu.. A-APA KAU?! TIDAK! JANGAN HAPUS KAMI!!</span>`, moveBtns());
+      return;
+    }
+    if (npc.shop) { showShop(); return; }
+    inputLock = true; npcTalk = npc; npcIdx = 0; showNPCLine();
+  }
+  function showNPCLine() {
+    const n = npcTalk;
+    const btns = [];
+    if (npcIdx < n.dialog.length - 1) btns.push({ label: 'LANJUT ►', fn: () => { npcIdx++; showNPCLine(); } });
+    else btns.push({ label: 'PAMIT', fn: () => { inputLock = false; setLog('Kamu pamit...', moveBtns()); if (state === 'library') drawLibrary(); else if (state === 'kingdom') drawKingdom(); else if (state === 'palace') drawPalace(); else drawOver(); } });
+    setLog(`<span style="color:#ffd700">${n.name}:</span> ${n.dialog[npcIdx]}`, btns);
+  }
+  function showShop() {
+    inputLock = true;
+    const btns = SHOP_ITEMS.map(it => ({ label: `${it.name} ${it.cost}G`, cls: 'ib', fn: () => buyItem(it) }));
+    btns.push({ label: 'KELUAR', fn: () => { inputLock = false; setLog('Sampai jumpa!', moveBtns()); drawOver(); } });
+    setLog(`<span style="color:#ffd700">Pedagang:</span> Apa yang kamu mau beli? Gold: ${P.gold}`, btns);
+  }
+  function buyItem(it) {
+    if (P.gold < it.cost) { setLog(`Gold tidak cukup! Butuh ${it.cost}G.`, [{ label: 'KEMBALI', fn: showShop }]); return; }
+    P.gold -= it.cost; P.items.push(it.name);
+    recalcStats();
+    setLog(`Membeli <span style="color:#55aaff">${it.name}</span>! -${it.cost}G. Sisa: ${P.gold}G`, [{ label: 'BELI LAGI', fn: showShop }, { label: 'KELUAR', fn: () => { inputLock = false; setLog('Sampai jumpa!', moveBtns()); drawOver(); } }]);
+    updateHUD();
+  }
+
+  let eSleep = false, eShield = false;
+  function startBattle(enemy, bstate) {
+    state = bstate; curEnemy = enemy; eSleep = false; eShield = false;
+    eDot = 0; eDelay = null; eAccDown = 0;
+    P.regenBuff = 0; P.reflectBuff = 0; P.atkBuff = 0; P.dodgeBuff = 0;
+    P.blockNext = false; P.dmgReduce = 1; P.comboSetup = false; P.autoRevive = 0;
+    showBattleUI();
+  }
+  function showBattleUI() {
+    const e = curEnemy;
+    const mhp = EDEFS[e.name]?.hp || OENEMIES.find(x => x.name === e.name)?.hp || e.hp;
+    const pct = Math.max(0, e.hp / mhp * 100);
+    let imgHtml = '';
+    if (e.boss) {
+      const fl = DFLOORS.find(f => f.boss === e.name);
+      if (fl && fl.img) imgHtml = `<img id="ebossimg" src="${fl.img}" style="width:100%;max-width:160px;height:auto;border:2px solid #ff4400;border-radius:4px;margin-bottom:4px;image-rendering:pixelated;transition:all 0.2s;">`;
+    }
+    let extraLog = '';
+    if (P.aetherState > 0) extraLog = `<div style="color:#aa55ff;font-size:5px;margin-bottom:2px;animation:pulse 1s infinite">🌌 AETHER BURST AKTIF (${P.aetherState} turn)</div>`;
+
+    const btns = [
+      { label: '⚔ SERANG', fn: doAtk },
+      { label: '✨ SIHIR', fn: showMagicMenu },
+      { label: '🧪 ITEM', fn: showItemsMenu },
+      { label: '🤸 DODGE', fn: doDodge },
+      { label: '🏃 LARI', cls: 'rb', fn: doRun },
+    ];
+    if (P.aetherEnergy >= 100 && P.aetherState <= 0) {
+      btns.push({
+        label: '🌌 BURST!', cls: 'yb', fn: () => {
+          P.aetherEnergy = 0; P.aetherState = 3;
+          P.growth.burst++;
+          let burstTxt = '';
+          if (P.growth.burst >= 3) { P.growth.burst = 0; P.stats.aether++; recalcStats(); burstTxt = ' <span style="color:#00ffaa">[AETHER UP]</span>'; }
+          addLog(`<br><span style="color:#aa55ff;font-size:6px">🌌 AETHER BURST! Kekuatan melonjak tajam!</span>${burstTxt}`);
+          showBattleUI(); updateHUD();
+        }
+      });
+    }
+
+    setLog(`<div style="text-align:center;">${imgHtml}</div>
+<div style="font-size:26px;text-align:center;margin:3px 0;${imgHtml ? 'display:none;' : ''}" id="espr">${e.spr || '👾'}</div>
+${extraLog}
+<span style="color:${e.boss ? '#ff4400' : '#ff4488'}">${e.name}${e.boss ? ' 👑' : ''}</span> HP:${Math.max(0, e.hp)}
+<div style="height:4px;background:#200010;border:1px solid #440022;margin:2px 0"><div style="height:100%;background:${e.boss ? '#ff2200' : '#cc0044'};width:${pct}%;transition:width .3s"></div></div>
+${eSleep ? '<span style="color:#55aaff">💤 Tertidur</span> ' : ''} ${eShield ? '<span style="color:#aaaaff">🛡 Bershield</span>' : ''}<br>Apa yang kamu lakukan?`, btns);
+  }
+  function flashEnemy(color = '#ff4400') {
+    const el = document.getElementById('espr');
+    const imgEl = document.getElementById('ebossimg');
+    if (el) {
+      el.style.filter = `drop-shadow(0 0 6px ${color})`;
+      el.style.opacity = '.2';
+      setTimeout(() => { if (el) { el.style.opacity = '1'; el.style.filter = ''; } }, 220);
+    }
+    if (imgEl) {
+      imgEl.style.filter = `drop-shadow(0 0 6px ${color})`;
+      imgEl.style.opacity = '.2';
+      setTimeout(() => { if (imgEl) { imgEl.style.opacity = '1'; imgEl.style.filter = ''; } }, 220);
+    }
+  }
+  function eTurn() {
+    let etxt = '';
+    if (eDot > 0) {
+      curEnemy.hp -= eDot;
+      etxt += `🔥 Musuh terbakar ${eDot} dmg!<br>`;
+      flashEnemy('#ff8800');
+    }
+    if (eDelay) {
+      eDelay.turns--;
+      if (eDelay.turns <= 0) {
+        let ddmg = eDelay.dmg[0] + Math.floor(Math.random() * (eDelay.dmg[1] - eDelay.dmg[0]));
+        curEnemy.hp -= ddmg;
+        etxt += `💥 ${eDelay.name} meledak! ${ddmg} dmg!<br>`;
+        flashEnemy('#ff0044');
+        eDelay = null;
+      } else {
+        etxt += `⏳ ${eDelay.name} menghitung mundur...<br>`;
+      }
+    }
+
+    if (curEnemy.hp <= 0) {
+      return { dmg: 0, txt: etxt, died: true };
+    }
+
+    if (eSleep && Math.random() < .35) { eSleep = false; etxt += `${curEnemy.name} terbangun!<br>`; }
+    if (eSleep) return { dmg: 0, txt: etxt };
+    if (P.antiDebuff > 0) P.antiDebuff--;
+    if (P.aetherState > 0) {
+      P.aetherState--;
+      if (P.aetherState === 0) etxt += `<span style="color:#aa55ff">Aether Burst telah berakhir.</span><br>`;
+    }
+
+    let regenAmt = Math.floor(P.stats.vitalis / 5) + P.regenBuff;
+    if (regenAmt > 0 && P.hp < P.maxHp) {
+      P.hp = Math.min(P.maxHp, P.hp + regenAmt);
+      if (P.regenBuff > 0) etxt += `✨ Regen memulihkan ${P.regenBuff} HP!<br>`;
+    }
+
+    if (eAccDown > 0 && Math.random() * 100 < eAccDown) {
+      etxt += `💨 Serangan musuh meleset karena akurasi turun!<br>`;
+      return { dmg: 0, txt: etxt };
+    }
+
+    let edm = Math.max(1, curEnemy.atk - (P.def + (P.defBuff || 0)) + Math.floor(Math.random() * 5));
+    if (curEnemy.boss && Math.random() < .28) { edm = Math.floor(edm * 1.6); etxt += `<span style="color:#ff6600">Serangan brutal!</span><br>`; }
+
+    if (inUmbra(P.x, P.y)) {
+      if (curEnemy.name === 'Eldroot Umbra' && Math.random() < 0.4) {
+        edm += 25;
+        if (Math.random() < 0.5) { P.status = 'POISON'; etxt += 'Akar beracun menyayatmu!<br>'; }
+        else { P.hp = Math.max(0, P.hp - 10); etxt += 'Aura korupsi menghisap nyawamu!<br>'; }
+      } else if (!curEnemy.boss && Math.random() < 0.3) {
+        edm += 15;
+        etxt += `<span style="color:#aa55ff">${curEnemy.name} menggunakan sihir terdistorsi!</span><br>`;
+      }
+    }
+
+    let dodgeChance = 0.05;
+    if (P.stats.velocity >= 50) dodgeChance = 0.15;
+    if (P.dodgeBuff > 0) dodgeChance += P.dodgeBuff;
+
+    if (Math.random() < dodgeChance) {
+      etxt += `<span style="color:#00ffcc">Kecepatan luar biasa! Menghindari serangan!</span><br>`;
+      return { dmg: 0, txt: etxt };
+    }
+
+    if (P.dodging) {
+      P.dodging = false;
+      const isFast = Math.random() < Math.max(0.05, 0.30 - P.stats.velocity * 0.005);
+      if (isFast) etxt += `<span style="color:#ff6600">Serangan musuh terlalu cepat! Gagal menghindar!</span><br>`;
+      else { etxt += `<span style="color:#00ffcc">Berhasil menghindari serangan!</span><br>`; return { dmg: 0, txt: etxt }; }
+    }
+
+    if (P.blockNext) {
+      P.blockNext = false;
+      etxt += `🛡️ Serangan musuh diblokir sepenuhnya!<br>`;
+      return { dmg: 0, txt: etxt };
+    }
+
+    if (P.dmgReduce < 1) {
+      edm = Math.floor(edm * P.dmgReduce);
+      etxt += `🛡️ Damage dikurangi drastis!<br>`;
+    }
+
+    if (curEnemy.name === 'Vampire Lord' && Math.random() < .25) { if (P.antiDebuff > 0) etxt += 'Kebal debuff!<br>'; else { P.status = 'DRAIN'; etxt += 'Kamu dilemahkan!<br>'; } }
+    if (curEnemy.name === 'Ancient Lich' && Math.random() < .2) { if (P.antiDebuff > 0) etxt += 'Kebal debuff!<br>'; else { P.status = 'POISON'; etxt += '☠️ Diracun oleh Lich!<br>'; } }
+    if (curEnemy.name === 'Dark Mage' && Math.random() < .3) { edm += 10; etxt += 'Mantra gelap!<br>'; }
+
+    P.hp = Math.max(0, P.hp - edm);
+    if (edm > 0) {
+      P.growth.hit++;
+      if (P.growth.hit >= 15) {
+        P.growth.hit = 0; P.stats.vitalis++; recalcStats();
+        etxt += ' <span style="color:#00ffaa">[VITALIS UP]</span><br>';
+      }
+    }
+    if (P.reflectBuff > 0 && edm > 0) {
+      curEnemy.hp -= P.reflectBuff;
+      etxt += `🪞 Memantulkan ${P.reflectBuff} dmg!<br>`;
+      flashEnemy('#aaaaff');
+      if (curEnemy.hp <= 0) return { dmg: edm, txt: etxt, died: true };
+    }
+
+    if (edm > 0) P.aetherEnergy = Math.min(100, P.aetherEnergy + 10);
+
+    if (P.hp <= 0 && P.autoRevive > 0) {
+      P.hp = Math.floor(P.maxHp * P.autoRevive);
+      P.autoRevive = 0;
+      etxt += `🔥 Phoenix Spark bangkit! Kamu hidup kembali dengan ${P.hp} HP!<br>`;
+    }
+
+    return { dmg: edm, txt: etxt };
+  }
+  function doDodge() {
+    if (inputLock) return; inputLock = true;
+    P.dodging = true;
+    P.growth.dodge++;
+    let txt = 'Kamu bersiap menghindari serangan...';
+    if (P.growth.dodge >= 5) { P.growth.dodge = 0; P.stats.velocity++; recalcStats(); txt += ' <span style="color:#00ffaa">[VELOCITY UP]</span>'; }
+    setTimeout(() => {
+      const turnRes = eTurn();
+      if (turnRes.txt) txt += `<br>${turnRes.txt}`;
+      if (turnRes.dmg > 0) txt += `<br>${curEnemy.name}: ${turnRes.dmg} dmg!`;
+      if (turnRes.died) { winBattle(0); inputLock = false; updateHUD(); return; }
+      if (P.hp <= 0) { die(); inputLock = false; return; }
+      showBattleUI(); addLog(txt); updateHUD(); inputLock = false;
+    }, 360);
+  }
+  function doAtk() {
+    if (inputLock) return; inputLock = true;
+
+    if (inUmbra(P.x, P.y)) {
+      const hasLight = (P.unlockedSpells || []).includes('LUMINIS') || (P.items || []).includes('Lumina Orb');
+      if (!hasLight && Math.random() < 0.4) {
+        let txt = `Hutan terlalu gelap! Serangan meleset!`;
+        setTimeout(() => {
+          const turnRes = eTurn();
+          if (turnRes.txt) txt += `<br>${turnRes.txt}`;
+          if (turnRes.dmg > 0) txt += `<br>${curEnemy.name}: ${turnRes.dmg} dmg!`;
+          if (turnRes.died) { winBattle(0); inputLock = false; updateHUD(); return; }
+          if (P.hp <= 0) { die(); inputLock = false; return; }
+          showBattleUI(); addLog(txt); updateHUD(); inputLock = false;
+        }, 360);
+        return;
+      }
+    }
+
+    let dmg = Math.max(1, P.atk + (P.atkBuff || 0) - Math.floor((curEnemy.def || 0) / 2) + Math.floor(Math.random() * 7));
+    if (P.comboSetup) {
+      dmg = Math.floor(dmg * 1.5);
+      P.comboSetup = false;
+    }
+    let isCrit = Math.random() < (P.stats.fortune * 0.005);
+    if (isCrit) dmg = Math.floor(dmg * (P.stats.fortune >= 70 ? 2.5 : 1.5));
+    if (P.aetherState > 0) dmg = Math.floor(dmg * 1.5);
+    curEnemy.hp -= dmg;
+    flashEnemy('#fff');
+    const cx = state === 'dungeon' ? P.x * DTW + DTW / 2 : (P.x - camX) * TW + TW / 2;
+    const cy = state === 'dungeon' ? P.y * DTW + DTW / 2 : (P.y - camY) * TW + TW / 2;
+    const ex = state === 'dbattle' ? curEnemy.x * DTW + DTW / 2 : 280;
+    const ey = state === 'dbattle' ? curEnemy.y * DTW + DTW / 2 : 80;
+    spawnParticles(cx, cy, '#eee', 5);
+    setTimeout(() => {
+      spawnParticles(ex, ey, isCrit ? '#ffff00' : '#ff0044', isCrit ? 15 : 10); updateParticles();
+      P.growth.atk++; P.aetherEnergy = Math.min(100, P.aetherEnergy + 5);
+      let growthTxt = '';
+      if (P.growth.atk >= 10) { P.growth.atk = 0; P.stats.might++; recalcStats(); growthTxt += ' <span style="color:#00ffaa">[MIGHT UP]</span>'; }
+      if (isCrit) {
+        P.growth.fortune++;
+        if (P.growth.fortune >= 10) { P.growth.fortune = 0; P.stats.fortune++; recalcStats(); growthTxt += ' <span style="color:#00ffaa">[FORTUNE UP]</span>'; }
+      }
+      let txt = `Kamu menyerang! ${isCrit ? '<span style="color:#ffff00">CRITICAL!</span> ' : ''}<span style="color:#ff8888">${dmg}</span> dmg!${growthTxt}`;
+      if (curEnemy.hp <= 0) { winBattle(dmg); inputLock = false; updateHUD(); return; }
+      setTimeout(() => {
+        const turnRes = eTurn(); if (turnRes.txt) txt += `<br>${turnRes.txt}`;
+        if (turnRes.dmg > 0) txt += `<br>${curEnemy.name}: ${turnRes.dmg} dmg!`;
+        if (turnRes.died) { winBattle(0); inputLock = false; updateHUD(); return; }
+        if (P.hp <= 0) { die(); inputLock = false; return; }
+        showBattleUI(); addLog(txt); updateHUD(); inputLock = false;
+      }, 360);
+    }, 200);
+  }
+  function showMagicMenu() {
+    const allSpells = [...SPELLS, ...ELEM_SPELLS];
+    const avail = allSpells.filter(s => (P.unlockedSpells || []).includes(s.name) && P.mp >= s.mp);
+    if (!avail.length) { setLog('Belum ada sihir atau MP tidak cukup!', moveBtns()); setTimeout(showBattleUI, 1200); return; }
+    const btns = avail.map(s => ({ label: `${s.name}(${s.mp}MP)`, fn: () => castSpell(s) }));
+    btns.push({ label: 'KEMBALI', fn: showBattleUI });
+    setLog('Pilih mantra:', btns);
+  }
+  function castSpell(sp) {
+    if (inputLock) return; inputLock = true;
+    let cost = sp.mp;
+    if (P.stats.insight >= 60) cost = Math.max(1, cost - 2);
+    P.mp -= cost;
+    let txt = '';
+
+    P.growth.spell++; P.aetherEnergy = Math.min(100, P.aetherEnergy + 8);
+    if (P.growth.spell >= 8) { P.growth.spell = 0; P.stats.insight++; recalcStats(); txt += ' <span style="color:#00ffaa">[INSIGHT UP]</span><br>'; }
+
+    if (sp.name === 'HEAL' || (sp.heal && !sp.dmg)) {
+      const h = sp.name === 'HEAL' ? 20 + Math.floor(P.stats.insight * 1.5) + Math.floor(Math.random() * 12) : sp.heal;
+      P.hp = Math.min(P.maxHp, P.hp + h); txt += `✨ ${sp.name}! +<span style="color:#88ffcc">${h}</span> HP!`;
+      if (sp.purify) { P.status = 'OK'; txt += ' Status pulih!'; }
+      if (sp.antiDebuff) { P.antiDebuff = 3; txt += ' Kebal debuff!'; }
+      if (sp.regen) { P.regenBuff = sp.regen; txt += ' Regen aktif!'; }
+      spawnParticles(state === 'dungeon' ? P.x * DTW + 16 : (P.x - camX) * TW + 16, state === 'dungeon' ? P.y * DTW + 16 : (P.y - camY) * TW + 16, '#00ffcc', 12, 'star'); updateParticles();
+    }
+    else if (sp.buff && !sp.dmg) {
+      if (sp.def) P.defBuff = (P.defBuff || 0) + sp.def;
+      if (sp.reflect) P.reflectBuff = sp.reflect;
+      txt += `🛡 ${sp.name}!`;
+      if (sp.def) txt += ` DEF +${sp.def} sementara!`;
+      if (sp.reflect) txt += ` Reflect aktif!`;
+    }
+    else if (sp.buffAtk) {
+      P.atkBuff = sp.buffAtk;
+      txt += `🔥 ${sp.name}! ATK +${sp.buffAtk} sementara!`;
+    }
+    else if (sp.autoRevive) {
+      P.autoRevive = sp.autoRevive;
+      txt += `🔥 ${sp.name}! Phoenix menyertaimu!`;
+    }
+    else if (sp.blockNext) {
+      P.blockNext = true;
+      txt += `🛡️ ${sp.name}! Serangan musuh berikutnya akan diblokir!`;
+    }
+    else if (sp.accDown) {
+      eAccDown = sp.accDown;
+      txt += `💨 ${sp.name}! Akurasi musuh berkurang!`;
+    }
+    else if (sp.dmgReduce) {
+      P.dmgReduce = sp.dmgReduce;
+      txt += `🛡️ ${sp.name}! Damage musuh akan berkurang drastis!`;
+    }
+    else if (sp.dodgeBoost) {
+      P.dodgeBuff = sp.dodgeBoost;
+      txt += `💨 ${sp.name}! Kecepatan menghindar meningkat!`;
+    }
+
+    if (sp.dmg) {
+      let hits = sp.multiHit || 1;
+      let totalDmg = 0;
+      for (let i = 0; i < hits; i++) {
+        let dmg = sp.dmg[0] + Math.floor(Math.random() * (sp.dmg[1] - sp.dmg[0])) + Math.floor(P.stats.insight * 1.5);
+        if (sp.name === 'ASTRAEL (Kosmos)' || sp.reqAscendant) dmg = sp.dmg[0];
+        if (P.comboSetup) { dmg = Math.floor(dmg * 1.5); P.comboSetup = false; }
+        if (P.aetherState > 0) dmg = Math.floor(dmg * 1.5);
+        if (eShield) dmg = Math.floor(dmg * .6);
+        totalDmg += dmg;
+      }
+      curEnemy.hp -= totalDmg; flashEnemy('#aa44ff');
+      const sx = state === 'dbattle' ? curEnemy.x * DTW + DTW / 2 : 280, sy = state === 'dbattle' ? curEnemy.y * DTW + DTW / 2 : 80;
+      spawnParticles(sx, sy, '#aa44ff', 14 * hits); updateParticles();
+      txt += `✨ ${sp.name}! <span style="color:#cc88ff">${totalDmg}</span> dmg!${hits > 1 ? ` (${hits} Hit!)` : ''}`;
+
+      if (sp.heal) { P.hp = Math.min(P.maxHp, P.hp + sp.heal); txt += ` +${sp.heal}HP!`; }
+      if (sp.drain || sp.lifesteal) { const h = Math.floor(totalDmg * .45); P.hp = Math.min(P.maxHp, P.hp + h); txt += ` Serap <span style="color:#88ffcc">+${h}HP</span>!`; }
+      if (sp.buff) { P.defBuff = (P.defBuff || 0) + sp.def; txt += ` DEF +${sp.def}!`; }
+      if (sp.stun) { eSleep = true; txt += ` Musuh tertahan!`; }
+      if (sp.debuff) { eShield = false; txt += ` Pertahanan hancur!`; }
+      if (sp.dot) { eDot = sp.dot; txt += ` Musuh terbakar!`; }
+      if (sp.delayDmg) { eDelay = { turns: 2, dmg: sp.delayDmg, name: sp.name }; txt += ` Menanam energi ledakan!`; }
+      if (sp.regen) { P.regenBuff = sp.regen; txt += ` Regen aktif!`; }
+      if (sp.dodgeBoost) { P.dodgeBuff = sp.dodgeBoost; txt += ` Menghindar meningkat!`; }
+      if (sp.comboSetup) { P.comboSetup = true; txt += ` Setup combo!`; }
+      if (sp.slow) { eAccDown = 20; txt += ` Gerakan musuh melambat!`; }
+
+      if (curEnemy.hp <= 0) { winBattle(totalDmg); inputLock = false; updateHUD(); return; }
+    }
+    setTimeout(() => {
+      const turnRes = eTurn();
+      if (turnRes.txt) txt += `<br>${turnRes.txt}`;
+      if (turnRes.dmg > 0) txt += `<br>${curEnemy.name}: ${turnRes.dmg} dmg!`;
+      if (turnRes.died) { winBattle(0); inputLock = false; updateHUD(); return; }
+
+      if (P.hp <= 0) { die(); inputLock = false; return; }
+      showBattleUI(); addLog(txt); updateHUD(); inputLock = false;
+    }, 360);
+  }
+  function showItemsMenu() {
+    const usableItems = P.items.map((it, i) => ({ it, i })).filter(x => ['Dark Potion', 'Hi-Potion', 'Ether', 'Antidote', 'Elixir', 'Dark Crystal'].includes(x.it));
+    if (!usableItems.length) { setLog('Tidak ada item yang bisa dipakai!', moveBtns()); setTimeout(showBattleUI, 1200); return; }
+    const btns = usableItems.map(x => ({ label: x.it, cls: 'ib', fn: () => useItemBattle(P.items.indexOf(x.it)) }));
+    btns.push({ label: 'KEMBALI', fn: showBattleUI });
+    setLog('Gunakan item:', btns);
+  }
+  function useItemBattle(idx) {
+    if (inputLock) return; inputLock = true;
+    const it = P.items.splice(idx, 1)[0];
+    let txt = '';
+    if (it === 'Dark Potion') { const h = 25 + Math.floor(Math.random() * 12); P.hp = Math.min(P.maxHp, P.hp + h); txt = `Dark Potion! +${h}HP`; }
+    else if (it === 'Hi-Potion') { const h = 55 + Math.floor(Math.random() * 15); P.hp = Math.min(P.maxHp, P.hp + h); txt = `Hi-Potion! +${h}HP`; }
+    else if (it === 'Elixir') { P.hp = P.maxHp; P.mp = P.maxMp; txt = 'Elixir! HP & MP penuh!'; }
+    else if (it === 'Ether') { P.mp = Math.min(P.maxMp, P.mp + 12); txt = 'Ether! +12MP'; }
+    else if (it === 'Antidote') { P.status = 'OK'; txt = 'Antidote! Racun sembuh!'; }
+    else if (it === 'Dark Crystal') { P.crystalAtk = (P.crystalAtk || 0) + 6; recalcStats(); txt = 'Dark Crystal! ATK permanen +6!'; }
+    setTimeout(() => {
+      const turnRes = eTurn();
+      if (turnRes.txt) txt += `<br>${turnRes.txt}`;
+      if (turnRes.dmg > 0) txt += `<br>${curEnemy.name}: ${turnRes.dmg} dmg!`;
+      if (turnRes.died) { winBattle(0); inputLock = false; updateHUD(); return; }
+      if (P.hp <= 0) { die(); inputLock = false; return; }
+      showBattleUI(); addLog(txt); updateHUD(); inputLock = false;
+    }, 220);
+  }
+  function doRun() {
+    if (inputLock) return; inputLock = true;
+    if (Math.random() < .48) {
+      const was = state; state = (was === 'dbattle' ? 'dungeon' : 'over');
+      curEnemy = null; setLog('Berhasil kabur!', moveBtns());
+      if (state === 'dungeon') drawDungeon(); else drawOver();
+      inputLock = false;
+    } else {
+      const edm = Math.max(1, curEnemy.atk - P.def + 4); P.hp = Math.max(0, P.hp - edm);
+      if (P.hp <= 0) { die(); inputLock = false; return; }
+      showBattleUI(); addLog(`Gagal kabur! ${curEnemy.name}: ${edm} dmg!`); updateHUD();
+      inputLock = false;
+    }
+  }
+  function winBattle(dmg) {
+    const e = curEnemy;
+
+    // THE FINAL ENCOUNTER LORE
+    if (e.name === 'Great Black Dragon') {
+      const isAscendantReqMet = (P.coreElems && P.coreElems.length === 4) || (typeof ECHOES !== 'undefined' && ECHOES.every(ec => ec.found));
+      let choices = [
+        {
+          label: 'PRESERVE THE LIE', fn: () => {
+            P.ascendant = false;
+            setLog(`<span style="color:#ffd700">Kamu membunuh Naga Hitam...</span><br>Keseimbangan palsu dipertahankan. Kamu hidup sebagai "Pahlawan" di dunia yang tidak pernah utuh.<br><b>Gelar: THE FALSE SAVIOR</b>`, moveBtns());
+            state = (state === 'dbattle' ? 'dungeon' : 'over'); curEnemy = null;
+            if (state === 'dungeon') drawDungeon(); else drawOver(); updateHUD();
+          }
+        },
+        {
+          label: 'EMBRACE THE NIHIL', cls: 'rb', fn: () => {
+            document.body.innerHTML = '<div style="color:red; background:black; height:100vh; display:flex; justify-content:center; align-items:center; font-family:monospace; font-size:24px;"><b>KEHANCURAN YANG JUJUR.</b><br>TIDAK ADA LAGI KEBOHONGAN.</div>';
+          }
+        }
+      ];
+
+      if (isAscendantReqMet) {
+        choices.push({
+          label: 'TRANSCEND (ASCENDANT)', cls: 'gb', fn: () => {
+            P.ascendant = true; P.maxHp = 9999; P.maxMp = 9999; P.hp = 9999; P.mp = 9999; P.atk = 999; P.unlockedSpells.push('[ERASE]');
+            setLog(`<span style="color:#aa55ff">Kamu menelan kekuatan sang Naga.</span><br>Sistem ini rapuh, dan kamu adalah celah yang kini menjadi <b>Tuhan</b>.<br>Realitas gemetar melihat keberadaanmu.`, moveBtns());
+            state = (state === 'dbattle' ? 'dungeon' : 'over'); curEnemy = null;
+            if (state === 'dungeon') drawDungeon(); else drawOver(); updateHUD();
+          }
+        });
+      } else {
+        choices.push({ label: '??? (SYARAT BELUM TERPENUHI)', fn: () => { } });
+      }
+
+      setLog(`<div style="text-align:center; padding:10px;"><span style="color:#ff0044; font-size:20px">THE FINAL CHOICE</span><br><br><i style="color:#888">Sang Naga menatapmu. "Apakah dunia ini layak untuk tetap ada seperti sekarang?"</i></div>`, choices);
+      return;
+    }
+
+    const ex = e.exp || Math.floor(P.lv * 12);
+    const dropG = (e.gold || 0) + Math.floor((P.stats?.fortune || 10) * 0.5);
+    P.exp += ex; P.gold += dropG; P.kills++;
+    if (e.boss) { P.bossKills++; qProgress('kill_boss'); P.items.push('Dark Crystal'); if (Math.random() < .6) P.keys++; }
+    qProgress('kill');
+    let txt = `<span style="color:#88ffcc">★ MENANG! ★</span> ${e.name} dikalahkan!<br>+${ex} EXP  +${dropG} Gold!`;
+    if (e.boss) txt += `<br><span style="color:#ffd700">★ BOS KALAH! Dark Crystal diperoleh! ★</span>`;
+    if (state === 'dbattle' && dobjs) { const ob = dobjs.find(o => o.name === e.name && o.x === e.x && o.y === e.y); if (ob) ob.alive = false; }
+    state = (state === 'dbattle' ? 'dungeon' : 'over'); curEnemy = null;
+    const px = state === 'dungeon' ? P.x * DTW + 16 : (P.x - camX) * TW + 16, py = state === 'dungeon' ? P.y * DTW + 16 : (P.y - camY) * TW + 16;
+    spawnParticles(px, py, '#ffd700', 20, 'star'); updateParticles();
+    checkLvUp(txt);
+    if (state === 'dungeon') drawDungeon(); else drawOver(); updateHUD();
+  }
+
+  // function level system
+  function checkLvUp(prev) {
+    if (P.exp >= P.expNext) {
+      P.lv++; P.exp = 0;
+      P.statPoints += 5; P.sp = (P.sp || 0) + 1;
+      recalcStats();
+      P.hp = P.maxHp; P.mp = P.maxMp; P.expNext = P.lv * 28 + 28;
+      spawnParticles(state === 'dungeon' ? P.x * DTW + 16 : (P.x - camX) * TW + 16, state === 'dungeon' ? P.y * DTW + 16 : (P.y - camY) * TW + 16, '#ffd700', 25, 'star'); updateParticles();
+      let msg = (prev || '') + '<br><span style="color:#ffd700">★★ LEVEL UP! LV ' + P.lv + '! ★★</span><br>+5 Stat Points (Gunakan AETHER CORE)';
+      if (P.lv >= 3 && (!P.coreElems || P.coreElems.length === 0)) {
+        setLog(msg + '<br><span style="color:#00ffaa">Kekuatan elemen kuno memanggilmu. Apakah kamu ingin menerima Core Elements?</span>', [
+          { label: 'YA', fn: () => acceptElements(msg) },
+          { label: 'TIDAK', fn: () => { setLog(msg + '<br>Kamu menolak kekuatan elemen untuk saat ini.', moveBtns()); } }
+        ]);
+        return;
+      }
+      setLog(msg, moveBtns());
+    } else if (prev) setLog(prev, moveBtns());
+  }
+
+  function acceptElements(prevMsg) {
+    const r = Math.random();
+    let num = 1;
+    const f = P.stats?.fortune || 10;
+    const c4 = 0.001 + (f * 0.0005);
+    const c3 = 0.05 + (f * 0.002);
+    const c2 = 0.10 + (f * 0.005);
+
+    if (r < c4) num = 4;
+    else if (r < c3) num = 3;
+    else if (r < c2) num = 2;
+
+    const elems = ['Pyra', 'Aqua', 'Terra', 'Aero'].sort(() => Math.random() - .5);
+    P.coreElems = elems.slice(0, num);
+    let msg = prevMsg + `<br><span style="color:#00ffaa">★ RESONANSI: Memperoleh Elemen ${P.coreElems.join(', ')}! ★</span>`;
+    setLog(msg, moveBtns());
+    updateHUD();
+  }
+  function die() {
+    state = 'dead';
+    setLog(`<span style="color:#ff0044">✝ KAMU GUGUR ✝</span><br>Kegelapan menelanmu...<br>LV:${P.lv} | Gold:${P.gold} | Kills:${P.kills}`, [{ label: 'BANGKIT LAGI', cls: 'rb', fn: restart }]);
+    updateHUD();
+  }
+
+  //function restart system 
+  function restart() {
+    P = { x: 2, y: 3, hp: 30, maxHp: 30, mp: 12, maxMp: 12, atk: 12, def: 6, lv: 1, exp: 0, expNext: 25, gold: 20, keys: 0, items: [], status: 'OK', defBuff: 0, steps: 0, kills: 0, bossKills: 0, chestsOpened: 0, coreElems: [], ascendant: false, antiDebuff: 0, sp: 0, unlockedSpells: ['HEAL'], stats: { might: 10, insight: 10, velocity: 10, fortune: 10, vitalis: 10, aether: 10 }, statPoints: 0, aetherEnergy: 0, aetherState: 0, growth: { atk: 0, spell: 0, dodge: 0, hit: 0, burst: 0, fortune: 0 }, crystalAtk: 0 };
+    recalcStats(); P.hp = P.maxHp; P.mp = P.maxMp;
+    OCHESTS.forEach(c => c.open = false);
+    if (typeof ECHOES !== 'undefined') ECHOES.forEach(e => e.found = false);
+    activeQuests = QUESTS.map(q => ({ ...q }));
+    state = 'over'; curEnemy = null; inputLock = false; osteps = 0; dfi = 0; dmap = null; dobjs = null; dvis = new Set();
+
+    const introText = `<div style="text-align:center; padding: 10px;">
+      <h2 style="color:#ff44aa; margin-bottom:10px;">Luminia: Echoes of the Unwhole</h2>
+      <p style="color:#aaa; font-style:italic;">Keseimbangan bukanlah keadaan alami.<br>Ia adalah kebohongan yang dipaksakan... dan selalu retak.</p>
+      <p style="color:#888;">Kamu bukanlah pahlawan.<br>Kamu adalah <b>celah</b> di antara dunia dan kehampaan.</p>
+    </div>`;
+
+    setLog(introText, [{
+      label: 'TERIMA KENYATAAN', fn: () => {
+        setLog('Petualangan dimulai... namun dunia ini terasa janggal.', moveBtns());
+      }
+    }]);
+    renderQuests(); drawOver(); updateHUD();
+  }
+  document.addEventListener('keydown', e => {
+    if (state === 'dead' || inputLock) return;
+    const k = { 'ArrowUp': [0, -1], 'ArrowDown': [0, 1], 'ArrowLeft': [-1, 0], 'ArrowRight': [1, 0], 'w': [0, -1], 's': [0, 1], 'a': [-1, 0], 'd': [1, 0] };
+    if (k[e.key]) { e.preventDefault(); move(...k[e.key]); }
+  });
+  renderQuests(); drawOver(); updateHUD();
+  setInterval(() => { if (state === 'over') drawOver(); else if (state === 'dungeon') drawDungeon(); else if (state === 'library') drawLibrary(); else if (state === 'kingdom') drawKingdom(); else if (state === 'palace') drawPalace(); }, 500);
+</script>
