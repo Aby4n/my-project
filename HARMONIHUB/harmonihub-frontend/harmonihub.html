@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HarmoniHub — Berbeda keyakinan, bersatu dalam kegiatan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&family=Playfair+Display:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F9F7F4;--bg2:#FFFFFF;--bg3:#F2EEE8;
+  --text:#1A1714;--text2:#5C564E;--text3:#8C8680;
+  --accent:#2D6A4F;--accent2:#52B788;--accent3:#B7E4C7;
+  --gold:#C9A84C;--gold2:#F0D080;
+  --border:rgba(0,0,0,0.08);--border2:rgba(0,0,0,0.12);
+  --shadow:0 2px 20px rgba(0,0,0,0.06);--shadow2:0 8px 40px rgba(0,0,0,0.1);
+  --r:16px;--r2:24px;--r3:32px;
+  --font:'DM Sans',sans-serif;--font2:'Playfair Display',serif;
+  --trans:all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:transparent}::-webkit-scrollbar-thumb{background:var(--accent3);border-radius:10px}
+
+/* ─── TOAST ─── */
+#toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%) translateY(120px);background:var(--text);color:#fff;padding:12px 24px;border-radius:100px;font-size:14px;z-index:9999;transition:transform 0.4s cubic-bezier(0.4,0,0.2,1);pointer-events:none}
+#toast.show{transform:translateX(-50%) translateY(0)}
+
+/* ─── MODAL ─── */
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);backdrop-filter:blur(8px);z-index:1000;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.open{display:flex}
+.modal{background:var(--bg2);border-radius:var(--r2);padding:40px;width:100%;max-width:480px;max-height:90vh;overflow-y:auto;animation:modalIn 0.35s cubic-bezier(0.4,0,0.2,1)}
+@keyframes modalIn{from{opacity:0;transform:scale(0.94) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px}
+.modal-title{font-family:var(--font2);font-size:22px;color:var(--text)}
+.modal-close{width:36px;height:36px;border:none;background:var(--bg3);border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;color:var(--text2);transition:var(--trans)}
+.modal-close:hover{background:var(--border2);color:var(--text)}
+
+/* ─── NAVBAR ─── */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;transition:var(--trans)}
+nav.scrolled{background:rgba(249,247,244,0.88);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+.nav-logo-icon{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-logo-text{font-family:var(--font2);font-size:20px;font-weight:600;color:var(--text)}
+.nav-links{display:flex;align-items:center;gap:4px}
+.nav-link{padding:8px 14px;border-radius:100px;font-size:14px;color:var(--text2);text-decoration:none;cursor:pointer;transition:var(--trans);border:none;background:transparent}
+.nav-link:hover,.nav-link.active{color:var(--accent);background:rgba(45,106,79,0.08)}
+.nav-actions{display:flex;gap:10px}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 20px;border-radius:100px;font-size:14px;font-weight:500;cursor:pointer;transition:var(--trans);border:none;text-decoration:none}
+.btn-outline{background:transparent;border:1.5px solid var(--border2);color:var(--text)}
+.btn-outline:hover{border-color:var(--accent);color:var(--accent);background:rgba(45,106,79,0.04)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:#1E5435;transform:translateY(-1px);box-shadow:0 4px 16px rgba(45,106,79,0.3)}
+.btn-gold{background:var(--gold);color:#fff}
+.btn-gold:hover{background:#B8973E;transform:translateY(-1px)}
+.btn-sm{padding:8px 16px;font-size:13px}
+.btn-lg{padding:14px 28px;font-size:16px}
+.btn-icon{padding:10px;gap:0}
+
+/* ─── HERO ─── */
+#hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:100px 40px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;pointer-events:none}
+.hero-orb{position:absolute;border-radius:50%;filter:blur(80px);opacity:0.35}
+.hero-orb-1{width:600px;height:600px;background:radial-gradient(circle,var(--accent3),transparent);top:-100px;left:-150px}
+.hero-orb-2{width:500px;height:500px;background:radial-gradient(circle,var(--gold2),transparent);bottom:-100px;right:-100px;opacity:0.25}
+.hero-orb-3{width:300px;height:300px;background:radial-gradient(circle,#B7D3E4,transparent);top:50%;left:50%;transform:translate(-50%,-50%)}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(45,106,79,0.1);border:1px solid rgba(45,106,79,0.2);color:var(--accent);padding:8px 18px;border-radius:100px;font-size:13px;font-weight:500;margin-bottom:28px;animation:fadeUp 0.8s ease both}
+.hero-title{font-family:var(--font2);font-size:clamp(44px,6vw,80px);line-height:1.1;color:var(--text);margin-bottom:20px;animation:fadeUp 0.8s 0.1s ease both}
+.hero-title span{color:var(--accent)}
+.hero-slogan{font-size:clamp(16px,2vw,20px);color:var(--text2);margin-bottom:40px;font-weight:300;font-style:italic;animation:fadeUp 0.8s 0.2s ease both}
+.hero-actions{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;animation:fadeUp 0.8s 0.3s ease both}
+.hero-stats{display:flex;gap:40px;margin-top:64px;animation:fadeUp 0.8s 0.4s ease both}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:var(--font2);font-size:32px;font-weight:600;color:var(--accent)}
+.hero-stat-label{font-size:13px;color:var(--text3)}
+.scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+
+/* ─── SECTIONS ─── */
+.section{padding:80px 40px;max-width:1200px;margin:0 auto}
+.section-full{padding:80px 40px}
+.section-tag{display:inline-flex;align-items:center;gap:6px;background:rgba(45,106,79,0.08);color:var(--accent);padding:6px 14px;border-radius:100px;font-size:12px;font-weight:600;letter-spacing:0.06em;text-transform:uppercase;margin-bottom:16px}
+.section-title{font-family:var(--font2);font-size:clamp(28px,3.5vw,44px);line-height:1.2;color:var(--text);margin-bottom:12px}
+.section-sub{font-size:17px;color:var(--text2);max-width:560px}
+.section-header{margin-bottom:48px}
+
+/* ─── CARDS ─── */
+.card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);overflow:hidden;transition:var(--trans)}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow2);border-color:var(--border2)}
+.card-img{width:100%;aspect-ratio:16/9;object-fit:cover;background:var(--bg3)}
+.card-img-placeholder{width:100%;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;font-size:40px;background:linear-gradient(135deg,var(--bg3),var(--accent3))}
+.card-body{padding:24px}
+.card-tag{display:inline-block;padding:4px 12px;border-radius:100px;font-size:12px;font-weight:500;margin-bottom:12px}
+.card-tag.green{background:rgba(45,106,79,0.1);color:var(--accent)}
+.card-tag.gold{background:rgba(201,168,76,0.1);color:var(--gold)}
+.card-tag.blue{background:rgba(59,130,246,0.1);color:#2563EB}
+.card-tag.purple{background:rgba(124,58,237,0.1);color:#7C3AED}
+.card-title{font-size:17px;font-weight:600;color:var(--text);margin-bottom:8px;line-height:1.3}
+.card-desc{font-size:14px;color:var(--text2);line-height:1.6}
+.card-footer{padding:16px 24px;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+
+/* ─── GRID ─── */
+.grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:24px}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+@media(max-width:900px){.grid-3{grid-template-columns:repeat(2,1fr)}.grid-4{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}.nav-links{display:none}}
+
+/* ─── FEATURES ─── */
+.feature-icon{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--accent3),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:22px;margin-bottom:16px;flex-shrink:0}
+.feature-card{padding:28px;background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);transition:var(--trans);cursor:pointer}
+.feature-card:hover{border-color:var(--accent2);box-shadow:0 8px 32px rgba(45,106,79,0.1);transform:translateY(-2px)}
+.feature-card h3{font-size:17px;font-weight:600;margin-bottom:8px}
+.feature-card p{font-size:14px;color:var(--text2);line-height:1.6}
+
+/* ─── TABS ─── */
+.tab-nav{display:flex;gap:4px;background:var(--bg3);padding:4px;border-radius:100px;margin-bottom:40px;width:fit-content;flex-wrap:wrap}
+.tab-btn{padding:9px 20px;border-radius:100px;border:none;background:transparent;font-size:14px;font-weight:500;color:var(--text2);cursor:pointer;transition:var(--trans)}
+.tab-btn.active{background:var(--bg2);color:var(--accent);box-shadow:var(--shadow)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+
+/* ─── FORM ─── */
+.form-group{margin-bottom:20px}
+.form-label{display:block;font-size:14px;font-weight:500;color:var(--text2);margin-bottom:8px}
+.form-input,.form-select,.form-textarea{width:100%;padding:12px 16px;border:1.5px solid var(--border2);border-radius:12px;font-size:15px;font-family:var(--font);background:var(--bg);color:var(--text);transition:var(--trans);outline:none}
+.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--accent);background:var(--bg2);box-shadow:0 0 0 3px rgba(45,106,79,0.1)}
+.form-textarea{min-height:100px;resize:vertical}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.form-hint{font-size:12px;color:var(--text3);margin-top:6px}
+.form-divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text3);font-size:13px}
+.form-divider::before,.form-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ─── DONASI ─── */
+.donation-amount{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.donation-btn{padding:12px;border:1.5px solid var(--border2);border-radius:12px;background:var(--bg);text-align:center;cursor:pointer;font-weight:500;font-size:15px;transition:var(--trans)}
+.donation-btn:hover,.donation-btn.selected{border-color:var(--accent);background:rgba(45,106,79,0.06);color:var(--accent)}
+.progress-bar{height:8px;background:var(--bg3);border-radius:100px;overflow:hidden;margin:12px 0}
+.progress-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:100px;transition:width 1s ease}
+
+/* ─── SERTIFIKAT ─── */
+.certificate{background:linear-gradient(135deg,#1A2E1E 0%,#2D6A4F 50%,#1A3A2A 100%);border-radius:20px;padding:48px;text-align:center;position:relative;overflow:hidden;color:#fff}
+.certificate::before{content:'';position:absolute;inset:8px;border:1px solid rgba(255,255,255,0.15);border-radius:14px;pointer-events:none}
+.cert-pattern{position:absolute;inset:0;opacity:0.04;background-image:repeating-linear-gradient(45deg,#fff 0,#fff 1px,transparent 0,transparent 50%);background-size:20px 20px}
+.cert-logo{font-family:var(--font2);font-size:28px;color:var(--gold2);margin-bottom:8px}
+.cert-subtitle{font-size:12px;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:32px}
+.cert-body{margin:24px 0}
+.cert-name{font-family:var(--font2);font-size:36px;color:var(--gold2);margin:16px 0;font-style:italic}
+.cert-desc{font-size:14px;color:rgba(255,255,255,0.7);line-height:1.7;max-width:380px;margin:0 auto}
+.cert-seal{width:72px;height:72px;background:rgba(201,168,76,0.2);border:2px solid var(--gold);border-radius:50%;margin:28px auto 0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.cert-footer{margin-top:28px;display:flex;justify-content:space-between;font-size:12px;color:rgba(255,255,255,0.4);border-top:1px solid rgba(255,255,255,0.1);padding-top:20px}
+
+/* ─── HARMONI INDEX ─── */
+.harmoni-ring{position:relative;width:200px;height:200px;margin:0 auto}
+.harmoni-score{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.harmoni-num{font-family:var(--font2);font-size:48px;font-weight:600;color:var(--accent)}
+.harmoni-label{font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.06em}
+.harmoni-bars{display:flex;flex-direction:column;gap:14px;margin-top:28px}
+.harmoni-bar-item{display:flex;align-items:center;gap:14px}
+.harmoni-bar-label{font-size:13px;color:var(--text2);width:140px;flex-shrink:0}
+.harmoni-bar-track{flex:1;height:6px;background:var(--bg3);border-radius:100px;overflow:hidden}
+.harmoni-bar-fill{height:100%;border-radius:100px;transition:width 1.2s cubic-bezier(0.4,0,0.2,1)}
+.harmoni-bar-val{font-size:13px;font-weight:500;color:var(--text);width:36px;text-align:right}
+
+/* ─── AVATAR ─── */
+.avatar{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:600;flex-shrink:0}
+.avatar-lg{width:80px;height:80px;font-size:28px}
+.avatar-green{background:var(--accent3);color:var(--accent)}
+.avatar-gold{background:rgba(201,168,76,0.2);color:var(--gold)}
+.avatar-blue{background:rgba(59,130,246,0.15);color:#2563EB}
+
+/* ─── DASHBOARD STATS ─── */
+.stat-card{background:var(--bg2);border-radius:var(--r);border:1px solid var(--border);padding:24px}
+.stat-num{font-family:var(--font2);font-size:36px;font-weight:600;color:var(--text);margin:4px 0}
+.stat-change{font-size:13px;color:#16A34A;display:flex;align-items:center;gap:4px}
+.stat-change.down{color:#DC2626}
+
+/* ─── TIMELINE ─── */
+.timeline{position:relative;padding-left:28px}
+.timeline::before{content:'';position:absolute;left:7px;top:8px;bottom:8px;width:1.5px;background:var(--border2)}
+.timeline-item{position:relative;margin-bottom:28px}
+.timeline-dot{position:absolute;left:-28px;top:4px;width:14px;height:14px;border-radius:50%;background:var(--accent2);border:2px solid var(--bg2);box-shadow:0 0 0 2px var(--accent3)}
+.timeline-date{font-size:12px;color:var(--text3);margin-bottom:4px}
+.timeline-title{font-size:15px;font-weight:500;color:var(--text);margin-bottom:4px}
+.timeline-desc{font-size:13px;color:var(--text2)}
+
+/* ─── BADGE ─── */
+.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:100px;font-size:12px;font-weight:500}
+.badge-green{background:rgba(45,106,79,0.1);color:var(--accent)}
+.badge-gold{background:rgba(201,168,76,0.1);color:var(--gold)}
+.badge-gray{background:var(--bg3);color:var(--text2)}
+
+/* ─── FOOTER ─── */
+footer{background:var(--text);color:rgba(255,255,255,0.7);padding:64px 40px 32px}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px;margin-bottom:48px}
+@media(max-width:800px){.footer-grid{grid-template-columns:1fr 1fr}}
+.footer-brand p{font-size:14px;margin-top:12px;line-height:1.7}
+.footer-col h4{font-size:14px;font-weight:600;color:#fff;margin-bottom:16px}
+.footer-col a{display:block;font-size:14px;color:rgba(255,255,255,0.5);text-decoration:none;margin-bottom:8px;transition:var(--trans)}
+.footer-col a:hover{color:#fff}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:24px;border-top:1px solid rgba(255,255,255,0.1);display:flex;justify-content:space-between;align-items:center;font-size:13px}
+
+/* ─── PAGE CONTENT SECTIONS ─── */
+.content-section{display:none;animation:fadeUp 0.4s ease}
+.content-section.active{display:block}
+
+/* ─── VOLUNTEER CARD ─── */
+.volunteer-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px;display:flex;gap:16px;align-items:flex-start;transition:var(--trans)}
+.volunteer-card:hover{border-color:var(--accent2);box-shadow:var(--shadow)}
+
+/* ─── ORG CARD ─── */
+.org-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:28px;text-align:center;transition:var(--trans)}
+.org-card:hover{border-color:var(--accent2);box-shadow:var(--shadow);transform:translateY(-2px)}
+.org-logo{width:72px;height:72px;border-radius:20px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:32px}
+
+/* ─── ARTICLE ─── */
+.article-card{background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);overflow:hidden;transition:var(--trans);cursor:pointer}
+.article-card:hover{transform:translateY(-4px);box-shadow:var(--shadow2)}
+.article-thumb{aspect-ratio:16/9;font-size:48px;display:flex;align-items:center;justify-content:center}
+.article-meta{display:flex;align-items:center;gap:12px;font-size:12px;color:var(--text3);margin-bottom:8px}
+
+/* ─── DONATION MODAL STEP ─── */
+.step-indicator{display:flex;gap:8px;margin-bottom:28px}
+.step-dot{height:4px;border-radius:100px;flex:1;background:var(--bg3);transition:var(--trans)}
+.step-dot.done{background:var(--accent)}
+
+/* ─── PROFILE ─── */
+.profile-cover{height:180px;background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:var(--r2) var(--r2) 0 0;position:relative}
+.profile-avatar-wrap{position:absolute;bottom:-40px;left:28px}
+.profile-avatar-wrap .avatar-lg{border:4px solid var(--bg2)}
+.profile-info{padding:56px 28px 28px;background:var(--bg2);border-radius:0 0 var(--r2) var(--r2)}
+.profile-name{font-family:var(--font2);font-size:24px;color:var(--text)}
+.profile-stats{display:flex;gap:28px;margin-top:20px}
+.profile-stat{text-align:center}
+.profile-stat-num{font-size:20px;font-weight:600;color:var(--text)}
+.profile-stat-label{font-size:12px;color:var(--text3)}
+
+/* ─── CHART FAKE ─── */
+.chart-bars{display:flex;align-items:flex-end;gap:8px;height:120px;padding:0 4px}
+.chart-bar{flex:1;background:linear-gradient(180deg,var(--accent2),var(--accent3));border-radius:6px 6px 0 0;transition:var(--trans);cursor:pointer}
+.chart-bar:hover{opacity:0.8}
+.chart-labels{display:flex;gap:8px;margin-top:8px}
+.chart-label{flex:1;text-align:center;font-size:11px;color:var(--text3)}
+
+/* ─── ACTIVE NAV INDICATOR ─── */
+.nav-user{display:flex;align-items:center;gap:10px}
+.nav-user-avatar{width:32px;height:32px;border-radius:50%;background:linear-gradient(135deg,var(--accent2),var(--accent));display:flex;align-items:center;justify-content:center;font-size:13px;color:#fff;font-weight:600;cursor:pointer}
+
+/* ─── ACTIVITY BADGE ─── */
+.activity-item{display:flex;align-items:flex-start;gap:14px;padding:16px 0;border-bottom:1px solid var(--border)}
+.activity-item:last-child{border-bottom:none}
+.activity-icon{width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+
+/* ─── DONATION CAUSE ─── */
+.cause-img{width:100%;aspect-ratio:16/9;background:var(--bg3);border-radius:var(--r);margin-bottom:16px;display:flex;align-items:center;justify-content:center;font-size:40px}
+
+/* ─── TOGGLE ─── */
+.toggle-wrap{display:flex;align-items:center;gap:10px;cursor:pointer}
+.toggle{width:44px;height:24px;background:var(--border2);border-radius:100px;position:relative;transition:var(--trans)}
+.toggle.on{background:var(--accent)}
+.toggle::after{content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:var(--trans);box-shadow:0 1px 3px rgba(0,0,0,0.2)}
+.toggle.on::after{left:23px}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- ─── NAVBAR ─── -->
+<nav id="navbar">
+  <a class="nav-logo" onclick="showPage('home')">
+    <div class="nav-logo-icon">🌿</div>
+    <span class="nav-logo-text">HarmoniHub</span>
+  </a>
+  <div class="nav-links" id="navLinks">
+    <span class="nav-link" onclick="showPage('home')">Beranda</span>
+    <span class="nav-link" onclick="showPage('kegiatan')">Kegiatan</span>
+    <span class="nav-link" onclick="showPage('relawan')">Relawan</span>
+    <span class="nav-link" onclick="showPage('organisasi')">Organisasi</span>
+    <span class="nav-link" onclick="showPage('donasi')">Donasi</span>
+    <span class="nav-link" onclick="showPage('artikel')">Artikel</span>
+    <span class="nav-link" onclick="showPage('dashboard')">Dashboard</span>
+  </div>
+  <div class="nav-actions" id="navActions">
+    <button class="btn btn-outline" onclick="openModal('loginModal')">Masuk</button>
+    <button class="btn btn-primary" onclick="openModal('registerModal')">Daftar</button>
+  </div>
+</nav>
+
+<!-- ─── PAGES WRAPPER ─── -->
+<div id="app">
+
+<!-- ════════════════════════════════ HOME ════════════════════════════════ -->
+<div class="content-section active" id="page-home">
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg">
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+  </div>
+  <div class="hero-badge">🌿 Platform Harmoni Sosial Indonesia</div>
+  <h1 class="hero-title">Bersatu dalam<br><span>Kebaikan</span></h1>
+  <p class="hero-slogan">"Berbeda keyakinan, bersatu dalam kegiatan"</p>
+  <div class="hero-actions">
+    <button class="btn btn-primary btn-lg" onclick="showPage('kegiatan')">Jelajahi Kegiatan ↗</button>
+    <button class="btn btn-outline btn-lg" onclick="openModal('registerModal')">Bergabung Gratis</button>
+  </div>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="hero-stat-num" id="counter1">0</div><div class="hero-stat-label">Relawan Aktif</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="counter2">0</div><div class="hero-stat-label">Kegiatan Berjalan</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="counter3">0</div><div class="hero-stat-label">Organisasi Mitra</div></div>
+    <div class="hero-stat"><div class="hero-stat-num" id="counter4">0</div><div class="hero-stat-label">Kota Terjangkau</div></div>
+  </div>
+  <div class="scroll-cue">↓</div>
+</section>
+
+<!-- FEATURES -->
+<section class="section">
+  <div class="section-header">
+    <div class="section-tag">✦ Fitur Platform</div>
+    <h2 class="section-title">Semua yang kamu butuhkan<br>untuk berbuat baik</h2>
+  </div>
+  <div class="grid-4">
+    <div class="feature-card" onclick="showPage('kegiatan')">
+      <div class="feature-icon">📅</div>
+      <h3>Kegiatan Sosial</h3>
+      <p>Temukan dan ikuti ratusan kegiatan sosial lintas iman di kotamu.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('relawan')">
+      <div class="feature-icon">🤝</div>
+      <h3>Daftar Relawan</h3>
+      <p>Jadilah relawan dan kontribusi nyata untuk masyarakat sekitar.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('organisasi')">
+      <div class="feature-icon">🏛️</div>
+      <h3>Manajemen Organisasi</h3>
+      <p>Kelola organisasi sosialmu dengan tools manajemen yang lengkap.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('donasi')">
+      <div class="feature-icon">💚</div>
+      <h3>Donasi Transparan</h3>
+      <p>Donasikan ke program yang tepat dengan laporan real-time.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('artikel')">
+      <div class="feature-icon">📚</div>
+      <h3>Artikel Edukasi</h3>
+      <p>Perluas wawasan toleransi & keberagaman melalui konten berkualitas.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('dashboard')">
+      <div class="feature-icon">📊</div>
+      <h3>Dashboard Statistik</h3>
+      <p>Pantau dampak sosial dan aktivitasmu dalam satu tampilan.</p>
+    </div>
+    <div class="feature-card" onclick="openModal('certModal')">
+      <div class="feature-icon">🎖️</div>
+      <h3>Sertifikat Digital</h3>
+      <p>Dapatkan sertifikat terverifikasi untuk setiap kontribusimu.</p>
+    </div>
+    <div class="feature-card" onclick="showPage('dashboard')">
+      <div class="feature-icon">🌈</div>
+      <h3>Indeks Harmoni</h3>
+      <p>Ukur tingkat harmoni komunitas dan pantau perkembangannya.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED ACTIVITIES -->
+<section class="section-full" style="background:var(--bg3)">
+<div class="section" style="padding-top:64px;padding-bottom:64px">
+  <div class="section-header">
+    <div class="section-tag">🔥 Kegiatan Populer</div>
+    <h2 class="section-title">Kegiatan yang sedang<br>berlangsung</h2>
+  </div>
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-img-placeholder">🌱</div>
+      <div class="card-body">
+        <span class="card-tag green">Lingkungan</span>
+        <div class="card-title">Tanam 1000 Pohon Bersama</div>
+        <div class="card-desc">Kegiatan penghijauan lintas komunitas di Taman Kota Surabaya. Terbuka untuk semua kalangan.</div>
+      </div>
+      <div class="card-footer">
+        <span style="font-size:13px;color:var(--text3)">📍 Surabaya · 15 Jun</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img-placeholder">🍱</div>
+      <div class="card-body">
+        <span class="card-tag gold">Sosial</span>
+        <div class="card-title">Berbagi Makanan untuk Dhuafa</div>
+        <div class="card-desc">Program berbagi makanan bergizi setiap minggu untuk keluarga kurang mampu di sekitar kita.</div>
+      </div>
+      <div class="card-footer">
+        <span style="font-size:13px;color:var(--text3)">📍 Jakarta · Setiap Minggu</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-img-placeholder">📖</div>
+      <div class="card-body">
+        <span class="card-tag blue">Pendidikan</span>
+        <div class="card-title">Bimbel Gratis Anak Yatim</div>
+        <div class="card-desc">Program bimbingan belajar gratis untuk anak-anak yatim usia SD-SMP di wilayah Bandung.</div>
+      </div>
+      <div class="card-footer">
+        <span style="font-size:13px;color:var(--text3)">📍 Bandung · 20 Jun</span>
+        <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar</button>
+      </div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:32px">
+    <button class="btn btn-outline" onclick="showPage('kegiatan')">Lihat Semua Kegiatan →</button>
+  </div>
+</div>
+</section>
+
+<!-- CTA DONASI -->
+<section class="section">
+  <div style="background:linear-gradient(135deg,var(--accent) 0%,#1A5235 100%);border-radius:var(--r3);padding:56px;display:grid;grid-template-columns:1fr auto;gap:40px;align-items:center">
+    <div>
+      <div class="section-tag" style="background:rgba(255,255,255,0.15);color:#fff">💚 Donasi Sekarang</div>
+      <h2 style="font-family:var(--font2);font-size:clamp(24px,3vw,36px);color:#fff;margin:12px 0 8px">Bantuan kecilmu berdampak<br>besar untuk sesama</h2>
+      <p style="color:rgba(255,255,255,0.7);font-size:16px">Sudah Rp 2,4 Miliar terkumpul untuk 38 program aktif</p>
+      <div style="margin-top:24px;display:flex;gap:12px;flex-wrap:wrap">
+        <button class="btn btn-gold" onclick="showPage('donasi')">Donasi Sekarang</button>
+        <button class="btn btn-outline" style="border-color:rgba(255,255,255,0.3);color:#fff" onclick="showPage('donasi')">Lihat Program →</button>
+      </div>
+    </div>
+    <div style="text-align:center;display:flex;flex-direction:column;gap:16px">
+      <div style="font-size:56px">🫶</div>
+      <div style="color:rgba(255,255,255,0.7);font-size:14px">4,200+ donatur aktif</div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="section-full" style="background:var(--bg3)">
+<div class="section" style="padding-top:64px;padding-bottom:64px">
+  <div class="section-header">
+    <div class="section-tag">💬 Testimoni</div>
+    <h2 class="section-title">Suara dari komunitas kami</h2>
+  </div>
+  <div class="grid-3">
+    <div style="background:var(--bg2);border-radius:var(--r2);padding:28px;border:1px solid var(--border)">
+      <div style="font-size:22px;color:var(--gold);margin-bottom:12px">★★★★★</div>
+      <p style="font-size:15px;color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:20px">"HarmoniHub membuat saya bisa bertemu teman-teman dari berbagai latar belakang. Kami berbeda, tapi bersatu dalam satu tujuan — berbuat baik."</p>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar avatar-green">AR</div>
+        <div><div style="font-weight:500;font-size:14px">Ahmad Rizky</div><div style="font-size:12px;color:var(--text3)">Relawan · Surabaya</div></div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border-radius:var(--r2);padding:28px;border:1px solid var(--border)">
+      <div style="font-size:22px;color:var(--gold);margin-bottom:12px">★★★★★</div>
+      <p style="font-size:15px;color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:20px">"Sebagai pengurus komunitas, fitur manajemen organisasi sangat membantu. Semua kegiatan terdokumentasi dengan rapi dan transparan."</p>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar avatar-gold">MW</div>
+        <div><div style="font-weight:500;font-size:14px">Maria Wulandari</div><div style="font-size:12px;color:var(--text3)">Pengurus NGO · Jakarta</div></div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border-radius:var(--r2);padding:28px;border:1px solid var(--border)">
+      <div style="font-size:22px;color:var(--gold);margin-bottom:12px">★★★★★</div>
+      <p style="font-size:15px;color:var(--text2);line-height:1.7;font-style:italic;margin-bottom:20px">"Sertifikat digital dari HarmoniHub sangat berguna untuk portofolio saya. Terpercaya, terverifikasi, dan desainnya sangat profesional!"</p>
+      <div style="display:flex;align-items:center;gap:12px">
+        <div class="avatar avatar-blue">BS</div>
+        <div><div style="font-weight:500;font-size:14px">Budi Santoso</div><div style="font-size:12px;color:var(--text3)">Mahasiswa · Bandung</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+</div><!-- end page-home -->
+
+<!-- ════════════════════════════════ KEGIATAN ════════════════════════════════ -->
+<div class="content-section" id="page-kegiatan" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">📅 Kegiatan Sosial</div>
+    <h2 class="section-title">Daftar Kegiatan Sosial</h2>
+    <p class="section-sub">Bergabunglah dengan ratusan kegiatan positif lintas komunitas dan keyakinan</p>
+  </div>
+
+  <!-- FILTER -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:32px;align-items:center">
+    <input class="form-input" style="max-width:320px" placeholder="🔍 Cari kegiatan...">
+    <select class="form-select" style="width:auto">
+      <option>Semua Kategori</option>
+      <option>Lingkungan</option>
+      <option>Pendidikan</option>
+      <option>Kesehatan</option>
+      <option>Sosial</option>
+    </select>
+    <select class="form-select" style="width:auto">
+      <option>Semua Kota</option>
+      <option>Surabaya</option>
+      <option>Jakarta</option>
+      <option>Bandung</option>
+    </select>
+    <button class="btn btn-primary btn-sm" onclick="openModal('createActivityModal')">+ Buat Kegiatan</button>
+  </div>
+
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('kegiatan',this,'upcoming')">Akan Datang</button>
+    <button class="tab-btn" onclick="switchTab('kegiatan',this,'ongoing')">Berlangsung</button>
+    <button class="tab-btn" onclick="switchTab('kegiatan',this,'done')">Selesai</button>
+  </div>
+
+  <div class="tab-pane active" id="kegiatan-upcoming">
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#B7E4C7,#52B788)">🌱</div>
+        <div class="card-body">
+          <span class="card-tag green">Lingkungan</span>
+          <div class="card-title">Tanam 1000 Pohon Bersama</div>
+          <div class="card-desc">Kegiatan penghijauan lintas komunitas di Taman Kota Surabaya. Terbuka untuk semua.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 15 Jun 2026</span><span>👥 47/80 peserta</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Surabaya</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#FEE2D5,#F0997B)">🩺</div>
+        <div class="card-body">
+          <span class="card-tag" style="background:rgba(239,99,123,0.1);color:#be185d">Kesehatan</span>
+          <div class="card-title">Bakti Sosial Kesehatan Gratis</div>
+          <div class="card-desc">Pemeriksaan kesehatan gratis meliputi tensi, gula darah, dan konsultasi dokter umum.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 22 Jun 2026</span><span>👥 120/200 peserta</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Jakarta</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#E0E7FF,#A5B4FC)">📖</div>
+        <div class="card-body">
+          <span class="card-tag blue">Pendidikan</span>
+          <div class="card-title">Bimbel Gratis Anak Yatim</div>
+          <div class="card-desc">Program bimbingan belajar gratis untuk anak-anak yatim usia SD-SMP di wilayah Bandung.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 20 Jun 2026</span><span>👥 30/50 peserta</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Bandung</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#FEF9C3,#FDE047)">🍱</div>
+        <div class="card-body">
+          <span class="card-tag gold">Sosial</span>
+          <div class="card-title">Berbagi Makanan untuk Dhuafa</div>
+          <div class="card-desc">Program berbagi makanan bergizi setiap minggu untuk keluarga kurang mampu.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 Setiap Minggu</span><span>👥 15/30 relawan</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Jakarta</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#CFFAFE,#67E8F9)">🎨</div>
+        <div class="card-body">
+          <span class="card-tag purple">Budaya</span>
+          <div class="card-title">Festival Seni Lintas Budaya</div>
+          <div class="card-desc">Pameran seni dan pertunjukan budaya yang merayakan keberagaman Indonesia.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 1 Jul 2026</span><span>👥 200/500 peserta</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Yogyakarta</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#D1FAE5,#6EE7B7)">🏠</div>
+        <div class="card-body">
+          <span class="card-tag green">Infrastruktur</span>
+          <div class="card-title">Renovasi Rumah Warga Miskin</div>
+          <div class="card-desc">Gotong royong renovasi rumah tidak layak huni bagi keluarga berpenghasilan rendah.</div>
+          <div style="margin-top:14px;display:flex;gap:16px;font-size:13px;color:var(--text3)">
+            <span>📅 5 Jul 2026</span><span>👥 8/20 relawan</span>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Semarang</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Daftar Sekarang</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="kegiatan-ongoing">
+    <div class="grid-3">
+      <div class="card">
+        <div class="card-img-placeholder" style="background:linear-gradient(135deg,#FEF3C7,#FCD34D)">🌻</div>
+        <div class="card-body">
+          <span class="card-tag gold">Berlangsung</span>
+          <div class="card-title">Kampanye Kebersihan Pantai</div>
+          <div class="card-desc">Aksi bersih pantai Kenjeran yang masih berlangsung hingga akhir bulan ini.</div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Surabaya</span>
+          <button class="btn btn-primary btn-sm" onclick="openModal('registerActivityModal')">Bergabung</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="kegiatan-done">
+    <div class="grid-3">
+      <div class="card" style="opacity:0.7">
+        <div class="card-img-placeholder">✅</div>
+        <div class="card-body">
+          <span class="card-tag gray">Selesai</span>
+          <div class="card-title">Donor Darah Massal</div>
+          <div class="card-desc">Kegiatan donor darah berhasil mengumpulkan 248 kantong darah untuk PMI.</div>
+        </div>
+        <div class="card-footer">
+          <span style="font-size:13px;color:var(--text3)">📍 Surabaya · 1 Jun</span>
+          <button class="btn btn-outline btn-sm" onclick="openModal('certModal')">Lihat Sertifikat</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ RELAWAN ════════════════════════════════ -->
+<div class="content-section" id="page-relawan" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">🤝 Pendaftaran Relawan</div>
+    <h2 class="section-title">Jadilah Agen Perubahan</h2>
+    <p class="section-sub">Daftarkan dirimu sebagai relawan dan mulai berkontribusi nyata</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:40px">
+    <!-- FORM DAFTAR -->
+    <div>
+      <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:36px">
+        <h3 style="font-family:var(--font2);font-size:20px;margin-bottom:24px">Form Pendaftaran Relawan</h3>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Nama Depan</label><input class="form-input" placeholder="Ahmad"></div>
+          <div class="form-group"><label class="form-label">Nama Belakang</label><input class="form-input" placeholder="Rizky"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="ahmad@email.com"></div>
+          <div class="form-group"><label class="form-label">No. HP</label><input class="form-input" placeholder="08xx-xxxx-xxxx"></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label class="form-label">Kota Domisili</label>
+            <select class="form-select"><option>Pilih kota</option><option>Surabaya</option><option>Jakarta</option><option>Bandung</option><option>Yogyakarta</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">Usia</label><input class="form-input" type="number" placeholder="25"></div>
+        </div>
+        <div class="form-group"><label class="form-label">Bidang Minat</label>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:8px" id="interestTags">
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">🌱 Lingkungan</span>
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">📚 Pendidikan</span>
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">🩺 Kesehatan</span>
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">🍽️ Pangan</span>
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">🎨 Seni Budaya</span>
+            <span class="badge badge-gray" style="cursor:pointer;padding:8px 14px" onclick="toggleTag(this)">🏠 Infrastruktur</span>
+          </div>
+        </div>
+        <div class="form-group"><label class="form-label">Keahlian Khusus</label><input class="form-input" placeholder="Dokter, Guru, Programmer, dll."></div>
+        <div class="form-group"><label class="form-label">Ketersediaan Waktu</label>
+          <select class="form-select"><option>Pilih ketersediaan</option><option>Akhir pekan saja</option><option>Hari kerja sore</option><option>Fleksibel</option><option>Full-time</option></select>
+        </div>
+        <div class="form-group"><label class="form-label">Motivasi (opsional)</label><textarea class="form-textarea" placeholder="Ceritakan mengapa kamu ingin menjadi relawan..."></textarea></div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="submitRelawan()">Daftar Sebagai Relawan 🤝</button>
+      </div>
+    </div>
+
+    <!-- SIDEBAR INFO -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="background:linear-gradient(135deg,var(--accent),#1E5235);border-radius:var(--r2);padding:28px;color:#fff">
+        <div style="font-size:36px;margin-bottom:12px">🌟</div>
+        <h3 style="font-family:var(--font2);font-size:20px;margin-bottom:8px">Keuntungan Menjadi Relawan</h3>
+        <ul style="list-style:none;font-size:14px;line-height:2;color:rgba(255,255,255,0.85)">
+          <li>✓ Sertifikat digital terverifikasi</li>
+          <li>✓ Poin reward yang bisa ditukar hadiah</li>
+          <li>✓ Jaringan komunitas yang luas</li>
+          <li>✓ Pelatihan & pengembangan diri</li>
+          <li>✓ Badge prestasi eksklusif</li>
+        </ul>
+      </div>
+      <!-- TOP RELAWAN -->
+      <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">🏆 Top Relawan Bulan Ini</h4>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:18px;width:24px">🥇</span>
+            <div class="avatar avatar-green" style="width:36px;height:36px;font-size:14px">SR</div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:500">Sari Rahayu</div><div style="font-size:12px;color:var(--text3)">24 jam kontribusi</div></div>
+            <span class="badge badge-gold">980 pts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:18px;width:24px">🥈</span>
+            <div class="avatar avatar-blue" style="width:36px;height:36px;font-size:14px">DH</div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:500">Dimas Haryanto</div><div style="font-size:12px;color:var(--text3)">18 jam kontribusi</div></div>
+            <span class="badge badge-gray">742 pts</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px">
+            <span style="font-size:18px;width:24px">🥉</span>
+            <div class="avatar avatar-gold" style="width:36px;height:36px;font-size:14px">LP</div>
+            <div style="flex:1"><div style="font-size:14px;font-weight:500">Liana Putri</div><div style="font-size:12px;color:var(--text3)">15 jam kontribusi</div></div>
+            <span class="badge badge-gray">615 pts</span>
+          </div>
+        </div>
+      </div>
+      <!-- AKTIVITAS TERBARU -->
+      <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">⚡ Aktivitas Relawan Terkini</h4>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">2 jam lalu</div><div class="timeline-title">Ahmad R. bergabung di kegiatan Tanam Pohon</div></div>
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">5 jam lalu</div><div class="timeline-title">Maria W. menyelesaikan Baksos Kesehatan</div></div>
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">1 hari lalu</div><div class="timeline-title">3 relawan baru dari Bandung bergabung</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ ORGANISASI ════════════════════════════════ -->
+<div class="content-section" id="page-organisasi" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">🏛️ Manajemen Organisasi</div>
+    <h2 class="section-title">Organisasi Mitra</h2>
+    <p class="section-sub">Bergabung dan kelola organisasi sosialmu bersama HarmoniHub</p>
+  </div>
+
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;flex-wrap:wrap;gap:12px">
+    <div class="tab-nav" style="margin:0">
+      <button class="tab-btn active" onclick="switchTab('org',this,'list')">Daftar Organisasi</button>
+      <button class="tab-btn" onclick="switchTab('org',this,'dashboard')">Dashboard</button>
+    </div>
+    <button class="btn btn-primary btn-sm" onclick="openModal('createOrgModal')">+ Daftarkan Organisasi</button>
+  </div>
+
+  <div class="tab-pane active" id="org-list">
+    <div class="grid-3">
+      <div class="org-card" onclick="openModal('orgDetailModal')">
+        <div class="org-logo" style="background:linear-gradient(135deg,#B7E4C7,#52B788)">🌿</div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:6px">Komunitas Hijau Nusantara</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Lingkungan · Surabaya</p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--text2);margin-bottom:16px">
+          <span>👥 240 anggota</span><span>📅 18 kegiatan</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <span class="badge badge-green">Terverifikasi ✓</span>
+          <span class="badge badge-gray">5 tahun aktif</span>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center">Lihat Profil</button>
+      </div>
+      <div class="org-card" onclick="openModal('orgDetailModal')">
+        <div class="org-logo" style="background:linear-gradient(135deg,#FEF3C7,#FCD34D)">📚</div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:6px">Yayasan Pintar Bersama</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Pendidikan · Jakarta</p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--text2);margin-bottom:16px">
+          <span>👥 580 anggota</span><span>📅 42 kegiatan</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <span class="badge badge-green">Terverifikasi ✓</span>
+          <span class="badge badge-gold">Organisasi Terbaik</span>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center">Lihat Profil</button>
+      </div>
+      <div class="org-card" onclick="openModal('orgDetailModal')">
+        <div class="org-logo" style="background:linear-gradient(135deg,#FCE7F3,#F9A8D4)">🩺</div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:6px">Dokter Peduli Indonesia</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Kesehatan · Nasional</p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--text2);margin-bottom:16px">
+          <span>👥 1,200 anggota</span><span>📅 87 kegiatan</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <span class="badge badge-green">Terverifikasi ✓</span>
+          <span class="badge badge-gray">Nasional</span>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center">Lihat Profil</button>
+      </div>
+      <div class="org-card">
+        <div class="org-logo" style="background:linear-gradient(135deg,#EDE9FE,#C4B5FD)">🎭</div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:6px">Sanggar Budaya Nusantara</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Budaya · Yogyakarta</p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--text2);margin-bottom:16px">
+          <span>👥 320 anggota</span><span>📅 28 kegiatan</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <span class="badge badge-green">Terverifikasi ✓</span>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center">Lihat Profil</button>
+      </div>
+      <div class="org-card">
+        <div class="org-logo" style="background:linear-gradient(135deg,#CFFAFE,#67E8F9)">🏠</div>
+        <h3 style="font-size:16px;font-weight:600;margin-bottom:6px">Rumah Bersama Foundation</h3>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Sosial · Bandung</p>
+        <div style="display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--text2);margin-bottom:16px">
+          <span>👥 415 anggota</span><span>📅 35 kegiatan</span>
+        </div>
+        <div style="display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-bottom:16px">
+          <span class="badge badge-green">Terverifikasi ✓</span>
+        </div>
+        <button class="btn btn-outline btn-sm" style="width:100%;justify-content:center">Lihat Profil</button>
+      </div>
+      <div class="org-card" style="border:2px dashed var(--border2);cursor:pointer" onclick="openModal('createOrgModal')">
+        <div style="font-size:48px;margin:20px 0 12px">➕</div>
+        <h3 style="font-size:16px;font-weight:600;color:var(--text2);margin-bottom:8px">Daftarkan Organisasimu</h3>
+        <p style="font-size:13px;color:var(--text3)">Bergabung sebagai mitra resmi HarmoniHub</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="tab-pane" id="org-dashboard">
+    <div style="background:var(--bg2);border-radius:var(--r2);padding:32px;border:1px solid var(--border)">
+      <h3 style="font-family:var(--font2);font-size:20px;margin-bottom:24px">Dashboard Komunitas Hijau Nusantara</h3>
+      <div class="grid-4" style="margin-bottom:28px">
+        <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Total Anggota</div><div class="stat-num">240</div><div class="stat-change">↑ 12 bulan ini</div></div>
+        <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Kegiatan Aktif</div><div class="stat-num">5</div><div class="stat-change">↑ 2 dari minggu lalu</div></div>
+        <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Total Jam Kerja</div><div class="stat-num">1,840</div><div class="stat-change">↑ 320 bulan ini</div></div>
+        <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Dana Terkumpul</div><div class="stat-num">Rp 42jt</div><div class="stat-change">↑ Rp 8jt bulan ini</div></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px">
+        <div>
+          <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text2)">Pertumbuhan Anggota</h4>
+          <div class="chart-bars">
+            <div class="chart-bar" style="height:40%"></div>
+            <div class="chart-bar" style="height:55%"></div>
+            <div class="chart-bar" style="height:45%"></div>
+            <div class="chart-bar" style="height:70%"></div>
+            <div class="chart-bar" style="height:65%"></div>
+            <div class="chart-bar" style="height:80%"></div>
+            <div class="chart-bar" style="height:100%"></div>
+          </div>
+          <div class="chart-labels">
+            <span class="chart-label">Des</span><span class="chart-label">Jan</span><span class="chart-label">Feb</span><span class="chart-label">Mar</span><span class="chart-label">Apr</span><span class="chart-label">Mei</span><span class="chart-label">Jun</span>
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size:14px;font-weight:600;margin-bottom:12px;color:var(--text2)">Anggota Aktif Terbaru</h4>
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="avatar avatar-green" style="width:32px;height:32px;font-size:12px">AR</div>
+              <div style="flex:1;font-size:13px">Ahmad Rizky <span style="color:var(--text3)">· bergabung 2 hari lalu</span></div>
+              <span class="badge badge-green">Baru</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="avatar avatar-gold" style="width:32px;height:32px;font-size:12px">SR</div>
+              <div style="flex:1;font-size:13px">Sari Rahayu <span style="color:var(--text3)">· bergabung 5 hari lalu</span></div>
+              <span class="badge badge-gray">Aktif</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px">
+              <div class="avatar avatar-blue" style="width:32px;height:32px;font-size:12px">DH</div>
+              <div style="flex:1;font-size:13px">Dimas H. <span style="color:var(--text3)">· bergabung seminggu lalu</span></div>
+              <span class="badge badge-gray">Aktif</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ DONASI ════════════════════════════════ -->
+<div class="content-section" id="page-donasi" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">💚 Program Donasi</div>
+    <h2 class="section-title">Salurkan Kebaikanmu</h2>
+    <p class="section-sub">Donasi transparan dan terverifikasi untuk program-program yang berdampak nyata</p>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 340px;gap:40px">
+    <div>
+      <!-- SUMMARY -->
+      <div style="background:linear-gradient(135deg,var(--accent),#1E5235);border-radius:var(--r2);padding:28px;margin-bottom:28px;display:flex;gap:20px;align-items:center;color:#fff">
+        <div style="font-size:48px">💚</div>
+        <div>
+          <div style="font-size:13px;opacity:0.7;margin-bottom:4px">Total Dana Terkumpul 2026</div>
+          <div style="font-family:var(--font2);font-size:36px;font-weight:600">Rp 2.467.000.000</div>
+          <div style="font-size:13px;opacity:0.7;margin-top:4px">dari 4,218 donatur · 38 program aktif</div>
+        </div>
+      </div>
+
+      <!-- PROGRAMS -->
+      <div style="display:flex;flex-direction:column;gap:16px">
+        <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div>
+              <span class="card-tag green" style="margin-bottom:8px">Pendidikan</span>
+              <div style="font-size:16px;font-weight:600">Beasiswa Anak Yatim Piatu</div>
+              <div style="font-size:13px;color:var(--text3);margin-top:4px">Oleh Yayasan Pintar Bersama · 280 penerima manfaat</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('donasiModal')">Donasi</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px">
+            <span><strong>Rp 182.400.000</strong> terkumpul</span>
+            <span>Target: Rp 250.000.000</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:73%"></div></div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">73% · 12 hari tersisa</div>
+        </div>
+
+        <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div>
+              <span class="card-tag" style="background:rgba(239,99,123,0.1);color:#be185d;margin-bottom:8px">Kesehatan</span>
+              <div style="font-size:16px;font-weight:600">Klinik Kesehatan Gratis Pelosok</div>
+              <div style="font-size:13px;color:var(--text3);margin-top:4px">Oleh Dokter Peduli Indonesia · 1,200 pasien tertangani</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('donasiModal')">Donasi</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px">
+            <span><strong>Rp 420.000.000</strong> terkumpul</span>
+            <span>Target: Rp 500.000.000</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:84%"></div></div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">84% · 5 hari tersisa</div>
+        </div>
+
+        <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:12px">
+            <div>
+              <span class="card-tag green" style="margin-bottom:8px">Lingkungan</span>
+              <div style="font-size:16px;font-weight:600">Hutan Mangrove Pesisir Jawa</div>
+              <div style="font-size:13px;color:var(--text3);margin-top:4px">Oleh Komunitas Hijau Nusantara · 50,000 bibit ditanam</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="openModal('donasiModal')">Donasi</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:13px;color:var(--text2);margin-bottom:8px">
+            <span><strong>Rp 78.500.000</strong> terkumpul</span>
+            <span>Target: Rp 150.000.000</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill" style="width:52%"></div></div>
+          <div style="font-size:12px;color:var(--text3);margin-top:4px">52% · 30 hari tersisa</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SIDEBAR DONASI -->
+    <div style="display:flex;flex-direction:column;gap:20px">
+      <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+        <h4 style="font-size:16px;font-weight:600;margin-bottom:4px">Donasi Cepat</h4>
+        <p style="font-size:13px;color:var(--text3);margin-bottom:20px">Pilih nominal atau masukkan jumlahmu</p>
+        <div class="donation-amount">
+          <div class="donation-btn" onclick="selectDonation(this,'10000')">10K</div>
+          <div class="donation-btn" onclick="selectDonation(this,'25000')">25K</div>
+          <div class="donation-btn" onclick="selectDonation(this,'50000')">50K</div>
+          <div class="donation-btn" onclick="selectDonation(this,'100000')">100K</div>
+        </div>
+        <div class="form-group"><input class="form-input" id="donasiAmount" placeholder="Rp Jumlah lainnya..."></div>
+        <div class="form-group">
+          <label class="form-label">Metode Pembayaran</label>
+          <select class="form-select">
+            <option>Transfer Bank (BCA, Mandiri, BNI)</option>
+            <option>GoPay / OVO / Dana</option>
+            <option>QRIS</option>
+            <option>Kartu Kredit/Debit</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <div class="toggle-wrap" onclick="toggleEl(this)">
+            <div class="toggle" id="anonymToggle"></div>
+            <span style="font-size:14px;color:var(--text2)">Donasi anonim</span>
+          </div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="openModal('donasiModal')">Donasi Sekarang 💚</button>
+      </div>
+
+      <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+        <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">💛 Donatur Terbaru</h4>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          <div style="display:flex;gap:10px;align-items:center">
+            <span style="font-size:20px">🫶</span>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">Anonim</div><div style="font-size:12px;color:var(--text3)">2 menit lalu</div></div>
+            <span style="font-size:13px;font-weight:600;color:var(--accent)">Rp 50K</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="avatar avatar-green" style="width:32px;height:32px;font-size:12px">BW</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">Budi W.</div><div style="font-size:12px;color:var(--text3)">15 menit lalu</div></div>
+            <span style="font-size:13px;font-weight:600;color:var(--accent)">Rp 500K</span>
+          </div>
+          <div style="display:flex;gap:10px;align-items:center">
+            <div class="avatar avatar-gold" style="width:32px;height:32px;font-size:12px">RI</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:500">Rina I.</div><div style="font-size:12px;color:var(--text3)">1 jam lalu</div></div>
+            <span style="font-size:13px;font-weight:600;color:var(--accent)">Rp 200K</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ ARTIKEL ════════════════════════════════ -->
+<div class="content-section" id="page-artikel" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">📚 Artikel Edukasi</div>
+    <h2 class="section-title">Wawasan & Inspirasi</h2>
+    <p class="section-sub">Perluas pemahaman tentang toleransi, harmoni, dan aksi sosial</p>
+  </div>
+
+  <!-- FEATURED -->
+  <div style="background:var(--bg2);border-radius:var(--r3);border:1px solid var(--border);overflow:hidden;margin-bottom:40px;display:grid;grid-template-columns:1fr 420px">
+    <div style="padding:48px">
+      <span class="card-tag gold" style="margin-bottom:16px">📌 Artikel Pilihan</span>
+      <h2 style="font-family:var(--font2);font-size:clamp(22px,2.5vw,32px);line-height:1.3;margin-bottom:16px">Bhinneka Tunggal Ika di Era Digital: Membangun Jembatan Antar Generasi</h2>
+      <p style="font-size:15px;color:var(--text2);line-height:1.7;margin-bottom:24px">Di tengah derasnya arus informasi, keberagaman Indonesia menghadapi tantangan sekaligus peluang baru. Bagaimana teknologi bisa menjadi jembatan, bukan tembok pemisah...</p>
+      <div style="display:flex;align-items:center;gap:14px;font-size:13px;color:var(--text3);margin-bottom:24px">
+        <div class="avatar avatar-green" style="width:28px;height:28px;font-size:11px">DP</div>
+        <span>Dr. Putri Hasanah</span>
+        <span>·</span><span>8 menit baca</span>
+        <span>·</span><span>2 Jun 2026</span>
+      </div>
+      <button class="btn btn-primary" onclick="showToast('Artikel dibuka')">Baca Sekarang →</button>
+    </div>
+    <div style="background:linear-gradient(135deg,#B7E4C7,#1A5235);display:flex;align-items:center;justify-content:center;font-size:80px">🌏</div>
+  </div>
+
+  <!-- ARTIKEL GRID -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('artikel',this,'semua')">Semua</button>
+    <button class="tab-btn" onclick="switchTab('artikel',this,'toleransi')">Toleransi</button>
+    <button class="tab-btn" onclick="switchTab('artikel',this,'sosial')">Sosial</button>
+    <button class="tab-btn" onclick="switchTab('artikel',this,'lingkungan')">Lingkungan</button>
+  </div>
+
+  <div class="tab-pane active" id="artikel-semua">
+    <div class="grid-3">
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FCD34D)">✊</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-gold">Toleransi</span><span>5 menit baca</span></div>
+          <div class="card-title">5 Cara Membangun Dialog Lintas Iman yang Bermakna</div>
+          <div class="card-desc">Panduan praktis untuk memulai percakapan yang jujur dan saling menghormati dengan mereka yang berbeda keyakinan.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Ustaz Hamid Rahman · 1 Jun 2026</div>
+        </div>
+      </div>
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#D1FAE5,#6EE7B7)">🌍</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-green">Lingkungan</span><span>7 menit baca</span></div>
+          <div class="card-title">Gotong Royong dan Kearifan Lokal dalam Menjaga Alam</div>
+          <div class="card-desc">Bagaimana nilai-nilai tradisi dari berbagai suku di Indonesia mengajarkan kita untuk merawat bumi bersama-sama.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Prof. Suharto · 30 Mei 2026</div>
+        </div>
+      </div>
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#EDE9FE,#C4B5FD)">🤝</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-gray">Sosial</span><span>4 menit baca</span></div>
+          <div class="card-title">Kisah Inspiratif: Masjid dan Gereja Bergotong Royong</div>
+          <div class="card-desc">Sebuah desa kecil di Flores menjadi teladan nyata bahwa keyakinan berbeda tak menghalangi semangat bersatu.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Rini Susanti · 28 Mei 2026</div>
+        </div>
+      </div>
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#CFFAFE,#67E8F9)">👶</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-blue">Pendidikan</span><span>6 menit baca</span></div>
+          <div class="card-title">Mendidik Anak Toleran Sejak Dini: Panduan untuk Orang Tua</div>
+          <div class="card-desc">Penelitian menunjukkan bahwa toleransi adalah nilai yang bisa diajarkan sejak usia dini melalui kebiasaan sehari-hari.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Dr. Amalia · 25 Mei 2026</div>
+        </div>
+      </div>
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#FEE2E2,#FCA5A5)">❤️</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-gray">Sosial</span><span>3 menit baca</span></div>
+          <div class="card-title">Volunteering dan Kesehatan Mental: Mengapa Membantu Menyembuhkan</div>
+          <div class="card-desc">Studi dari Harvard menemukan hubungan kuat antara aktivitas sosial sukarela dan tingkat kebahagiaan seseorang.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Psikolog Dewi Kurnia · 22 Mei 2026</div>
+        </div>
+      </div>
+      <div class="article-card" onclick="showToast('Artikel dibuka')">
+        <div class="article-thumb" style="background:linear-gradient(135deg,#FEF9C3,#FDE047)">🎯</div>
+        <div style="padding:20px">
+          <div class="article-meta"><span class="badge badge-gold">Toleransi</span><span>9 menit baca</span></div>
+          <div class="card-title">Indeks Harmoni Sosial: Mengukur Kedamaian dengan Data</div>
+          <div class="card-desc">Metodologi di balik Indeks Harmoni HarmoniHub dan bagaimana angka-angka ini mencerminkan kondisi sosial nyata.</div>
+          <div style="font-size:12px;color:var(--text3);margin-top:12px">Oleh Tim HarmoniHub · 20 Mei 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="artikel-toleransi"><div class="grid-3">
+    <div class="article-card" onclick="showToast('Artikel dibuka')">
+      <div class="article-thumb" style="background:linear-gradient(135deg,#FEF3C7,#FCD34D)">✊</div>
+      <div style="padding:20px"><div class="article-meta"><span class="badge badge-gold">Toleransi</span></div>
+      <div class="card-title">5 Cara Membangun Dialog Lintas Iman yang Bermakna</div></div></div>
+  </div></div>
+  <div class="tab-pane" id="artikel-sosial"></div>
+  <div class="tab-pane" id="artikel-lingkungan"></div>
+</div>
+</div>
+
+<!-- ════════════════════════════════ DASHBOARD ════════════════════════════════ -->
+<div class="content-section" id="page-dashboard" style="padding-top:100px">
+<div class="section">
+  <div class="section-header">
+    <div class="section-tag">📊 Dashboard Statistik</div>
+    <h2 class="section-title">Dampak Nyata HarmoniHub</h2>
+  </div>
+
+  <!-- TOP STATS -->
+  <div class="grid-4" style="margin-bottom:32px">
+    <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Total Relawan</div><div class="stat-num">12,480</div><div class="stat-change">↑ 8.2% bulan ini</div></div>
+    <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Kegiatan Selesai</div><div class="stat-num">1,847</div><div class="stat-change">↑ 124 bulan ini</div></div>
+    <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Dana Disalurkan</div><div class="stat-num">Rp 2.4M</div><div class="stat-change">↑ Rp 380jt ini</div></div>
+    <div class="stat-card"><div style="font-size:12px;color:var(--text3);text-transform:uppercase;letter-spacing:0.05em">Indeks Harmoni</div><div class="stat-num">87.4</div><div class="stat-change">↑ 2.1 dari bulan lalu</div></div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:1fr 380px;gap:24px;margin-bottom:24px">
+    <!-- CHART AKTIVITAS -->
+    <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:28px">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px">
+        <h3 style="font-size:16px;font-weight:600">Tren Kegiatan & Donasi</h3>
+        <select class="form-select" style="width:auto;font-size:13px;padding:6px 12px">
+          <option>6 Bulan Terakhir</option>
+          <option>1 Tahun</option>
+        </select>
+      </div>
+      <div class="chart-bars" style="height:160px">
+        <div class="chart-bar" style="height:45%"></div>
+        <div class="chart-bar" style="height:60%"></div>
+        <div class="chart-bar" style="height:52%"></div>
+        <div class="chart-bar" style="height:78%"></div>
+        <div class="chart-bar" style="height:88%"></div>
+        <div class="chart-bar" style="height:100%"></div>
+      </div>
+      <div class="chart-labels">
+        <span class="chart-label">Jan</span><span class="chart-label">Feb</span><span class="chart-label">Mar</span><span class="chart-label">Apr</span><span class="chart-label">Mei</span><span class="chart-label">Jun</span>
+      </div>
+    </div>
+
+    <!-- INDEKS HARMONI -->
+    <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:28px">
+      <h3 style="font-size:16px;font-weight:600;margin-bottom:20px">🌈 Indeks Harmoni Nasional</h3>
+      <div class="harmoni-ring">
+        <svg viewBox="0 0 120 120" width="200" height="200">
+          <circle cx="60" cy="60" r="52" fill="none" stroke="#F2EEE8" stroke-width="10"/>
+          <circle cx="60" cy="60" r="52" fill="none" stroke="url(#hg)" stroke-width="10" stroke-dasharray="283" stroke-dashoffset="36" stroke-linecap="round" transform="rotate(-90 60 60)"/>
+          <defs><linearGradient id="hg" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#52B788"/><stop offset="100%" stop-color="#2D6A4F"/></linearGradient></defs>
+        </svg>
+        <div class="harmoni-score">
+          <div class="harmoni-num">87</div>
+          <div class="harmoni-label">/ 100</div>
+        </div>
+      </div>
+      <div class="harmoni-bars" id="harmoniBars">
+        <div class="harmoni-bar-item">
+          <span class="harmoni-bar-label">Toleransi Antar Agama</span>
+          <div class="harmoni-bar-track"><div class="harmoni-bar-fill" style="width:0%;background:linear-gradient(90deg,var(--accent2),var(--accent))" data-target="91"></div></div>
+          <span class="harmoni-bar-val">91</span>
+        </div>
+        <div class="harmoni-bar-item">
+          <span class="harmoni-bar-label">Kerukunan Antar Suku</span>
+          <div class="harmoni-bar-track"><div class="harmoni-bar-fill" style="width:0%;background:linear-gradient(90deg,#67E8F9,#2563EB)" data-target="88"></div></div>
+          <span class="harmoni-bar-val">88</span>
+        </div>
+        <div class="harmoni-bar-item">
+          <span class="harmoni-bar-label">Partisipasi Sosial</span>
+          <div class="harmoni-bar-track"><div class="harmoni-bar-fill" style="width:0%;background:linear-gradient(90deg,var(--gold2),var(--gold))" data-target="84"></div></div>
+          <span class="harmoni-bar-val">84</span>
+        </div>
+        <div class="harmoni-bar-item">
+          <span class="harmoni-bar-label">Kepercayaan Komunitas</span>
+          <div class="harmoni-bar-track"><div class="harmoni-bar-fill" style="width:0%;background:linear-gradient(90deg,#F9A8D4,#be185d)" data-target="79"></div></div>
+          <span class="harmoni-bar-val">79</span>
+        </div>
+        <div class="harmoni-bar-item">
+          <span class="harmoni-bar-label">Kolaborasi Lintas Budaya</span>
+          <div class="harmoni-bar-track"><div class="harmoni-bar-fill" style="width:0%;background:linear-gradient(90deg,#C4B5FD,#7C3AED)" data-target="93"></div></div>
+          <span class="harmoni-bar-val">93</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BOTTOM GRID -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px">
+    <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+      <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">🗺️ Distribusi Regional</h4>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Jawa Timur</span><span>3,240 relawan</span></div><div class="progress-bar"><div class="progress-fill" style="width:82%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Jawa Barat</span><span>2,810 relawan</span></div><div class="progress-bar"><div class="progress-fill" style="width:71%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>DKI Jakarta</span><span>2,560 relawan</span></div><div class="progress-bar"><div class="progress-fill" style="width:65%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Jawa Tengah</span><span>1,890 relawan</span></div><div class="progress-bar"><div class="progress-fill" style="width:48%"></div></div></div>
+        <div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px"><span>Sulawesi</span><span>980 relawan</span></div><div class="progress-bar"><div class="progress-fill" style="width:25%"></div></div></div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+      <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">📂 Kategori Kegiatan</h4>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0"></div><div style="flex:1;font-size:13px">Lingkungan</div><span style="font-size:13px;font-weight:500">428</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:#2563EB;flex-shrink:0"></div><div style="flex:1;font-size:13px">Pendidikan</div><span style="font-size:13px;font-weight:500">385</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:#be185d;flex-shrink:0"></div><div style="flex:1;font-size:13px">Kesehatan</div><span style="font-size:13px;font-weight:500">312</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:var(--gold);flex-shrink:0"></div><div style="flex:1;font-size:13px">Sosial</div><span style="font-size:13px;font-weight:500">289</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:#7C3AED;flex-shrink:0"></div><div style="flex:1;font-size:13px">Budaya</div><span style="font-size:13px;font-weight:500">203</span></div>
+        <div style="display:flex;align-items:center;gap:12px"><div style="width:8px;height:8px;border-radius:50%;background:var(--text3);flex-shrink:0"></div><div style="flex:1;font-size:13px">Lainnya</div><span style="font-size:13px;font-weight:500">230</span></div>
+      </div>
+    </div>
+    <div style="background:var(--bg2);border-radius:var(--r2);border:1px solid var(--border);padding:24px">
+      <h4 style="font-size:15px;font-weight:600;margin-bottom:16px">⚡ Aktivitas Real-time</h4>
+      <div class="activity-item"><div class="activity-icon" style="background:rgba(45,106,79,0.1)">🌱</div><div><div style="font-size:13px;font-weight:500">Ahmad bergabung kegiatan Tanam Pohon</div><div style="font-size:12px;color:var(--text3)">1 menit lalu</div></div></div>
+      <div class="activity-item"><div class="activity-icon" style="background:rgba(201,168,76,0.1)">💚</div><div><div style="font-size:13px;font-weight:500">Donasi Rp 100K masuk ke Beasiswa Yatim</div><div style="font-size:12px;color:var(--text3)">3 menit lalu</div></div></div>
+      <div class="activity-item"><div class="activity-icon" style="background:rgba(124,58,237,0.1)">🎖️</div><div><div style="font-size:13px;font-weight:500">Sari mendapat sertifikat Relawan Aktif</div><div style="font-size:12px;color:var(--text3)">8 menit lalu</div></div></div>
+      <div class="activity-item"><div class="activity-icon" style="background:rgba(59,130,246,0.1)">🏛️</div><div><div style="font-size:13px;font-weight:500">Organisasi baru terdaftar dari Semarang</div><div style="font-size:12px;color:var(--text3)">12 menit lalu</div></div></div>
+    </div>
+  </div>
+</div>
+</div>
+
+</div><!-- end #app -->
+
+<!-- ─────────────────── FOOTER ─────────────────── -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+        <div style="width:36px;height:36px;background:var(--accent2);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:16px">🌿</div>
+        <span style="font-family:var(--font2);font-size:20px;color:#fff">HarmoniHub</span>
+      </div>
+      <p style="max-width:280px">Platform harmoni sosial Indonesia yang menyatukan berbagai komunitas dalam kegiatan positif dan bermakna.</p>
+      <p style="font-style:italic;margin-top:12px;color:rgba(255,255,255,0.4);font-size:13px">"Berbeda keyakinan, bersatu dalam kegiatan"</p>
+    </div>
+    <div class="footer-col">
+      <h4>Platform</h4>
+      <a onclick="showPage('kegiatan')">Kegiatan Sosial</a>
+      <a onclick="showPage('relawan')">Daftar Relawan</a>
+      <a onclick="showPage('organisasi')">Organisasi</a>
+      <a onclick="showPage('donasi')">Donasi</a>
+    </div>
+    <div class="footer-col">
+      <h4>Konten</h4>
+      <a onclick="showPage('artikel')">Artikel Edukasi</a>
+      <a onclick="showPage('dashboard')">Dashboard</a>
+      <a onclick="openModal('certModal')">Sertifikat Digital</a>
+      <a onclick="showPage('dashboard')">Indeks Harmoni</a>
+    </div>
+    <div class="footer-col">
+      <h4>HarmoniHub</h4>
+      <a href="#">Tentang Kami</a>
+      <a href="#">Blog</a>
+      <a href="#">Karir</a>
+      <a href="#">Kontak</a>
+      <a href="#">Kebijakan Privasi</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2026 HarmoniHub. Dibuat dengan 💚 di Indonesia.</span>
+    <div style="display:flex;gap:16px">
+      <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:20px">📘</a>
+      <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:20px">📷</a>
+      <a href="#" style="color:rgba(255,255,255,0.4);text-decoration:none;font-size:20px">🐦</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ══════════════════ MODALS ══════════════════ -->
+
+<!-- LOGIN -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Selamat Datang Kembali 👋</span>
+      <button class="modal-close" onclick="closeModal('loginModal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="email@kamu.com"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="••••••••"><div class="form-hint"><a href="#" style="color:var(--accent);text-decoration:none">Lupa password?</a></div></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-bottom:16px" onclick="handleLogin()">Masuk ke HarmoniHub</button>
+    <div class="form-divider">atau</div>
+    <button class="btn btn-outline" style="width:100%;justify-content:center;margin-bottom:8px" onclick="showToast('Login dengan Google')">🔵 Masuk dengan Google</button>
+    <div style="text-align:center;font-size:14px;color:var(--text3);margin-top:16px">Belum punya akun? <a href="#" onclick="closeModal('loginModal');openModal('registerModal')" style="color:var(--accent);text-decoration:none">Daftar gratis</a></div>
+  </div>
+</div>
+
+<!-- REGISTER -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Bergabung dengan HarmoniHub 🌿</span>
+      <button class="modal-close" onclick="closeModal('registerModal')">✕</button>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Nama Depan</label><input class="form-input" placeholder="Ahmad"></div>
+      <div class="form-group"><label class="form-label">Nama Belakang</label><input class="form-input" placeholder="Rizky"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="email@kamu.com"></div>
+    <div class="form-group"><label class="form-label">Password</label><input class="form-input" type="password" placeholder="Min. 8 karakter"><div class="form-hint">Password harus mengandung huruf dan angka</div></div>
+    <div class="form-group"><label class="form-label">Konfirmasi Password</label><input class="form-input" type="password" placeholder="Ulangi password"></div>
+    <div class="form-group"><label class="form-label">Kota</label>
+      <select class="form-select"><option>Pilih kota</option><option>Surabaya</option><option>Jakarta</option><option>Bandung</option><option>Yogyakarta</option><option>Semarang</option></select>
+    </div>
+    <div style="display:flex;align-items:flex-start;gap:10px;margin-bottom:20px;font-size:13px;color:var(--text2)">
+      <input type="checkbox" style="margin-top:3px;width:16px;height:16px;accent-color:var(--accent)">
+      <span>Saya menyetujui <a href="#" style="color:var(--accent);text-decoration:none">Syarat & Ketentuan</a> dan <a href="#" style="color:var(--accent);text-decoration:none">Kebijakan Privasi</a> HarmoniHub</span>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-bottom:16px" onclick="handleRegister()">Buat Akun Gratis 🌿</button>
+    <div class="form-divider">atau</div>
+    <button class="btn btn-outline" style="width:100%;justify-content:center" onclick="showToast('Daftar dengan Google')">🔵 Daftar dengan Google</button>
+    <div style="text-align:center;font-size:14px;color:var(--text3);margin-top:16px">Sudah punya akun? <a href="#" onclick="closeModal('registerModal');openModal('loginModal')" style="color:var(--accent);text-decoration:none">Masuk di sini</a></div>
+  </div>
+</div>
+
+<!-- REGISTER ACTIVITY -->
+<div class="modal-overlay" id="registerActivityModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Daftar Kegiatan 📅</span>
+      <button class="modal-close" onclick="closeModal('registerActivityModal')">✕</button>
+    </div>
+    <div style="background:var(--bg3);border-radius:var(--r);padding:16px;margin-bottom:20px;display:flex;gap:14px;align-items:center">
+      <span style="font-size:28px">🌱</span>
+      <div><div style="font-weight:600;font-size:15px">Tanam 1000 Pohon Bersama</div><div style="font-size:13px;color:var(--text3)">📍 Surabaya · 📅 15 Jun 2026</div></div>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Lengkap</label><input class="form-input" placeholder="Ahmad Rizky"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" placeholder="ahmad@email.com"></div>
+    <div class="form-group"><label class="form-label">No. HP (untuk konfirmasi)</label><input class="form-input" placeholder="08xx-xxxx-xxxx"></div>
+    <div class="form-group"><label class="form-label">Jumlah Peserta</label>
+      <select class="form-select"><option>1 orang (saya sendiri)</option><option>2 orang</option><option>3-5 orang</option><option>6-10 orang (grup)</option></select>
+    </div>
+    <div class="form-group"><label class="form-label">Catatan Khusus (opsional)</label><textarea class="form-textarea" placeholder="Ada kebutuhan khusus yang perlu disampaikan?"></textarea></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="submitActivity()">Konfirmasi Pendaftaran ✓</button>
+  </div>
+</div>
+
+<!-- CREATE ACTIVITY -->
+<div class="modal-overlay" id="createActivityModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title">Buat Kegiatan Baru ✨</span>
+      <button class="modal-close" onclick="closeModal('createActivityModal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Kegiatan</label><input class="form-input" placeholder="Judul yang menarik..."></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Kategori</label>
+        <select class="form-select"><option>Lingkungan</option><option>Pendidikan</option><option>Kesehatan</option><option>Sosial</option><option>Budaya</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Kota</label>
+        <select class="form-select"><option>Surabaya</option><option>Jakarta</option><option>Bandung</option></select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Tanggal</label><input class="form-input" type="date"></div>
+      <div class="form-group"><label class="form-label">Kuota Peserta</label><input class="form-input" type="number" placeholder="50"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Deskripsi</label><textarea class="form-textarea" placeholder="Ceritakan tentang kegiatan ini..."></textarea></div>
+    <div class="form-group"><label class="form-label">Lokasi Detail</label><input class="form-input" placeholder="Nama tempat, alamat lengkap"></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-top:4px" onclick="submitCreate()">Publikasikan Kegiatan 🚀</button>
+  </div>
+</div>
+
+<!-- DONASI MODAL -->
+<div class="modal-overlay" id="donasiModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Konfirmasi Donasi 💚</span>
+      <button class="modal-close" onclick="closeModal('donasiModal')">✕</button>
+    </div>
+    <div class="step-indicator"><div class="step-dot done" id="sd1"></div><div class="step-dot done" id="sd2"></div><div class="step-dot" id="sd3"></div></div>
+    <div style="background:var(--bg3);border-radius:var(--r);padding:16px;margin-bottom:20px;text-align:center">
+      <div style="font-size:32px;margin-bottom:8px">🎓</div>
+      <div style="font-weight:600;margin-bottom:4px">Beasiswa Anak Yatim Piatu</div>
+      <div style="font-family:var(--font2);font-size:28px;color:var(--accent);font-weight:600">Rp 50.000</div>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Pengirim</label><input class="form-input" value="Ahmad Rizky"></div>
+    <div class="form-group"><label class="form-label">Email</label><input class="form-input" type="email" value="ahmad@email.com"></div>
+    <div class="form-group"><label class="form-label">Pesan (opsional)</label><textarea class="form-textarea" placeholder="Semoga bermanfaat..." style="min-height:70px"></textarea></div>
+    <div style="background:rgba(45,106,79,0.06);border-radius:12px;padding:16px;margin-bottom:20px;font-size:13px;color:var(--text2)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Jumlah donasi</span><span>Rp 50.000</span></div>
+      <div style="display:flex;justify-content:space-between;margin-bottom:6px"><span>Biaya platform (0%)</span><span style="color:var(--accent)">Gratis</span></div>
+      <div style="border-top:1px solid var(--border);padding-top:6px;display:flex;justify-content:space-between;font-weight:600;color:var(--text)"><span>Total</span><span>Rp 50.000</span></div>
+    </div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px" onclick="submitDonasi()">Bayar Sekarang 💚</button>
+  </div>
+</div>
+
+<!-- SERTIFIKAT -->
+<div class="modal-overlay" id="certModal">
+  <div class="modal" style="max-width:560px">
+    <div class="modal-header">
+      <span class="modal-title">Sertifikat Digital 🎖️</span>
+      <button class="modal-close" onclick="closeModal('certModal')">✕</button>
+    </div>
+    <div class="certificate">
+      <div class="cert-pattern"></div>
+      <div class="cert-logo">HarmoniHub</div>
+      <div class="cert-subtitle">Sertifikat Partisipasi Resmi</div>
+      <div style="font-size:13px;color:rgba(255,255,255,0.5);letter-spacing:0.1em">DENGAN BANGGA MEMBERIKAN PENGHARGAAN KEPADA</div>
+      <div class="cert-body">
+        <div class="cert-name">Ahmad Rizky</div>
+        <div class="cert-desc">Atas kontribusi luar biasa dalam kegiatan <strong style="color:var(--gold2)">Tanam 1000 Pohon Bersama</strong> yang dilaksanakan pada tanggal 15 Juni 2026 di Taman Kota Surabaya, dengan dedikasi penuh demi kelestarian lingkungan dan harmoni sosial.</div>
+      </div>
+      <div class="cert-seal">🌿</div>
+      <div class="cert-footer">
+        <div><div style="font-size:10px;margin-bottom:4px">DIKELUARKAN OLEH</div><div style="color:rgba(255,255,255,0.7)">HarmoniHub Indonesia</div></div>
+        <div style="text-align:center"><div style="font-size:10px;margin-bottom:4px">TANGGAL</div><div style="color:rgba(255,255,255,0.7)">15 Juni 2026</div></div>
+        <div style="text-align:right"><div style="font-size:10px;margin-bottom:4px">ID SERTIFIKAT</div><div style="color:rgba(255,255,255,0.7)">#HH-2026-08247</div></div>
+      </div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px">
+      <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="showToast('Sertifikat diunduh!')">⬇️ Unduh PDF</button>
+      <button class="btn btn-outline" style="flex:1;justify-content:center" onclick="showToast('Link disalin!')">🔗 Bagikan</button>
+    </div>
+  </div>
+</div>
+
+<!-- CREATE ORG -->
+<div class="modal-overlay" id="createOrgModal">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Daftarkan Organisasi 🏛️</span>
+      <button class="modal-close" onclick="closeModal('createOrgModal')">✕</button>
+    </div>
+    <div class="form-group"><label class="form-label">Nama Organisasi</label><input class="form-input" placeholder="Nama lengkap organisasi"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Bidang Fokus</label>
+        <select class="form-select"><option>Lingkungan</option><option>Pendidikan</option><option>Kesehatan</option><option>Sosial</option><option>Budaya</option></select>
+      </div>
+      <div class="form-group"><label class="form-label">Kota Pusat</label>
+        <select class="form-select"><option>Surabaya</option><option>Jakarta</option><option>Bandung</option></select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Deskripsi Organisasi</label><textarea class="form-textarea" placeholder="Visi, misi, dan kegiatan utama..."></textarea></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Email Resmi</label><input class="form-input" type="email" placeholder="org@email.com"></div>
+      <div class="form-group"><label class="form-label">Website (opsional)</label><input class="form-input" placeholder="www.org.id"></div>
+    </div>
+    <div class="form-group"><label class="form-label">Dokumen Legalitas</label><input class="form-input" type="file" accept=".pdf"><div class="form-hint">Upload SK atau akta pendirian (PDF, maks 5MB)</div></div>
+    <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;margin-top:4px" onclick="submitOrg()">Ajukan Pendaftaran →</button>
+  </div>
+</div>
+
+<!-- ORG DETAIL -->
+<div class="modal-overlay" id="orgDetailModal">
+  <div class="modal" style="max-width:540px">
+    <div class="modal-header">
+      <span class="modal-title">Profil Organisasi</span>
+      <button class="modal-close" onclick="closeModal('orgDetailModal')">✕</button>
+    </div>
+    <div style="text-align:center;padding:20px 0;border-bottom:1px solid var(--border);margin-bottom:20px">
+      <div class="org-logo" style="background:linear-gradient(135deg,#B7E4C7,#52B788);width:80px;height:80px;font-size:36px;border-radius:20px">🌿</div>
+      <h2 style="font-family:var(--font2);font-size:22px;margin-top:12px">Komunitas Hijau Nusantara</h2>
+      <p style="font-size:14px;color:var(--text3)">Lingkungan · Surabaya, Jawa Timur</p>
+      <div style="display:flex;justify-content:center;gap:8px;margin-top:10px">
+        <span class="badge badge-green">Terverifikasi ✓</span>
+        <span class="badge badge-gray">Berdiri 2019</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px">
+      <div class="stat-card" style="text-align:center"><div style="font-size:12px;color:var(--text3)">Anggota</div><div style="font-size:22px;font-weight:600;color:var(--text)">240</div></div>
+      <div class="stat-card" style="text-align:center"><div style="font-size:12px;color:var(--text3)">Kegiatan</div><div style="font-size:22px;font-weight:600;color:var(--text)">18</div></div>
+      <div class="stat-card" style="text-align:center"><div style="font-size:12px;color:var(--text3)">Dampak</div><div style="font-size:22px;font-weight:600;color:var(--text)">4K+</div></div>
+    </div>
+    <p style="font-size:14px;color:var(--text2);line-height:1.7;margin-bottom:20px">Komunitas Hijau Nusantara adalah organisasi lingkungan yang berdedikasi untuk pelestarian alam Indonesia melalui pendekatan lintas komunitas dan gotong royong.</p>
+    <div style="display:flex;gap:10px">
+      <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="showToast('Bergabung dengan organisasi!');closeModal('orgDetailModal')">Bergabung</button>
+      <button class="btn btn-outline" onclick="closeModal('orgDetailModal')">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE MODAL -->
+<div class="modal-overlay" id="profileModal">
+  <div class="modal" style="padding:0;overflow:hidden">
+    <div class="profile-cover"><div class="profile-avatar-wrap"><div class="avatar avatar-lg avatar-green">AR</div></div><button class="modal-close" style="position:absolute;top:16px;right:16px" onclick="closeModal('profileModal')">✕</button></div>
+    <div class="profile-info">
+      <div class="profile-name">Ahmad Rizky</div>
+      <div style="font-size:14px;color:var(--text3);margin-top:4px">Relawan Aktif · Surabaya</div>
+      <div style="display:flex;gap:8px;margin-top:10px"><span class="badge badge-green">🌿 Lingkungan</span><span class="badge badge-blue">📚 Pendidikan</span></div>
+      <div class="profile-stats">
+        <div class="profile-stat"><div class="profile-stat-num">12</div><div class="profile-stat-label">Kegiatan</div></div>
+        <div class="profile-stat"><div class="profile-stat-num">48h</div><div class="profile-stat-label">Total Jam</div></div>
+        <div class="profile-stat"><div class="profile-stat-num">980</div><div class="profile-stat-label">Poin</div></div>
+        <div class="profile-stat"><div class="profile-stat-num">5</div><div class="profile-stat-label">Sertifikat</div></div>
+      </div>
+      <div style="margin-top:20px;border-top:1px solid var(--border);padding-top:16px">
+        <h4 style="font-size:14px;font-weight:600;margin-bottom:12px">Riwayat Kegiatan</h4>
+        <div class="timeline">
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Jun 2026</div><div class="timeline-title">Tanam 1000 Pohon Bersama · Surabaya</div></div>
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Mei 2026</div><div class="timeline-title">Donor Darah Massal · Surabaya</div></div>
+          <div class="timeline-item"><div class="timeline-dot"></div><div class="timeline-date">Apr 2026</div><div class="timeline-title">Baksos Kesehatan Gratis · Jakarta</div></div>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px;margin-top:16px">
+        <button class="btn btn-primary" style="flex:1;justify-content:center" onclick="showToast('Edit profil dibuka');closeModal('profileModal')">Edit Profil</button>
+        <button class="btn btn-outline" onclick="openModal('certModal');closeModal('profileModal')">🎖️ Sertifikatku</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── STATE ───
+let loggedIn = false;
+let userName = '';
+let donationSelected = '';
+
+// ─── PAGE NAVIGATION ───
+function showPage(page){
+  document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));
+  const el = document.getElementById('page-'+page);
+  if(el){
+    el.classList.add('active');
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  document.querySelectorAll('.nav-link').forEach(l=>l.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l=>{
+    if(l.getAttribute('onclick')&&l.getAttribute('onclick').includes(page)) l.classList.add('active');
+  });
+  if(page==='dashboard') animateBars();
+}
+
+// ─── TABS ───
+function switchTab(group,btn,pane){
+  document.querySelectorAll('#page-'+group+' .tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('#page-'+group+' .tab-pane, [id^="'+group+'-"]').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  const el = document.getElementById(group+'-'+pane);
+  if(el) el.classList.add('active');
+  // org special case
+  if(group==='org'){
+    document.querySelectorAll('#page-organisasi .tab-pane').forEach(p=>p.classList.remove('active'));
+    const oel = document.getElementById('org-'+pane);
+    if(oel) oel.classList.add('active');
+  }
+  if(group==='artikel'){
+    document.querySelectorAll('#page-artikel .tab-pane').forEach(p=>p.classList.remove('active'));
+    const ael = document.getElementById('artikel-'+pane);
+    if(ael) ael.classList.add('active');
+  }
+  if(group==='kegiatan'){
+    document.querySelectorAll('#page-kegiatan .tab-pane').forEach(p=>p.classList.remove('active'));
+    const kel = document.getElementById('kegiatan-'+pane);
+    if(kel) kel.classList.add('active');
+  }
+}
+
+// ─── MODAL ───
+function openModal(id){document.getElementById(id).classList.add('open')}
+function closeModal(id){document.getElementById(id).classList.remove('open')}
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open')});
+});
+
+// ─── TOAST ───
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),2800);
+}
+
+// ─── AUTH ───
+function handleLogin(){
+  loggedIn=true;userName='Ahmad Rizky';
+  closeModal('loginModal');
+  const nav = document.getElementById('navActions');
+  nav.innerHTML=`<div class="nav-user"><button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">Dashboard</button><div class="nav-user-avatar" onclick="openModal('profileModal')">AR</div></div>`;
+  showToast('Selamat datang, Ahmad Rizky! 👋');
+}
+function handleRegister(){
+  loggedIn=true;userName='Pengguna Baru';
+  closeModal('registerModal');
+  document.getElementById('navActions').innerHTML=`<div class="nav-user"><button class="btn btn-outline btn-sm" onclick="showPage('dashboard')">Dashboard</button><div class="nav-user-avatar" onclick="openModal('profileModal')">U</div></div>`;
+  showToast('Akun berhasil dibuat! Selamat bergabung 🌿');
+}
+function submitRelawan(){showToast('Pendaftaran relawan berhasil dikirim! ✓')}
+function submitActivity(){closeModal('registerActivityModal');showToast('Pendaftaran kegiatan berhasil! Cek email konfirmasi ✓')}
+function submitCreate(){closeModal('createActivityModal');showToast('Kegiatan berhasil dipublikasikan! 🚀')}
+function submitDonasi(){closeModal('donasiModal');showToast('Donasi Rp 50.000 berhasil! Terima kasih 💚')}
+function submitOrg(){closeModal('createOrgModal');showToast('Pengajuan organisasi dikirim! Tim kami akan menghubungimu 🏛️')}
+
+// ─── DONATION SELECT ───
+function selectDonation(el,val){
+  document.querySelectorAll('.donation-btn').forEach(b=>b.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('donasiAmount').value='Rp '+parseInt(val).toLocaleString('id-ID');
+  donationSelected=val;
+}
+
+// ─── TOGGLE ───
+function toggleEl(wrap){
+  const t=wrap.querySelector('.toggle');
+  t.classList.toggle('on');
+}
+
+// ─── TAG SELECT ───
+function toggleTag(el){
+  if(el.classList.contains('badge-green')){
+    el.className='badge badge-gray';el.style.cursor='pointer';
+  } else {
+    el.className='badge badge-green';el.style.cursor='pointer';
+  }
+  el.setAttribute('onclick','toggleTag(this)');
+}
+
+// ─── COUNTERS ───
+function animateCounter(id,target,suffix=''){
+  let cur=0;const step=target/60;
+  const el=document.getElementById(id);
+  const timer=setInterval(()=>{
+    cur+=step;if(cur>=target){cur=target;clearInterval(timer);}
+    el.textContent=Math.floor(cur).toLocaleString('id-ID')+(suffix||'');
+  },16);
+}
+
+// ─── HARMONI BARS ───
+function animateBars(){
+  setTimeout(()=>{
+    document.querySelectorAll('.harmoni-bar-fill').forEach(bar=>{
+      const t=bar.getAttribute('data-target');
+      if(t) bar.style.width=t+'%';
+    });
+  },200);
+}
+
+// ─── NAVBAR SCROLL ───
+window.addEventListener('scroll',()=>{
+  const nav=document.getElementById('navbar');
+  if(window.scrollY>40) nav.classList.add('scrolled');
+  else nav.classList.remove('scrolled');
+});
+
+// ─── INIT ───
+document.addEventListener('DOMContentLoaded',()=>{
+  animateCounter('counter1',12480);
+  animateCounter('counter2',1847);
+  animateCounter('counter3',156);
+  animateCounter('counter4',34);
+});
+
+// ─── KEYBOARD CLOSE ───
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape') document.querySelectorAll('.modal-overlay.open').forEach(m=>m.classList.remove('open'));
+});
+</script>
+</body>
+</html>
